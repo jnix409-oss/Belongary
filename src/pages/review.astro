@@ -1,0 +1,283 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import companies from '../data/companies.json';
+import { DIMENSIONS } from '../data/dimensions';
+import { LENSES } from '../data/lenses';
+
+const companyNames = companies.map(c => c.name).sort();
+const companyMetros = Object.fromEntries(companies.map(c => [c.name, c.hq_metro]));
+const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
+---
+<BaseLayout title="Leave a Review" description="Share your anonymous experience of belonging at your company.">
+  <div class="max-w-2xl mx-auto px-4 py-12 sm:py-16">
+    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-plum mb-3">
+      Share Your Experience
+    </h1>
+    <p class="text-ink/60 mb-8">
+      Your review is anonymous. No work email required. No identity verification. Just honest answers about belonging.
+    </p>
+
+    <div id="success-message" class="hidden mb-8 bg-score-good/10 border border-score-good/30 rounded-lg p-6 text-center">
+      <p class="text-lg font-heading font-semibold text-plum mb-2">Thank you for your review!</p>
+      <p class="text-ink/60 text-sm">Your submission will be reviewed by a moderator and added to the company's profile.</p>
+    </div>
+
+    <form
+      name="review"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      id="review-form"
+      class="space-y-8"
+    >
+      <input type="hidden" name="form-name" value="review" />
+      <p class="hidden">
+        <label>Don't fill this out: <input name="bot-field" /></label>
+      </p>
+
+      <!-- 1. Company -->
+      <div class="relative">
+        <label for="company" class="block text-sm font-semibold text-plum mb-1">Company *</label>
+        <input
+          type="text"
+          name="company"
+          id="company"
+          required
+          autocomplete="off"
+          placeholder="Start typing a company name..."
+          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
+        />
+        <ul id="company-dropdown" class="hidden absolute z-10 w-full mt-1 max-h-48 overflow-y-auto bg-white border border-border rounded-lg shadow-lg"></ul>
+        <p class="text-xs text-ink/40 mt-1">If your company isn't listed, type it in — we'll add it to the directory.</p>
+      </div>
+
+      <!-- 2. Metro -->
+      <div class="relative">
+        <label for="metro" class="block text-sm font-semibold text-plum mb-1">Metro area</label>
+        <input
+          type="text"
+          name="metro"
+          id="metro"
+          autocomplete="off"
+          placeholder="e.g., Nashville, New York, Remote"
+          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
+        />
+        <ul id="metro-dropdown" class="hidden absolute z-10 w-full mt-1 max-h-48 overflow-y-auto bg-white border border-border rounded-lg shadow-lg"></ul>
+      </div>
+
+      <!-- 3. Tenure -->
+      <div>
+        <label class="block text-sm font-semibold text-plum mb-2">Tenure</label>
+        <div class="flex flex-wrap gap-3">
+          {['Still there', 'Less than 2 years', '2-5 years', '5+ years'].map(opt => (
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="tenure" value={opt} class="accent-coral" />
+              <span class="text-sm text-ink/70">{opt}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <!-- 4. Headline Question -->
+      <div class="bg-cream rounded-xl p-6 border border-border">
+        <p class="text-lg font-heading font-semibold text-plum mb-4">
+          In your opinion, would you tell someone like you to take this job?
+        </p>
+        <div class="flex flex-wrap gap-4">
+          {['Yes', 'No', 'Depends'].map(opt => (
+            <label class="flex-1 min-w-[100px]">
+              <input type="radio" name="headline" value={opt.toLowerCase()} required class="peer hidden" />
+              <div class="peer-checked:bg-coral peer-checked:text-white peer-checked:border-coral text-center py-3 px-4 rounded-lg border-2 border-border text-ink/70 font-semibold cursor-pointer hover:border-coral/50 transition-all">
+                {opt}
+              </div>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <!-- 5. Eight Dimensions -->
+      <div>
+        <h2 class="text-lg font-heading font-semibold text-plum mb-1">Rate These Dimensions</h2>
+        <p class="text-sm text-ink/50 mb-4">1 = poor, 5 = excellent. Skip any you can't speak to.</p>
+        <div class="space-y-4">
+          {DIMENSIONS.map(dim => (
+            <div class="flex items-center gap-4 p-3 rounded-lg bg-white border border-border">
+              <span class="text-lg">{dim.icon}</span>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-plum">{dim.label}</p>
+              </div>
+              <div class="flex gap-1" role="radiogroup" aria-label={dim.label}>
+                {[1, 2, 3, 4, 5].map(v => (
+                  <label class="dimension-rating">
+                    <input type="radio" name={`dim_${dim.id}`} value={v} class="peer hidden" />
+                    <span class="peer-checked:bg-coral peer-checked:text-white peer-checked:border-coral w-9 h-9 flex items-center justify-center rounded-md border border-border text-sm font-medium text-ink/60 cursor-pointer hover:border-coral/50 transition-all">
+                      {v}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- 6. Sensitive-Data Consent + 7. Lens Selection -->
+      <div class="bg-cream-light rounded-xl p-6 border border-border">
+        <div class="mb-4">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="lens-consent" name="lens_consent" value="yes" class="mt-1 accent-coral" />
+            <div>
+              <p class="text-sm font-semibold text-plum">I'd like to tag my review with an identity lens</p>
+              <p class="text-xs text-ink/50 mt-1">
+                Your lens tag helps aggregate belonging scores for people with similar identities. It is never published individually — only shown when enough reviews exist to protect anonymity (minimum 5). This is completely optional.
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <div id="lens-options" class="hidden">
+          <p class="text-sm font-semibold text-plum mb-2">Select any that apply:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {LENSES.map(lens => (
+              <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/50 cursor-pointer">
+                <input type="checkbox" name="lens" value={lens.id} class="lens-checkbox accent-coral" disabled />
+                <span class="text-sm text-ink/70">{lens.label}</span>
+              </label>
+            ))}
+            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/50 cursor-pointer">
+              <input type="checkbox" name="lens" value="prefer-not-to-say" class="lens-checkbox accent-coral" disabled />
+              <span class="text-sm text-ink/70">Prefer not to say</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Org Level -->
+      <div>
+        <label class="block text-sm font-semibold text-plum mb-2">Org level</label>
+        <div class="flex flex-wrap gap-3">
+          {['Frontline / Hourly', 'Individual Contributor', 'Manager / Supervisor', 'Director / Sr. Leadership', 'Executive'].map(opt => (
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="org_level" value={opt} class="accent-coral" />
+              <span class="text-sm text-ink/70">{opt}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <!-- 9. Optional Comment -->
+      <div>
+        <label for="comment" class="block text-sm font-semibold text-plum mb-1">
+          Anything else? <span class="font-normal text-ink/40">(optional, 200 characters max)</span>
+        </label>
+        <textarea
+          name="comment"
+          id="comment"
+          maxlength="200"
+          rows="3"
+          placeholder="Keep it about the experience, not individuals."
+          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral resize-none"
+        ></textarea>
+        <p class="text-xs text-ink/40 mt-1">
+          Content naming individuals, containing hate speech, or that could identify you will be rejected outright. You'll be asked to resubmit — we never edit your words.
+        </p>
+        <p class="text-xs text-ink/40 mt-0.5" id="char-count">0 / 200</p>
+      </div>
+
+      <!-- 10. Optional Email -->
+      <div>
+        <label for="email" class="block text-sm font-semibold text-plum mb-1">
+          Email <span class="font-normal text-ink/40">(optional — for corrections/removal only)</span>
+        </label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="your@email.com"
+          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
+        />
+        <p class="text-xs text-ink/40 mt-1">
+          Never published. Never used to verify employment. Only used to contact you if a correction or removal is requested.
+        </p>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full py-3 bg-coral text-white font-semibold rounded-lg hover:bg-coral/90 transition-colors shadow-sm text-lg"
+      >
+        Submit Review
+      </button>
+    </form>
+  </div>
+
+  <script define:vars={{ companyNames, companyMetros, metros }}>
+    function setupAutocomplete(inputId, dropdownId, items, onSelect) {
+      const input = document.getElementById(inputId);
+      const dropdown = document.getElementById(dropdownId);
+      if (!input || !dropdown) return;
+
+      input.addEventListener('input', () => {
+        const val = input.value.toLowerCase().trim();
+        dropdown.innerHTML = '';
+        if (val.length < 1) { dropdown.classList.add('hidden'); return; }
+        const matches = items.filter(item => item.toLowerCase().includes(val)).slice(0, 10);
+        if (matches.length === 0) { dropdown.classList.add('hidden'); return; }
+        matches.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          li.className = 'px-4 py-2 cursor-pointer hover:bg-cream text-sm text-ink';
+          li.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            input.value = item;
+            dropdown.classList.add('hidden');
+            if (onSelect) onSelect(item);
+          });
+          dropdown.appendChild(li);
+        });
+        dropdown.classList.remove('hidden');
+      });
+
+      input.addEventListener('focus', () => {
+        if (input.value.trim().length >= 1) input.dispatchEvent(new Event('input'));
+      });
+
+      input.addEventListener('blur', () => {
+        setTimeout(() => dropdown.classList.add('hidden'), 150);
+      });
+    }
+
+    const metroInput = document.getElementById('metro');
+    setupAutocomplete('company', 'company-dropdown', companyNames, (name) => {
+      if (companyMetros[name] && metroInput && !metroInput.value) {
+        metroInput.value = companyMetros[name];
+      }
+    });
+    setupAutocomplete('metro', 'metro-dropdown', metros, null);
+  </script>
+
+  <script>
+    const consent = document.getElementById('lens-consent');
+    const lensOptions = document.getElementById('lens-options');
+    const lensCheckboxes = document.querySelectorAll('.lens-checkbox');
+
+    consent?.addEventListener('change', () => {
+      const checked = (consent as HTMLInputElement).checked;
+      lensOptions?.classList.toggle('hidden', !checked);
+      lensCheckboxes.forEach(cb => {
+        (cb as HTMLInputElement).disabled = !checked;
+        if (!checked) (cb as HTMLInputElement).checked = false;
+      });
+    });
+
+    const comment = document.getElementById('comment') as HTMLTextAreaElement;
+    const charCount = document.getElementById('char-count');
+    comment?.addEventListener('input', () => {
+      if (charCount) charCount.textContent = `${comment.value.length} / 200`;
+    });
+
+    if (window.location.search.includes('success=true')) {
+      document.getElementById('success-message')?.classList.remove('hidden');
+      document.getElementById('review-form')?.classList.add('hidden');
+    }
+  </script>
+</BaseLayout>

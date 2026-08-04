@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import companies from '../data/companies.json';
+import { getHeadlineBadge } from '../data/thresholds';
+
+const topCompanies = companies
+  .filter(c => c.reports.n >= 5)
+  .sort((a, b) => {
+    const aScore = a.reports.yes / (a.reports.yes + a.reports.no);
+    const bScore = b.reports.yes / (b.reports.yes + b.reports.no);
+    return bScore - aScore;
+  })
+  .slice(0, 6);
+---
+<BaseLayout title="Home" description="Belongary shows whether people actually belong at a company — filtered through their own identity lens.">
+  <!-- Hero -->
+  <section class="bg-gradient-to-b from-cream to-cream-light">
+    <div class="max-w-5xl mx-auto px-4 py-16 sm:py-24 text-center">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-plum leading-tight mb-6">
+        Do you actually <span class="text-coral">belong</span> there?
+      </h1>
+      <p class="text-lg sm:text-xl text-ink/70 max-w-2xl mx-auto mb-10">
+        Real talk about belonging at work. Anonymous reviews filtered through the identity lenses that matter to you — not a polished employer brand.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/review" class="inline-flex items-center justify-center px-8 py-3 bg-coral text-white font-semibold rounded-lg hover:bg-coral/90 transition-colors shadow-sm">
+          Add Your Voice
+        </a>
+        <a href="/directory" class="inline-flex items-center justify-center px-8 py-3 bg-white text-plum font-semibold rounded-lg border border-border hover:border-plum/30 transition-colors">
+          Browse Companies
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="py-16 sm:py-20">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum text-center mb-12">
+        How Belongary Works
+      </h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-coral/10 flex items-center justify-center">
+            <span class="text-2xl font-heading font-bold text-coral">1</span>
+          </div>
+          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Answer honestly</h3>
+          <p class="text-ink/60 text-sm">
+            One headline question — would you tell someone like you to take this job? — plus eight dimensions of belonging, scored 1-5.
+          </p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-teal/10 flex items-center justify-center">
+            <span class="text-2xl font-heading font-bold text-teal">2</span>
+          </div>
+          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Filter by lens</h3>
+          <p class="text-ink/60 text-sm">
+            Optionally tag your review with an identity lens — professional of color, caregiver, LGBTQ+, and more. Your lens is never published individually.
+          </p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-amber/10 flex items-center justify-center">
+            <span class="text-2xl font-heading font-bold text-amber">3</span>
+          </div>
+          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Truth emerges</h3>
+          <p class="text-ink/60 text-sm">
+            Scores aggregate anonymously. Toggle lenses on any company to see how belonging differs across identities. Numbers speak when branding can't.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Companies -->
+  <section class="py-16 sm:py-20 bg-white/50">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum text-center mb-4">
+        Top-Rated Companies
+      </h2>
+      <p class="text-ink/60 text-center mb-12 max-w-xl mx-auto">
+        Companies with the highest belonging scores, based on anonymous reviews from real employees.
+      </p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {topCompanies.map(company => {
+          const pct = Math.round((company.reports.yes / (company.reports.yes + company.reports.no)) * 100);
+          const badge = getHeadlineBadge(pct);
+          return (
+            <a href={`/company/${company.slug}`} class="block bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-plum/20 transition-all group">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="font-heading font-semibold text-plum group-hover:text-coral transition-colors">{company.name}</h3>
+                  <p class="text-sm text-ink/50">{company.industry} · {company.hq_metro}</p>
+                </div>
+                <div class="flex flex-col items-center">
+                  <span class="text-2xl font-heading font-bold" style={`color: ${badge.color}`}>{pct}%</span>
+                  <span class="text-xs font-medium" style={`color: ${badge.color}`}>{badge.label}</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-ink/40">
+                <span>{company.reports.n} reviews</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+      <div class="text-center mt-10">
+        <a href="/directory" class="text-coral font-semibold hover:text-coral/80 transition-colors">
+          View all companies &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Waitlist / CTA -->
+  <section class="py-16 sm:py-20 bg-cream">
+    <div class="max-w-xl mx-auto px-4 text-center">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum mb-4">
+        Stay in the loop
+      </h2>
+      <p class="text-ink/60 mb-8">
+        Get notified when new companies are added, and be the first to know about new features.
+      </p>
+      <form
+        name="waitlist"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+      >
+        <input type="hidden" name="form-name" value="waitlist" />
+        <p class="hidden">
+          <label>Don't fill this out: <input name="bot-field" /></label>
+        </p>
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="your@email.com"
+          class="flex-1 px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
+        />
+        <button
+          type="submit"
+          class="px-6 py-3 bg-coral text-white font-semibold rounded-lg hover:bg-coral/90 transition-colors shadow-sm"
+        >
+          Join Waitlist
+        </button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

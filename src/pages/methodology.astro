@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { DIMENSIONS } from '../data/dimensions';
+import { CONFIDENCE_CONFIG } from '../data/thresholds';
+---
+<BaseLayout title="Methodology" description="How Belongary collects, aggregates, and displays belonging scores.">
+  <div class="max-w-3xl mx-auto px-4 py-12 sm:py-16">
+    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-plum mb-8">How Belongary Works</h1>
+
+    <div class="space-y-10 text-ink/80 leading-relaxed">
+      <section>
+        <h2 class="text-2xl font-heading font-semibold text-plum mb-4">The Headline Question</h2>
+        <p class="mb-4">
+          Every review starts with one question: <strong>"In your opinion, would you tell someone like you to take this job?"</strong> The answer is Yes, No, or Depends.
+        </p>
+        <p class="mb-4">
+          The headline score you see on a company profile is <strong>Yes &divide; (Yes + No)</strong>, expressed as a percentage. "Depends" responses are always shown in the full three-way split bar but are excluded from the headline percentage. This means the headline directly answers: "Of people who had a clear opinion, what fraction said yes?"
+        </p>
+        <p>
+          We always show the full three-way split (yes / depends / no) alongside the headline number so you can judge for yourself.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Eight Dimensions of Belonging</h2>
+        <p class="mb-6">
+          Beyond the headline, reviewers rate eight specific dimensions of workplace belonging on a 1-5 scale. Each dimension can be skipped if the reviewer can't speak to it.
+        </p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          {DIMENSIONS.map(dim => (
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-white border border-border">
+              <span class="text-xl">{dim.icon}</span>
+              <span class="text-sm font-medium text-plum">{dim.label}</span>
+            </div>
+          ))}
+        </div>
+        <p class="mt-4 text-sm text-ink/60">
+          We display both the average score and the distribution spread. A 3.5 from a polarized workforce (lots of 1s and 5s) looks different from a steady 3.5 — and should.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Identity Lenses</h2>
+        <p class="mb-4">
+          Reviewers can optionally tag their review with up to two identity lenses. This is gated behind an explicit opt-in consent step. Lens tags are never published individually — scores only appear when at least 5 reviews exist for a given lens at a given company.
+        </p>
+        <p class="mb-4">
+          Lenses are not demographic categories imposed by us. They're self-identified perspectives that a reviewer believes are relevant to their experience of belonging at that company.
+        </p>
+        <p>
+          Seven identity lenses and four non-traditional-path tags are available, plus "prefer not to say." Lenses are never combined or averaged together.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Suppression Thresholds</h2>
+        <p class="mb-4">
+          We take data integrity and anonymity seriously. Scores are gated by report count, and the confidence level is always shown:
+        </p>
+        <div class="space-y-3">
+          {Object.entries(CONFIDENCE_CONFIG).map(([level, config]) => (
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-border">
+              <span class="text-sm font-semibold text-plum whitespace-nowrap">{config.label}</span>
+              <span class="text-sm text-ink/60">{config.description}</span>
+            </div>
+          ))}
+        </div>
+        <p class="mt-4 text-sm text-ink/60">
+          These thresholds apply <strong>per lens, per dimension</strong>. A company can be "reliable" overall and "suppressed" on a specific lens simultaneously. Suppressed lenses are shown honestly, not hidden — you can see how many reviews exist and how many more are needed.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Anonymity</h2>
+        <p class="mb-4">
+          No work email is required. No SSO verification. No domain matching. We don't verify employment. We trust reviewers to report honestly, and we rely on volume, moderation, and community norms to maintain data quality.
+        </p>
+        <p>
+          If a reviewer provides an email, it's used solely for correction or removal requests. It is never published, never cross-referenced, and never used to confirm employment.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Moderation</h2>
+        <p class="mb-4">
+          Every review is read by a human moderator before it's published. Content that names individuals, contains hate speech, or could identify the reviewer is <strong>rejected outright</strong> — the reviewer is asked to resubmit.
+        </p>
+        <p>
+          We never edit someone's words and republish them. If a review is rejected, the reviewer gets a chance to rewrite it. What goes on the site is always the reviewer's own language, unmodified.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Score Display</h2>
+        <p>
+          Scores are never conveyed by color alone. Every score is paired with a number, a label (Strong, Good, Mixed, Low), and a visual bar. This meets WCAG 2.1 AA accessibility requirements and ensures the data is usable by everyone.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
