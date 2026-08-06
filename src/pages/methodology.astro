@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { DIMENSIONS } from '../data/dimensions';
-import { CONFIDENCE_CONFIG } from '../data/thresholds';
+import { MIN_REVIEWS_DISPLAY, MIN_REVIEWS_SENSITIVE_LENS } from '../config';
 ---
 <BaseLayout title="Methodology" description="How Belongary collects, aggregates, and displays belonging scores.">
   <div class="max-w-3xl mx-auto px-4 py-12 sm:py-16">
@@ -29,7 +29,7 @@ import { CONFIDENCE_CONFIG } from '../data/thresholds';
         <div class="grid sm:grid-cols-2 gap-3">
           {DIMENSIONS.map(dim => (
             <div class="flex items-center gap-3 p-3 rounded-lg bg-white border border-border">
-              <span class="text-xl">{dim.icon}</span>
+              <img src={dim.icon} alt="" width="24" height="24" class="text-plum" aria-hidden="true" />
               <span class="text-sm font-medium text-plum">{dim.label}</span>
             </div>
           ))}
@@ -42,7 +42,7 @@ import { CONFIDENCE_CONFIG } from '../data/thresholds';
       <section>
         <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Identity Lenses</h2>
         <p class="mb-4">
-          Reviewers can optionally tag their review with up to two identity lenses. This is gated behind an explicit opt-in consent step. Lens tags are never published individually — scores only appear when at least 5 reviews exist for a given lens at a given company.
+          Reviewers can optionally tag their review with identity lenses. This is gated behind an explicit opt-in consent step. Lens tags are never published individually — scores only appear when enough reviews exist for a given lens at a given company.
         </p>
         <p class="mb-4">
           Lenses are not demographic categories imposed by us. They're self-identified perspectives that a reviewer believes are relevant to their experience of belonging at that company.
@@ -53,20 +53,22 @@ import { CONFIDENCE_CONFIG } from '../data/thresholds';
       </section>
 
       <section>
-        <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Suppression Thresholds</h2>
+        <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Display Thresholds</h2>
         <p class="mb-4">
-          We take data integrity and anonymity seriously. Scores are gated by report count, and the confidence level is always shown:
+          We take data integrity and anonymity seriously. Scores are gated by review count and are never displayed until the threshold is met:
         </p>
         <div class="space-y-3">
-          {Object.entries(CONFIDENCE_CONFIG).map(([level, config]) => (
-            <div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-border">
-              <span class="text-sm font-semibold text-plum whitespace-nowrap">{config.label}</span>
-              <span class="text-sm text-ink/60">{config.description}</span>
-            </div>
-          ))}
+          <div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-border">
+            <span class="text-sm font-semibold text-plum whitespace-nowrap">Company scores</span>
+            <span class="text-sm text-ink/60">Require at least {MIN_REVIEWS_DISPLAY} reviews before any scores are shown.</span>
+          </div>
+          <div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-border">
+            <span class="text-sm font-semibold text-plum whitespace-nowrap">Identity lens scores</span>
+            <span class="text-sm text-ink/60">Require at least {MIN_REVIEWS_SENSITIVE_LENS} reviews with that lens tag. The higher bar protects the anonymity of smaller groups.</span>
+          </div>
         </div>
         <p class="mt-4 text-sm text-ink/60">
-          These thresholds apply <strong>per lens, per dimension</strong>. A company can be "reliable" overall and "suppressed" on a specific lens simultaneously. Suppressed lenses are shown honestly, not hidden — you can see how many reviews exist and how many more are needed.
+          Below threshold, we show a progress indicator — never a zero, a dash, or an empty chart, which could be misread as a real low score. The threshold is never waived.
         </p>
       </section>
 
@@ -96,10 +98,10 @@ import { CONFIDENCE_CONFIG } from '../data/thresholds';
           Scores are never conveyed by color alone. Every score is paired with a number, a label (Strong, Good, Mixed, Low), and a visual bar. This meets WCAG 2.1 AA accessibility requirements and ensures the data is usable by everyone.
         </p>
         <div class="rounded-xl overflow-hidden border border-border shadow-sm">
-          <img src="/score-preview.png" alt="Example belonging score card showing a 7.2 out of 10 score with a 'Good' label, distribution bar chart, and lens filter for Black Women 40+" class="w-full h-auto" />
+          <img src="/score-preview.png" alt="Example belonging score card showing a score with a label, distribution bar chart, and lens filter" class="w-full h-auto" />
         </div>
         <p class="mt-3 text-sm text-ink/50 text-center italic">
-          Example of a belonging score card filtered through an identity lens
+          Example of how a belonging score card will look once reviews reach the display threshold
         </p>
       </section>
     </div>

@@ -1,18 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import companies from '../data/companies.json';
-import { getHeadlineBadge } from '../data/thresholds';
+import ReviewProgress from '../components/ReviewProgress.astro';
+import { getThreshold } from '../data/thresholds';
 
-const topCompanies = companies
-  .filter(c => c.reports.n >= 5)
-  .sort((a, b) => {
-    const aScore = a.reports.yes / (a.reports.yes + a.reports.no);
-    const bScore = b.reports.yes / (b.reports.yes + b.reports.no);
-    return bScore - aScore;
-  })
-  .slice(0, 6);
+// Sort alphabetically — no score-based ranking with zero reviews
+const allCompanies = [...companies].sort((a, b) => a.name.localeCompare(b.name));
+const threshold = getThreshold();
 ---
-<BaseLayout title="Home" description="Belongary shows whether people actually belong at a company — filtered through their own identity lens.">
+<BaseLayout title="Home" description="See if you'll belong — before you take the job. Anonymous workplace belonging reviews filtered through identity lenses.">
   <!-- Hero -->
   <section class="bg-gradient-to-b from-cream to-cream-light relative overflow-hidden">
     <div class="max-w-5xl mx-auto px-4 py-16 sm:py-24 text-center relative z-10">
@@ -33,7 +29,7 @@ const topCompanies = companies
     </div>
     <!-- Decorative brand pattern -->
     <div class="absolute bottom-0 right-0 w-64 sm:w-80 lg:w-96 opacity-[0.07] pointer-events-none translate-x-1/4 translate-y-1/4">
-      <img src="/brand-patterns.png" alt="" class="w-full h-auto" aria-hidden="true" />
+      <img src="/brand/pattern-elements.png" alt="" class="w-full h-auto" aria-hidden="true" />
     </div>
   </section>
 
@@ -75,37 +71,33 @@ const topCompanies = companies
     </div>
   </section>
 
-  <!-- Featured Companies -->
+  <!-- Companies We're Gathering Data On -->
   <section class="py-16 sm:py-20 bg-white/50">
     <div class="max-w-5xl mx-auto px-4">
       <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum text-center mb-4">
-        Top-Rated Companies
+        Companies we're gathering data on
       </h2>
       <p class="text-ink/60 text-center mb-12 max-w-xl mx-auto">
-        Companies with the highest belonging scores, based on anonymous reviews from real employees.
+        Help us reach {threshold} reviews per company so belonging scores can go live. Every review brings us closer.
       </p>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {topCompanies.map(company => {
-          const pct = Math.round((company.reports.yes / (company.reports.yes + company.reports.no)) * 100);
-          const badge = getHeadlineBadge(pct);
-          return (
-            <a href={`/company/${company.slug}`} class="block bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-plum/20 transition-all group">
-              <div class="flex items-start justify-between mb-3">
-                <div>
-                  <h3 class="font-heading font-semibold text-plum group-hover:text-coral transition-colors">{company.name}</h3>
-                  <p class="text-sm text-ink/50">{company.industry} · {company.hq_metro}</p>
-                </div>
-                <div class="flex flex-col items-center">
-                  <span class="text-2xl font-heading font-bold" style={`color: ${badge.color}`}>{pct}%</span>
-                  <span class="text-xs font-medium" style={`color: ${badge.color}`}>{badge.label}</span>
-                </div>
+        {allCompanies.slice(0, 6).map(company => (
+          <a href={`/company/${company.slug}`} class="block bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-plum/20 transition-all group">
+            <div class="mb-3">
+              <h3 class="font-heading font-semibold text-plum group-hover:text-coral transition-colors">{company.name}</h3>
+              <p class="text-sm text-ink/50">{company.industry} · {company.hq_metro}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex-1 bg-light rounded-full h-2 overflow-hidden">
+                <div
+                  class="h-full rounded-full bg-coral/40"
+                  style={`width: ${Math.min(100, Math.round(((company as any).reviewCount / threshold) * 100))}%`}
+                ></div>
               </div>
-              <div class="flex items-center gap-2 text-xs text-ink/40">
-                <span>{company.reports.n} reviews</span>
-              </div>
-            </a>
-          );
-        })}
+              <span class="text-xs text-ink/40 whitespace-nowrap">{(company as any).reviewCount} / {threshold}</span>
+            </div>
+          </a>
+        ))}
       </div>
       <div class="text-center mt-10">
         <a href="/directory" class="text-coral font-semibold hover:text-coral/80 transition-colors">

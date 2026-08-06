@@ -1,30 +1,22 @@
-export type ConfidenceLevel = 'suppressed' | 'early' | 'directional' | 'reliable';
+import { MIN_REVIEWS_DISPLAY, MIN_REVIEWS_SENSITIVE_LENS } from '../config';
 
-export function getConfidenceLevel(n: number): ConfidenceLevel {
-  if (n < 5) return 'suppressed';
-  if (n < 25) return 'early';
-  if (n < 100) return 'directional';
-  return 'reliable';
+/**
+ * Returns true when `count` meets or exceeds the display threshold.
+ * Sensitive lenses (identity-based) require a higher bar to protect anonymity.
+ */
+export function hasThreshold(count: number, isSensitiveLens = false): boolean {
+  const min = isSensitiveLens ? MIN_REVIEWS_SENSITIVE_LENS : MIN_REVIEWS_DISPLAY;
+  return count >= min;
 }
 
-export const CONFIDENCE_CONFIG: Record<ConfidenceLevel, { label: string; description: string }> = {
-  suppressed: {
-    label: 'Not enough reports yet',
-    description: 'We need at least 5 reviews before showing scores.',
-  },
-  early: {
-    label: 'Early / Small Sample',
-    description: 'Based on a small number of reviews. Interpret with care.',
-  },
-  directional: {
-    label: 'Directional',
-    description: 'A meaningful signal backed by a growing number of reviews.',
-  },
-  reliable: {
-    label: 'Reliable',
-    description: 'Based on 100+ reviews. This is a strong signal.',
-  },
-};
+/**
+ * Returns the threshold number that applies, for display in progress UI.
+ */
+export function getThreshold(isSensitiveLens = false): number {
+  return isSensitiveLens ? MIN_REVIEWS_SENSITIVE_LENS : MIN_REVIEWS_DISPLAY;
+}
+
+// --- Score display helpers (only used when hasThreshold() is true) ---
 
 export function getScoreColor(score: number): string {
   if (score >= 3.5) return '#3E8E7E';

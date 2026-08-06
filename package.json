@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "check-data": "node scripts/check-no-fabricated-data.mjs",
+    "build": "node scripts/check-no-fabricated-data.mjs && astro build",
     "preview": "astro preview"
   },
   "dependencies": {

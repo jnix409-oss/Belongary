@@ -1,360 +1,162 @@
 [
   {
-    "slug": "hca-healthcare",
-    "name": "HCA Healthcare",
-    "industry": "Healthcare",
-    "hq_metro": "Nashville",
-    "reports": {
-      "n": 583,
-      "yes": 71, "no": 11, "depends": 18,
-      "dimensions": { "belonging": 4.3, "heard": 3.9, "manager": 4.1, "sponsorship": 3.2, "promotion": 3.0, "growth": 3.6, "representation": 3.8, "flexibility": 4.4 },
-      "by_lens": {
-        "caregiver": { "n": 61, "yes": 58, "no": 16, "depends": 26, "dimensions": { "belonging": 3.9, "heard": 3.5, "manager": 3.8, "sponsorship": 2.9, "promotion": 2.7, "growth": 3.2, "representation": 3.4, "flexibility": 4.6 } },
-        "poc": { "n": 142, "yes": 62, "no": 18, "depends": 20, "dimensions": { "belonging": 3.8, "heard": 3.4, "manager": 3.9, "sponsorship": 2.8, "promotion": 2.6, "growth": 3.3, "representation": 3.1, "flexibility": 4.2 } },
-        "lgbtq": { "n": 3 },
-        "40plus": { "n": 89, "yes": 74, "no": 8, "depends": 18, "dimensions": { "belonging": 4.5, "heard": 4.1, "manager": 4.3, "sponsorship": 3.5, "promotion": 3.2, "growth": 3.4, "representation": 4.0, "flexibility": 4.5 } },
-        "neurodivergent": { "n": 27, "yes": 52, "no": 22, "depends": 26, "dimensions": { "belonging": 3.4, "heard": 3.0, "manager": 3.5, "sponsorship": 2.6, "promotion": 2.5, "growth": 3.0, "representation": 2.8, "flexibility": 4.1 } },
-        "disabled": { "n": 18, "yes": 44, "no": 28, "depends": 28, "dimensions": { "belonging": 3.2, "heard": 2.8, "manager": 3.3, "sponsorship": 2.4, "promotion": 2.3, "growth": 2.8, "representation": 2.5, "flexibility": 3.9 } },
-        "firstgen": { "n": 34, "yes": 65, "no": 12, "depends": 23, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.9, "sponsorship": 3.0, "promotion": 2.8, "growth": 3.5, "representation": 3.3, "flexibility": 4.3 } }
-      }
-    }
-  },
-  {
-    "slug": "community-health-systems",
-    "name": "Community Health Systems",
-    "industry": "Healthcare",
-    "hq_metro": "Nashville",
-    "reports": {
-      "n": 247,
-      "yes": 54, "no": 22, "depends": 24,
-      "dimensions": { "belonging": 3.6, "heard": 3.2, "manager": 3.4, "sponsorship": 2.8, "promotion": 2.6, "growth": 3.0, "representation": 3.2, "flexibility": 3.8 },
-      "by_lens": {
-        "poc": { "n": 78, "yes": 42, "no": 30, "depends": 28, "dimensions": { "belonging": 3.1, "heard": 2.7, "manager": 3.0, "sponsorship": 2.3, "promotion": 2.1, "growth": 2.6, "representation": 2.7, "flexibility": 3.5 } },
-        "caregiver": { "n": 35, "yes": 48, "no": 26, "depends": 26, "dimensions": { "belonging": 3.3, "heard": 3.0, "manager": 3.2, "sponsorship": 2.5, "promotion": 2.4, "growth": 2.8, "representation": 3.0, "flexibility": 4.0 } },
-        "40plus": { "n": 52, "yes": 60, "no": 18, "depends": 22, "dimensions": { "belonging": 3.8, "heard": 3.5, "manager": 3.6, "sponsorship": 3.0, "promotion": 2.8, "growth": 3.1, "representation": 3.5, "flexibility": 3.9 } },
-        "lgbtq": { "n": 12, "yes": 38, "no": 32, "depends": 30, "dimensions": { "belonging": 2.9, "heard": 2.5, "manager": 2.8, "sponsorship": 2.1, "promotion": 2.0, "growth": 2.4, "representation": 2.3, "flexibility": 3.4 } }
-      }
-    }
-  },
-  {
-    "slug": "unitedhealth-group",
-    "name": "UnitedHealth Group",
-    "industry": "Healthcare",
-    "hq_metro": "Minneapolis",
-    "reports": {
-      "n": 412,
-      "yes": 63, "no": 16, "depends": 21,
-      "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.0, "promotion": 2.9, "growth": 3.4, "representation": 3.5, "flexibility": 4.2 },
-      "by_lens": {
-        "poc": { "n": 105, "yes": 51, "no": 24, "depends": 25, "dimensions": { "belonging": 3.5, "heard": 3.1, "manager": 3.4, "sponsorship": 2.5, "promotion": 2.3, "growth": 2.9, "representation": 2.8, "flexibility": 4.0 } },
-        "caregiver": { "n": 48, "yes": 66, "no": 12, "depends": 22, "dimensions": { "belonging": 4.1, "heard": 3.7, "manager": 3.9, "sponsorship": 3.1, "promotion": 3.0, "growth": 3.5, "representation": 3.6, "flexibility": 4.5 } },
-        "neurodivergent": { "n": 19, "yes": 47, "no": 26, "depends": 27, "dimensions": { "belonging": 3.2, "heard": 2.8, "manager": 3.1, "sponsorship": 2.3, "promotion": 2.2, "growth": 2.7, "representation": 2.6, "flexibility": 3.9 } },
-        "lgbtq": { "n": 31, "yes": 68, "no": 10, "depends": 22, "dimensions": { "belonging": 4.2, "heard": 3.8, "manager": 4.0, "sponsorship": 3.3, "promotion": 3.1, "growth": 3.6, "representation": 3.7, "flexibility": 4.3 } },
-        "disabled": { "n": 8, "yes": 38, "no": 34, "depends": 28, "dimensions": { "belonging": 2.8, "heard": 2.4, "manager": 2.7, "sponsorship": 2.0, "promotion": 1.9, "growth": 2.3, "representation": 2.1, "flexibility": 3.6 } },
-        "40plus": { "n": 67, "yes": 70, "no": 12, "depends": 18, "dimensions": { "belonging": 4.3, "heard": 3.9, "manager": 4.1, "sponsorship": 3.4, "promotion": 3.2, "growth": 3.5, "representation": 3.9, "flexibility": 4.3 } }
-      }
-    }
-  },
-  {
-    "slug": "vanderbilt-university-medical-center",
-    "name": "Vanderbilt University Medical Center",
-    "industry": "Healthcare",
-    "hq_metro": "Nashville",
-    "reports": {
-      "n": 321,
-      "yes": 76, "no": 8, "depends": 16,
-      "dimensions": { "belonging": 4.5, "heard": 4.1, "manager": 4.3, "sponsorship": 3.6, "promotion": 3.4, "growth": 4.0, "representation": 4.2, "flexibility": 4.1 },
-      "by_lens": {
-        "poc": { "n": 82, "yes": 68, "no": 12, "depends": 20, "dimensions": { "belonging": 4.1, "heard": 3.7, "manager": 4.0, "sponsorship": 3.2, "promotion": 3.0, "growth": 3.6, "representation": 3.8, "flexibility": 3.9 } },
-        "lgbtq": { "n": 45, "yes": 82, "no": 6, "depends": 12, "dimensions": { "belonging": 4.7, "heard": 4.4, "manager": 4.5, "sponsorship": 3.9, "promotion": 3.7, "growth": 4.2, "representation": 4.5, "flexibility": 4.2 } },
-        "caregiver": { "n": 38, "yes": 71, "no": 10, "depends": 19, "dimensions": { "belonging": 4.3, "heard": 3.9, "manager": 4.1, "sponsorship": 3.4, "promotion": 3.2, "growth": 3.8, "representation": 4.0, "flexibility": 4.4 } },
-        "neurodivergent": { "n": 15, "yes": 60, "no": 13, "depends": 27, "dimensions": { "belonging": 3.8, "heard": 3.4, "manager": 3.6, "sponsorship": 2.9, "promotion": 2.7, "growth": 3.3, "representation": 3.2, "flexibility": 4.0 } },
-        "firstgen": { "n": 29, "yes": 72, "no": 10, "depends": 18, "dimensions": { "belonging": 4.3, "heard": 3.9, "manager": 4.1, "sponsorship": 3.5, "promotion": 3.3, "growth": 3.9, "representation": 3.8, "flexibility": 4.0 } }
-      }
-    }
-  },
-  {
-    "slug": "cvs-health",
-    "name": "CVS Health",
-    "industry": "Healthcare",
-    "hq_metro": "Woonsocket",
-    "reports": {
-      "n": 189,
-      "yes": 48, "no": 28, "depends": 24,
-      "dimensions": { "belonging": 3.3, "heard": 2.9, "manager": 3.1, "sponsorship": 2.5, "promotion": 2.3, "growth": 2.7, "representation": 3.0, "flexibility": 3.5 },
-      "by_lens": {
-        "poc": { "n": 62, "yes": 38, "no": 36, "depends": 26, "dimensions": { "belonging": 2.8, "heard": 2.4, "manager": 2.7, "sponsorship": 2.0, "promotion": 1.9, "growth": 2.3, "representation": 2.5, "flexibility": 3.2 } },
-        "caregiver": { "n": 28, "yes": 42, "no": 30, "depends": 28, "dimensions": { "belonging": 3.0, "heard": 2.6, "manager": 2.8, "sponsorship": 2.2, "promotion": 2.1, "growth": 2.5, "representation": 2.7, "flexibility": 3.8 } },
-        "40plus": { "n": 41, "yes": 56, "no": 22, "depends": 22, "dimensions": { "belonging": 3.6, "heard": 3.2, "manager": 3.4, "sponsorship": 2.8, "promotion": 2.6, "growth": 2.9, "representation": 3.3, "flexibility": 3.6 } },
-        "disabled": { "n": 4 }
-      }
-    }
-  },
-  {
-    "slug": "jpmorgan-chase",
-    "name": "JPMorgan Chase",
-    "industry": "Financial Services",
-    "hq_metro": "New York",
-    "reports": {
-      "n": 356,
-      "yes": 61, "no": 18, "depends": 21,
-      "dimensions": { "belonging": 3.9, "heard": 3.5, "manager": 3.7, "sponsorship": 3.1, "promotion": 2.8, "growth": 3.5, "representation": 3.4, "flexibility": 3.8 },
-      "by_lens": {
-        "poc": { "n": 98, "yes": 50, "no": 26, "depends": 24, "dimensions": { "belonging": 3.4, "heard": 3.0, "manager": 3.3, "sponsorship": 2.6, "promotion": 2.3, "growth": 3.0, "representation": 2.9, "flexibility": 3.5 } },
-        "lgbtq": { "n": 42, "yes": 72, "no": 10, "depends": 18, "dimensions": { "belonging": 4.3, "heard": 3.9, "manager": 4.1, "sponsorship": 3.5, "promotion": 3.2, "growth": 3.8, "representation": 3.7, "flexibility": 4.0 } },
-        "caregiver": { "n": 31, "yes": 55, "no": 20, "depends": 25, "dimensions": { "belonging": 3.6, "heard": 3.2, "manager": 3.4, "sponsorship": 2.8, "promotion": 2.6, "growth": 3.1, "representation": 3.2, "flexibility": 4.2 } },
-        "40plus": { "n": 55, "yes": 66, "no": 14, "depends": 20, "dimensions": { "belonging": 4.1, "heard": 3.7, "manager": 3.9, "sponsorship": 3.3, "promotion": 3.0, "growth": 3.4, "representation": 3.6, "flexibility": 3.9 } },
-        "neurodivergent": { "n": 7, "yes": 43, "no": 29, "depends": 28, "dimensions": { "belonging": 3.0, "heard": 2.6, "manager": 2.9, "sponsorship": 2.2, "promotion": 2.0, "growth": 2.5, "representation": 2.4, "flexibility": 3.6 } },
-        "firstgen": { "n": 23, "yes": 57, "no": 17, "depends": 26, "dimensions": { "belonging": 3.7, "heard": 3.3, "manager": 3.5, "sponsorship": 2.9, "promotion": 2.7, "growth": 3.2, "representation": 3.1, "flexibility": 3.7 } }
-      }
-    }
-  },
-  {
-    "slug": "deloitte",
-    "name": "Deloitte",
+    "slug": "accenture",
+    "name": "Accenture",
     "industry": "Professional Services",
-    "hq_metro": "New York",
-    "reports": {
-      "n": 278,
-      "yes": 67, "no": 13, "depends": 20,
-      "dimensions": { "belonging": 4.2, "heard": 3.8, "manager": 4.0, "sponsorship": 3.4, "promotion": 3.2, "growth": 3.8, "representation": 3.9, "flexibility": 4.3 },
-      "by_lens": {
-        "poc": { "n": 72, "yes": 58, "no": 18, "depends": 24, "dimensions": { "belonging": 3.7, "heard": 3.3, "manager": 3.6, "sponsorship": 2.9, "promotion": 2.7, "growth": 3.3, "representation": 3.4, "flexibility": 4.1 } },
-        "lgbtq": { "n": 38, "yes": 76, "no": 8, "depends": 16, "dimensions": { "belonging": 4.5, "heard": 4.1, "manager": 4.3, "sponsorship": 3.7, "promotion": 3.5, "growth": 4.0, "representation": 4.2, "flexibility": 4.4 } },
-        "caregiver": { "n": 25, "yes": 60, "no": 16, "depends": 24, "dimensions": { "belonging": 3.9, "heard": 3.5, "manager": 3.7, "sponsorship": 3.1, "promotion": 2.9, "growth": 3.5, "representation": 3.6, "flexibility": 4.5 } },
-        "firstgen": { "n": 18, "yes": 61, "no": 14, "depends": 25, "dimensions": { "belonging": 3.8, "heard": 3.4, "manager": 3.7, "sponsorship": 3.0, "promotion": 2.8, "growth": 3.4, "representation": 3.3, "flexibility": 4.2 } },
-        "veteran": { "n": 9, "yes": 67, "no": 11, "depends": 22, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.2, "promotion": 3.0, "growth": 3.5, "representation": 3.4, "flexibility": 4.1 } }
-      }
-    }
+    "hq_metro": "Dublin",
+    "reviewCount": 0,
+    "reviews": []
   },
   {
     "slug": "amazon",
     "name": "Amazon",
     "industry": "Technology",
     "hq_metro": "Seattle",
-    "reports": {
-      "n": 498,
-      "yes": 52, "no": 24, "depends": 24,
-      "dimensions": { "belonging": 3.5, "heard": 3.1, "manager": 3.3, "sponsorship": 2.7, "promotion": 2.5, "growth": 3.2, "representation": 3.3, "flexibility": 3.0 },
-      "by_lens": {
-        "poc": { "n": 138, "yes": 42, "no": 32, "depends": 26, "dimensions": { "belonging": 3.0, "heard": 2.6, "manager": 2.9, "sponsorship": 2.2, "promotion": 2.0, "growth": 2.7, "representation": 2.8, "flexibility": 2.7 } },
-        "caregiver": { "n": 56, "yes": 40, "no": 32, "depends": 28, "dimensions": { "belonging": 3.1, "heard": 2.7, "manager": 2.9, "sponsorship": 2.3, "promotion": 2.1, "growth": 2.8, "representation": 3.0, "flexibility": 2.5 } },
-        "lgbtq": { "n": 52, "yes": 64, "no": 16, "depends": 20, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.2, "promotion": 2.9, "growth": 3.5, "representation": 3.6, "flexibility": 3.2 } },
-        "40plus": { "n": 71, "yes": 46, "no": 28, "depends": 26, "dimensions": { "belonging": 3.2, "heard": 2.8, "manager": 3.0, "sponsorship": 2.4, "promotion": 2.2, "growth": 2.6, "representation": 3.0, "flexibility": 2.9 } },
-        "neurodivergent": { "n": 38, "yes": 48, "no": 26, "depends": 26, "dimensions": { "belonging": 3.3, "heard": 2.9, "manager": 3.1, "sponsorship": 2.5, "promotion": 2.3, "growth": 2.9, "representation": 3.0, "flexibility": 3.1 } },
-        "disabled": { "n": 14, "yes": 36, "no": 36, "depends": 28, "dimensions": { "belonging": 2.7, "heard": 2.3, "manager": 2.6, "sponsorship": 1.9, "promotion": 1.8, "growth": 2.2, "representation": 2.1, "flexibility": 2.8 } },
-        "firstgen": { "n": 45, "yes": 50, "no": 24, "depends": 26, "dimensions": { "belonging": 3.4, "heard": 3.0, "manager": 3.2, "sponsorship": 2.6, "promotion": 2.4, "growth": 3.1, "representation": 3.1, "flexibility": 2.9 } }
-      }
-    }
-  },
-  {
-    "slug": "microsoft",
-    "name": "Microsoft",
-    "industry": "Technology",
-    "hq_metro": "Redmond",
-    "reports": {
-      "n": 392,
-      "yes": 74, "no": 10, "depends": 16,
-      "dimensions": { "belonging": 4.4, "heard": 4.0, "manager": 4.2, "sponsorship": 3.5, "promotion": 3.3, "growth": 3.9, "representation": 3.7, "flexibility": 4.6 },
-      "by_lens": {
-        "poc": { "n": 95, "yes": 65, "no": 14, "depends": 21, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.1, "promotion": 2.9, "growth": 3.5, "representation": 3.3, "flexibility": 4.4 } },
-        "lgbtq": { "n": 48, "yes": 80, "no": 6, "depends": 14, "dimensions": { "belonging": 4.6, "heard": 4.2, "manager": 4.4, "sponsorship": 3.8, "promotion": 3.6, "growth": 4.1, "representation": 4.0, "flexibility": 4.7 } },
-        "neurodivergent": { "n": 42, "yes": 72, "no": 10, "depends": 18, "dimensions": { "belonging": 4.2, "heard": 3.8, "manager": 4.0, "sponsorship": 3.4, "promotion": 3.2, "growth": 3.7, "representation": 3.5, "flexibility": 4.5 } },
-        "caregiver": { "n": 36, "yes": 78, "no": 8, "depends": 14, "dimensions": { "belonging": 4.5, "heard": 4.1, "manager": 4.3, "sponsorship": 3.6, "promotion": 3.4, "growth": 3.9, "representation": 3.8, "flexibility": 4.8 } },
-        "40plus": { "n": 58, "yes": 76, "no": 8, "depends": 16, "dimensions": { "belonging": 4.4, "heard": 4.0, "manager": 4.2, "sponsorship": 3.5, "promotion": 3.3, "growth": 3.8, "representation": 3.9, "flexibility": 4.6 } },
-        "disabled": { "n": 28, "yes": 71, "no": 11, "depends": 18, "dimensions": { "belonging": 4.2, "heard": 3.8, "manager": 4.0, "sponsorship": 3.3, "promotion": 3.1, "growth": 3.6, "representation": 3.4, "flexibility": 4.5 } }
-      }
-    }
-  },
-  {
-    "slug": "walmart",
-    "name": "Walmart",
-    "industry": "Retail",
-    "hq_metro": "Bentonville",
-    "reports": {
-      "n": 267,
-      "yes": 44, "no": 30, "depends": 26,
-      "dimensions": { "belonging": 3.1, "heard": 2.7, "manager": 2.9, "sponsorship": 2.3, "promotion": 2.1, "growth": 2.5, "representation": 3.2, "flexibility": 2.8 },
-      "by_lens": {
-        "poc": { "n": 89, "yes": 36, "no": 38, "depends": 26, "dimensions": { "belonging": 2.7, "heard": 2.3, "manager": 2.5, "sponsorship": 1.9, "promotion": 1.7, "growth": 2.1, "representation": 2.8, "flexibility": 2.5 } },
-        "caregiver": { "n": 42, "yes": 38, "no": 34, "depends": 28, "dimensions": { "belonging": 2.9, "heard": 2.5, "manager": 2.7, "sponsorship": 2.1, "promotion": 1.9, "growth": 2.3, "representation": 3.0, "flexibility": 2.4 } },
-        "40plus": { "n": 38, "yes": 50, "no": 26, "depends": 24, "dimensions": { "belonging": 3.3, "heard": 2.9, "manager": 3.1, "sponsorship": 2.5, "promotion": 2.3, "growth": 2.7, "representation": 3.4, "flexibility": 3.0 } },
-        "firstgen": { "n": 35, "yes": 46, "no": 28, "depends": 26, "dimensions": { "belonging": 3.0, "heard": 2.6, "manager": 2.8, "sponsorship": 2.2, "promotion": 2.0, "growth": 2.4, "representation": 3.1, "flexibility": 2.7 } }
-      }
-    }
+    "reviewCount": 0,
+    "reviews": []
   },
   {
     "slug": "ascension-health",
     "name": "Ascension Health",
     "industry": "Healthcare",
     "hq_metro": "St. Louis",
-    "reports": {
-      "n": 156,
-      "yes": 59, "no": 18, "depends": 23,
-      "dimensions": { "belonging": 3.8, "heard": 3.4, "manager": 3.6, "sponsorship": 2.9, "promotion": 2.7, "growth": 3.2, "representation": 3.5, "flexibility": 4.0 },
-      "by_lens": {
-        "poc": { "n": 45, "yes": 49, "no": 24, "depends": 27, "dimensions": { "belonging": 3.3, "heard": 2.9, "manager": 3.2, "sponsorship": 2.5, "promotion": 2.3, "growth": 2.8, "representation": 3.0, "flexibility": 3.7 } },
-        "caregiver": { "n": 22, "yes": 64, "no": 14, "depends": 22, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.1, "promotion": 2.9, "growth": 3.4, "representation": 3.6, "flexibility": 4.3 } },
-        "lgbtq": { "n": 6, "yes": 50, "no": 17, "depends": 33, "dimensions": { "belonging": 3.2, "heard": 2.8, "manager": 3.0, "sponsorship": 2.4, "promotion": 2.2, "growth": 2.7, "representation": 2.6, "flexibility": 3.5 } },
-        "40plus": { "n": 31, "yes": 65, "no": 13, "depends": 22, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.1, "promotion": 2.9, "growth": 3.3, "representation": 3.7, "flexibility": 4.1 } }
-      }
-    }
-  },
-  {
-    "slug": "google",
-    "name": "Google",
-    "industry": "Technology",
-    "hq_metro": "Mountain View",
-    "reports": {
-      "n": 345,
-      "yes": 70, "no": 12, "depends": 18,
-      "dimensions": { "belonging": 4.3, "heard": 3.9, "manager": 4.1, "sponsorship": 3.4, "promotion": 3.1, "growth": 3.8, "representation": 3.6, "flexibility": 4.5 },
-      "by_lens": {
-        "poc": { "n": 88, "yes": 58, "no": 18, "depends": 24, "dimensions": { "belonging": 3.8, "heard": 3.4, "manager": 3.6, "sponsorship": 2.9, "promotion": 2.6, "growth": 3.3, "representation": 3.1, "flexibility": 4.3 } },
-        "lgbtq": { "n": 52, "yes": 78, "no": 8, "depends": 14, "dimensions": { "belonging": 4.6, "heard": 4.2, "manager": 4.4, "sponsorship": 3.7, "promotion": 3.4, "growth": 4.0, "representation": 3.9, "flexibility": 4.6 } },
-        "caregiver": { "n": 29, "yes": 62, "no": 16, "depends": 22, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.1, "promotion": 2.9, "growth": 3.5, "representation": 3.4, "flexibility": 4.7 } },
-        "neurodivergent": { "n": 25, "yes": 64, "no": 14, "depends": 22, "dimensions": { "belonging": 4.1, "heard": 3.7, "manager": 3.9, "sponsorship": 3.2, "promotion": 3.0, "growth": 3.5, "representation": 3.3, "flexibility": 4.4 } },
-        "40plus": { "n": 42, "yes": 62, "no": 16, "depends": 22, "dimensions": { "belonging": 3.9, "heard": 3.5, "manager": 3.7, "sponsorship": 3.0, "promotion": 2.8, "growth": 3.3, "representation": 3.5, "flexibility": 4.4 } }
-      }
-    }
-  },
-  {
-    "slug": "cigna",
-    "name": "Cigna",
-    "industry": "Healthcare",
-    "hq_metro": "Bloomfield",
-    "reports": {
-      "n": 134,
-      "yes": 57, "no": 20, "depends": 23,
-      "dimensions": { "belonging": 3.7, "heard": 3.3, "manager": 3.5, "sponsorship": 2.8, "promotion": 2.6, "growth": 3.1, "representation": 3.3, "flexibility": 4.1 },
-      "by_lens": {
-        "poc": { "n": 38, "yes": 45, "no": 28, "depends": 27, "dimensions": { "belonging": 3.2, "heard": 2.8, "manager": 3.1, "sponsorship": 2.4, "promotion": 2.2, "growth": 2.7, "representation": 2.8, "flexibility": 3.8 } },
-        "caregiver": { "n": 18, "yes": 61, "no": 17, "depends": 22, "dimensions": { "belonging": 3.9, "heard": 3.5, "manager": 3.7, "sponsorship": 3.0, "promotion": 2.8, "growth": 3.3, "representation": 3.5, "flexibility": 4.4 } },
-        "40plus": { "n": 24, "yes": 63, "no": 17, "depends": 20, "dimensions": { "belonging": 3.9, "heard": 3.5, "manager": 3.7, "sponsorship": 3.0, "promotion": 2.8, "growth": 3.2, "representation": 3.5, "flexibility": 4.2 } },
-        "lgbtq": { "n": 4 }
-      }
-    }
-  },
-  {
-    "slug": "kaiser-permanente",
-    "name": "Kaiser Permanente",
-    "industry": "Healthcare",
-    "hq_metro": "Oakland",
-    "reports": {
-      "n": 203,
-      "yes": 72, "no": 10, "depends": 18,
-      "dimensions": { "belonging": 4.4, "heard": 4.0, "manager": 4.2, "sponsorship": 3.5, "promotion": 3.3, "growth": 3.8, "representation": 4.1, "flexibility": 4.3 },
-      "by_lens": {
-        "poc": { "n": 68, "yes": 70, "no": 12, "depends": 18, "dimensions": { "belonging": 4.2, "heard": 3.8, "manager": 4.0, "sponsorship": 3.3, "promotion": 3.1, "growth": 3.6, "representation": 4.0, "flexibility": 4.1 } },
-        "lgbtq": { "n": 28, "yes": 79, "no": 7, "depends": 14, "dimensions": { "belonging": 4.6, "heard": 4.2, "manager": 4.4, "sponsorship": 3.7, "promotion": 3.5, "growth": 4.0, "representation": 4.3, "flexibility": 4.4 } },
-        "caregiver": { "n": 24, "yes": 75, "no": 8, "depends": 17, "dimensions": { "belonging": 4.4, "heard": 4.0, "manager": 4.2, "sponsorship": 3.5, "promotion": 3.3, "growth": 3.8, "representation": 4.1, "flexibility": 4.6 } },
-        "disabled": { "n": 11, "yes": 64, "no": 14, "depends": 22, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.1, "promotion": 2.9, "growth": 3.4, "representation": 3.6, "flexibility": 4.2 } },
-        "40plus": { "n": 35, "yes": 74, "no": 9, "depends": 17, "dimensions": { "belonging": 4.4, "heard": 4.0, "manager": 4.2, "sponsorship": 3.5, "promotion": 3.3, "growth": 3.7, "representation": 4.1, "flexibility": 4.3 } }
-      }
-    }
+    "reviewCount": 0,
+    "reviews": []
   },
   {
     "slug": "bank-of-america",
     "name": "Bank of America",
     "industry": "Financial Services",
     "hq_metro": "Charlotte",
-    "reports": {
-      "n": 231,
-      "yes": 55, "no": 22, "depends": 23,
-      "dimensions": { "belonging": 3.6, "heard": 3.2, "manager": 3.4, "sponsorship": 2.8, "promotion": 2.6, "growth": 3.0, "representation": 3.3, "flexibility": 3.7 },
-      "by_lens": {
-        "poc": { "n": 72, "yes": 44, "no": 30, "depends": 26, "dimensions": { "belonging": 3.1, "heard": 2.7, "manager": 3.0, "sponsorship": 2.3, "promotion": 2.1, "growth": 2.6, "representation": 2.8, "flexibility": 3.4 } },
-        "lgbtq": { "n": 22, "yes": 64, "no": 14, "depends": 22, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.1, "promotion": 2.9, "growth": 3.4, "representation": 3.5, "flexibility": 3.9 } },
-        "caregiver": { "n": 19, "yes": 47, "no": 26, "depends": 27, "dimensions": { "belonging": 3.3, "heard": 2.9, "manager": 3.1, "sponsorship": 2.5, "promotion": 2.3, "growth": 2.7, "representation": 3.0, "flexibility": 3.9 } },
-        "40plus": { "n": 36, "yes": 61, "no": 17, "depends": 22, "dimensions": { "belonging": 3.8, "heard": 3.4, "manager": 3.6, "sponsorship": 3.0, "promotion": 2.8, "growth": 3.2, "representation": 3.5, "flexibility": 3.8 } }
-      }
-    }
+    "reviewCount": 0,
+    "reviews": []
   },
   {
-    "slug": "tenet-healthcare",
-    "name": "Tenet Healthcare",
+    "slug": "cvs-health",
+    "name": "CVS Health",
     "industry": "Healthcare",
-    "hq_metro": "Dallas",
-    "reports": {
-      "n": 98,
-      "yes": 46, "no": 28, "depends": 26,
-      "dimensions": { "belonging": 3.2, "heard": 2.8, "manager": 3.0, "sponsorship": 2.4, "promotion": 2.2, "growth": 2.6, "representation": 2.9, "flexibility": 3.4 },
-      "by_lens": {
-        "poc": { "n": 32, "yes": 38, "no": 34, "depends": 28, "dimensions": { "belonging": 2.8, "heard": 2.4, "manager": 2.6, "sponsorship": 2.0, "promotion": 1.8, "growth": 2.2, "representation": 2.5, "flexibility": 3.1 } },
-        "caregiver": { "n": 12, "yes": 42, "no": 30, "depends": 28, "dimensions": { "belonging": 3.0, "heard": 2.6, "manager": 2.8, "sponsorship": 2.2, "promotion": 2.0, "growth": 2.4, "representation": 2.7, "flexibility": 3.6 } },
-        "40plus": { "n": 15, "yes": 53, "no": 20, "depends": 27, "dimensions": { "belonging": 3.4, "heard": 3.0, "manager": 3.2, "sponsorship": 2.6, "promotion": 2.4, "growth": 2.8, "representation": 3.1, "flexibility": 3.5 } },
-        "lgbtq": { "n": 4 }
-      }
-    }
+    "hq_metro": "Woonsocket",
+    "reviewCount": 0,
+    "reviews": []
   },
   {
-    "slug": "accenture",
-    "name": "Accenture",
+    "slug": "cigna",
+    "name": "Cigna",
+    "industry": "Healthcare",
+    "hq_metro": "Bloomfield",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "community-health-systems",
+    "name": "Community Health Systems",
+    "industry": "Healthcare",
+    "hq_metro": "Nashville",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "deloitte",
+    "name": "Deloitte",
     "industry": "Professional Services",
-    "hq_metro": "Dublin",
-    "reports": {
-      "n": 215,
-      "yes": 65, "no": 14, "depends": 21,
-      "dimensions": { "belonging": 4.1, "heard": 3.7, "manager": 3.9, "sponsorship": 3.2, "promotion": 3.0, "growth": 3.6, "representation": 3.7, "flexibility": 4.2 },
-      "by_lens": {
-        "poc": { "n": 62, "yes": 56, "no": 20, "depends": 24, "dimensions": { "belonging": 3.6, "heard": 3.2, "manager": 3.5, "sponsorship": 2.8, "promotion": 2.6, "growth": 3.1, "representation": 3.2, "flexibility": 4.0 } },
-        "lgbtq": { "n": 30, "yes": 73, "no": 10, "depends": 17, "dimensions": { "belonging": 4.4, "heard": 4.0, "manager": 4.2, "sponsorship": 3.5, "promotion": 3.3, "growth": 3.8, "representation": 3.9, "flexibility": 4.3 } },
-        "caregiver": { "n": 18, "yes": 61, "no": 17, "depends": 22, "dimensions": { "belonging": 3.9, "heard": 3.5, "manager": 3.7, "sponsorship": 3.0, "promotion": 2.8, "growth": 3.4, "representation": 3.5, "flexibility": 4.4 } },
-        "firstgen": { "n": 21, "yes": 62, "no": 14, "depends": 24, "dimensions": { "belonging": 3.9, "heard": 3.5, "manager": 3.7, "sponsorship": 3.0, "promotion": 2.8, "growth": 3.4, "representation": 3.4, "flexibility": 4.1 } },
-        "neurodivergent": { "n": 10, "yes": 50, "no": 20, "depends": 30, "dimensions": { "belonging": 3.4, "heard": 3.0, "manager": 3.2, "sponsorship": 2.6, "promotion": 2.4, "growth": 2.9, "representation": 2.8, "flexibility": 4.0 } }
-      }
-    }
+    "hq_metro": "New York",
+    "reviewCount": 0,
+    "reviews": []
   },
   {
     "slug": "anthem-elevance",
     "name": "Elevance Health (Anthem)",
     "industry": "Healthcare",
     "hq_metro": "Indianapolis",
-    "reports": {
-      "n": 167,
-      "yes": 58, "no": 19, "depends": 23,
-      "dimensions": { "belonging": 3.7, "heard": 3.3, "manager": 3.5, "sponsorship": 2.9, "promotion": 2.7, "growth": 3.1, "representation": 3.4, "flexibility": 4.0 },
-      "by_lens": {
-        "poc": { "n": 48, "yes": 48, "no": 26, "depends": 26, "dimensions": { "belonging": 3.2, "heard": 2.8, "manager": 3.1, "sponsorship": 2.4, "promotion": 2.2, "growth": 2.7, "representation": 2.9, "flexibility": 3.7 } },
-        "caregiver": { "n": 22, "yes": 64, "no": 14, "depends": 22, "dimensions": { "belonging": 4.0, "heard": 3.6, "manager": 3.8, "sponsorship": 3.1, "promotion": 2.9, "growth": 3.3, "representation": 3.6, "flexibility": 4.4 } },
-        "40plus": { "n": 28, "yes": 64, "no": 14, "depends": 22, "dimensions": { "belonging": 3.9, "heard": 3.5, "manager": 3.7, "sponsorship": 3.1, "promotion": 2.9, "growth": 3.2, "representation": 3.6, "flexibility": 4.1 } },
-        "lgbtq": { "n": 8, "yes": 50, "no": 25, "depends": 25, "dimensions": { "belonging": 3.3, "heard": 2.9, "manager": 3.1, "sponsorship": 2.5, "promotion": 2.3, "growth": 2.8, "representation": 2.7, "flexibility": 3.8 } }
-      }
-    }
+    "reviewCount": 0,
+    "reviews": []
   },
   {
-    "slug": "meta",
-    "name": "Meta",
+    "slug": "google",
+    "name": "Google",
     "industry": "Technology",
-    "hq_metro": "Menlo Park",
-    "reports": {
-      "n": 289,
-      "yes": 56, "no": 22, "depends": 22,
-      "dimensions": { "belonging": 3.7, "heard": 3.3, "manager": 3.5, "sponsorship": 3.0, "promotion": 2.7, "growth": 3.4, "representation": 3.2, "flexibility": 4.1 },
-      "by_lens": {
-        "poc": { "n": 72, "yes": 44, "no": 30, "depends": 26, "dimensions": { "belonging": 3.1, "heard": 2.7, "manager": 3.0, "sponsorship": 2.4, "promotion": 2.1, "growth": 2.8, "representation": 2.6, "flexibility": 3.8 } },
-        "lgbtq": { "n": 38, "yes": 68, "no": 14, "depends": 18, "dimensions": { "belonging": 4.2, "heard": 3.8, "manager": 4.0, "sponsorship": 3.4, "promotion": 3.1, "growth": 3.7, "representation": 3.5, "flexibility": 4.3 } },
-        "caregiver": { "n": 25, "yes": 48, "no": 24, "depends": 28, "dimensions": { "belonging": 3.4, "heard": 3.0, "manager": 3.2, "sponsorship": 2.7, "promotion": 2.4, "growth": 3.0, "representation": 2.9, "flexibility": 4.3 } },
-        "40plus": { "n": 32, "yes": 47, "no": 28, "depends": 25, "dimensions": { "belonging": 3.2, "heard": 2.8, "manager": 3.0, "sponsorship": 2.5, "promotion": 2.2, "growth": 2.7, "representation": 3.0, "flexibility": 4.0 } },
-        "neurodivergent": { "n": 18, "yes": 56, "no": 22, "depends": 22, "dimensions": { "belonging": 3.5, "heard": 3.1, "manager": 3.3, "sponsorship": 2.8, "promotion": 2.5, "growth": 3.1, "representation": 2.9, "flexibility": 4.1 } }
-      }
-    }
+    "hq_metro": "Mountain View",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "hca-healthcare",
+    "name": "HCA Healthcare",
+    "industry": "Healthcare",
+    "hq_metro": "Nashville",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "jpmorgan-chase",
+    "name": "JPMorgan Chase",
+    "industry": "Financial Services",
+    "hq_metro": "New York",
+    "reviewCount": 0,
+    "reviews": []
   },
   {
     "slug": "johnson-and-johnson",
     "name": "Johnson & Johnson",
     "industry": "Healthcare",
     "hq_metro": "New Brunswick",
-    "reports": {
-      "n": 178,
-      "yes": 69, "no": 12, "depends": 19,
-      "dimensions": { "belonging": 4.2, "heard": 3.8, "manager": 4.0, "sponsorship": 3.3, "promotion": 3.1, "growth": 3.7, "representation": 3.8, "flexibility": 4.3 },
-      "by_lens": {
-        "poc": { "n": 52, "yes": 60, "no": 16, "depends": 24, "dimensions": { "belonging": 3.8, "heard": 3.4, "manager": 3.6, "sponsorship": 2.9, "promotion": 2.7, "growth": 3.3, "representation": 3.4, "flexibility": 4.1 } },
-        "caregiver": { "n": 28, "yes": 75, "no": 7, "depends": 18, "dimensions": { "belonging": 4.4, "heard": 4.0, "manager": 4.2, "sponsorship": 3.5, "promotion": 3.3, "growth": 3.8, "representation": 4.0, "flexibility": 4.6 } },
-        "lgbtq": { "n": 15, "yes": 73, "no": 7, "depends": 20, "dimensions": { "belonging": 4.3, "heard": 3.9, "manager": 4.1, "sponsorship": 3.4, "promotion": 3.2, "growth": 3.7, "representation": 3.6, "flexibility": 4.4 } },
-        "40plus": { "n": 22, "yes": 73, "no": 9, "depends": 18, "dimensions": { "belonging": 4.3, "heard": 3.9, "manager": 4.1, "sponsorship": 3.4, "promotion": 3.2, "growth": 3.6, "representation": 3.9, "flexibility": 4.3 } }
-      }
-    }
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "kaiser-permanente",
+    "name": "Kaiser Permanente",
+    "industry": "Healthcare",
+    "hq_metro": "Oakland",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "meta",
+    "name": "Meta",
+    "industry": "Technology",
+    "hq_metro": "Menlo Park",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "microsoft",
+    "name": "Microsoft",
+    "industry": "Technology",
+    "hq_metro": "Redmond",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "tenet-healthcare",
+    "name": "Tenet Healthcare",
+    "industry": "Healthcare",
+    "hq_metro": "Dallas",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "unitedhealth-group",
+    "name": "UnitedHealth Group",
+    "industry": "Healthcare",
+    "hq_metro": "Minneapolis",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "vanderbilt-university-medical-center",
+    "name": "Vanderbilt University Medical Center",
+    "industry": "Healthcare",
+    "hq_metro": "Nashville",
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "walmart",
+    "name": "Walmart",
+    "industry": "Retail",
+    "hq_metro": "Bentonville",
+    "reviewCount": 0,
+    "reviews": []
   }
 ]
