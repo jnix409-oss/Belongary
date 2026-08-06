@@ -1,22 +1,18 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import companies from '../../data/companies.json';
-import { LENSES, getLensLabel } from '../../data/lenses';
-import { getHeadlineBadge, getConfidenceLevel, CONFIDENCE_CONFIG } from '../../data/thresholds';
+import { LENSES } from '../../data/lenses';
+import { getThreshold } from '../../data/thresholds';
 
-const rankedCompanies = companies
-  .filter(c => c.reports.n >= 5)
-  .map(c => {
-    const pct = Math.round((c.reports.yes / (c.reports.yes + c.reports.no)) * 100);
-    return { ...c, pct, badge: getHeadlineBadge(pct), confidence: getConfidenceLevel(c.reports.n) };
-  })
-  .sort((a, b) => b.pct - a.pct);
+// Alphabetical — no score-based ranking
+const allCompanies = [...companies].sort((a, b) => a.name.localeCompare(b.name));
+const threshold = getThreshold();
 ---
-<BaseLayout title="Company Directory" description="Browse companies ranked by belonging scores from anonymous employee reviews.">
+<BaseLayout title="Company Directory" description="Browse companies on Belongary. Help us gather belonging data by leaving a review.">
   <div class="max-w-5xl mx-auto px-4 py-12 sm:py-16">
     <h1 class="text-3xl sm:text-4xl font-heading font-bold text-plum mb-3">Company Directory</h1>
     <p class="text-ink/60 mb-8">
-      Companies ranked by belonging score, based on anonymous employee reviews. Toggle by identity lens to see how belonging differs.
+      We're gathering belonging data for these companies. Browse by identity lens or help us reach the {threshold}-review threshold by leaving a review.
     </p>
 
     <!-- Lens Toggle -->
@@ -33,28 +29,31 @@ const rankedCompanies = companies
 
     <!-- Company List -->
     <div class="space-y-4">
-      {rankedCompanies.map((company, i) => (
-        <a href={`/company/${company.slug}`} class="flex items-center gap-4 sm:gap-6 bg-white rounded-xl border border-border p-5 hover:shadow-md hover:border-plum/20 transition-all group">
-          <span class="text-2xl font-heading font-bold text-ink/20 w-8 text-right">{i + 1}</span>
-          <div class="flex-1 min-w-0">
-            <h3 class="font-heading font-semibold text-plum group-hover:text-coral transition-colors truncate">{company.name}</h3>
-            <div class="flex items-center gap-2 text-xs text-ink/40 mt-0.5">
-              <span>{company.industry}</span>
-              <span>·</span>
-              <span>{company.hq_metro}</span>
-              <span>·</span>
-              <span>{company.reports.n} reviews</span>
-              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-light">
-                {CONFIDENCE_CONFIG[company.confidence].label}
-              </span>
+      {allCompanies.map(company => {
+        const reviewCount = (company as any).reviewCount ?? 0;
+        const pct = Math.min(100, Math.round((reviewCount / threshold) * 100));
+        return (
+          <a href={`/company/${company.slug}`} class="flex items-center gap-4 sm:gap-6 bg-white rounded-xl border border-border p-5 hover:shadow-md hover:border-plum/20 transition-all group">
+            <div class="flex-1 min-w-0">
+              <h3 class="font-heading font-semibold text-plum group-hover:text-coral transition-colors truncate">{company.name}</h3>
+              <div class="flex items-center gap-2 text-xs text-ink/40 mt-0.5">
+                <span>{company.industry}</span>
+                <span>·</span>
+                <span>{company.hq_metro}</span>
+              </div>
             </div>
-          </div>
-          <div class="text-right shrink-0">
-            <span class="text-2xl font-heading font-bold" style={`color: ${company.badge.color}`}>{company.pct}%</span>
-            <p class="text-xs font-medium" style={`color: ${company.badge.color}`}>{company.badge.label}</p>
-          </div>
-        </a>
-      ))}
+            <div class="flex items-center gap-3 shrink-0">
+              <div class="w-24 bg-light rounded-full h-2 overflow-hidden">
+                <div
+                  class="h-full rounded-full bg-coral/40"
+                  style={`width: ${pct}%`}
+                ></div>
+              </div>
+              <span class="text-xs text-ink/40 whitespace-nowrap w-12 text-right">{reviewCount} / {threshold}</span>
+            </div>
+          </a>
+        );
+      })}
     </div>
   </div>
 </BaseLayout>

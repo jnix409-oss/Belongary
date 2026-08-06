@@ -1,0 +1,61 @@
+---
+interface Props {
+  count: number;
+  companyName: string;
+  threshold: number;
+}
+
+const { count, companyName, threshold } = Astro.props;
+const remaining = Math.max(0, threshold - count);
+const pct = Math.min(100, Math.round((count / threshold) * 100));
+const reviewParam = encodeURIComponent(companyName);
+---
+<div class="bg-white rounded-xl border border-border p-8 text-center">
+  <div class="mb-4">
+    <img
+      src="/brand/icons/belonging.svg"
+      alt=""
+      width="32"
+      height="32"
+      class="mx-auto text-plum"
+      aria-hidden="true"
+    />
+  </div>
+
+  <h3 class="text-lg font-heading font-semibold text-plum mb-2">
+    No belonging scores yet for {companyName}
+  </h3>
+
+  <p class="text-sm text-ink/60 mb-6 max-w-md mx-auto">
+    Scores appear once {threshold} people have reviewed. This threshold
+    protects reviewer anonymity — it is never waived.
+  </p>
+
+  <!-- Progress bar -->
+  <div class="max-w-xs mx-auto mb-6">
+    <div
+      class="w-full bg-light rounded-full h-4 overflow-hidden"
+      role="progressbar"
+      aria-valuenow={count}
+      aria-valuemin={0}
+      aria-valuemax={threshold}
+      aria-label={`${count} of ${threshold} reviews collected for ${companyName}`}
+    >
+      <div
+        class="h-full rounded-full transition-all duration-500"
+        style={`width: ${pct}%; background: ${count > 0 ? '#E2674A' : '#E5E0DB'}`}
+      ></div>
+    </div>
+    <p class="text-sm font-medium text-ink/70 mt-2">
+      {count} of {threshold} reviews
+    </p>
+  </div>
+
+  <!-- CTA -->
+  <a
+    href={`/review?company=${reviewParam}`}
+    class="inline-flex items-center justify-center px-6 py-3 bg-coral text-white font-semibold rounded-lg hover:bg-coral/90 transition-colors shadow-sm"
+  >
+    Be one of the first {remaining}
+  </a>
+</div>
