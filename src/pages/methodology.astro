@@ -92,8 +92,14 @@ import { CONFIDENCE_CONFIG } from '../data/thresholds';
 
       <section>
         <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Score Display</h2>
-        <p>
+        <p class="mb-6">
           Scores are never conveyed by color alone. Every score is paired with a number, a label (Strong, Good, Mixed, Low), and a visual bar. This meets WCAG 2.1 AA accessibility requirements and ensures the data is usable by everyone.
+        </p>
+        <div class="rounded-xl overflow-hidden border border-border shadow-sm">
+          <img src="/score-preview.png" alt="Example belonging score card showing a 7.2 out of 10 score with a 'Good' label, distribution bar chart, and lens filter for Black Women 40+" class="w-full h-auto" />
+        </div>
+        <p class="mt-3 text-sm text-ink/50 text-center italic">
+          Example of a belonging score card filtered through an identity lens
         </p>
       </section>
     </div>

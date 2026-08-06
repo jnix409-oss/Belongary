@@ -14,8 +14,8 @@ const topCompanies = companies
 ---
 <BaseLayout title="Home" description="Belongary shows whether people actually belong at a company — filtered through their own identity lens.">
   <!-- Hero -->
-  <section class="bg-gradient-to-b from-cream to-cream-light">
-    <div class="max-w-5xl mx-auto px-4 py-16 sm:py-24 text-center">
+  <section class="bg-gradient-to-b from-cream to-cream-light relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 py-16 sm:py-24 text-center relative z-10">
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-plum leading-tight mb-6">
         Do you actually <span class="text-coral">belong</span> there?
       </h1>
@@ -30,6 +30,10 @@ const topCompanies = companies
           Browse Companies
         </a>
       </div>
+    </div>
+    <!-- Decorative brand pattern -->
+    <div class="absolute bottom-0 right-0 w-64 sm:w-80 lg:w-96 opacity-[0.07] pointer-events-none translate-x-1/4 translate-y-1/4">
+      <img src="/brand-patterns.png" alt="" class="w-full h-auto" aria-hidden="true" />
     </div>
   </section>
 
