@@ -17,6 +17,9 @@ const threshold = getThreshold();
 const meetsThreshold = hasThreshold(reviewCount);
 ---
 <BaseLayout title={company.name} description={`Workplace belonging profile for ${company.name}. ${company.industry} · ${company.hq_metro}.`}>
+  {!meetsThreshold && (
+    <meta slot="head" name="robots" content="noindex" />
+  )}
   <div class="max-w-4xl mx-auto px-4 py-12 sm:py-16">
     <!-- Company Header -->
     <div class="mb-8">

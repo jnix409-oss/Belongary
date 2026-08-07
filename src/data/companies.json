@@ -4,6 +4,7 @@
     "name": "Accenture",
     "industry": "Professional Services",
     "hq_metro": "Dublin",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -12,6 +13,16 @@
     "name": "Amazon",
     "industry": "Technology",
     "hq_metro": "Seattle",
+    "featured": false,
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "ardent-health",
+    "name": "Ardent Health",
+    "industry": "Healthcare",
+    "hq_metro": "Nashville",
+    "featured": true,
     "reviewCount": 0,
     "reviews": []
   },
@@ -20,6 +31,25 @@
     "name": "Ascension Health",
     "industry": "Healthcare",
     "hq_metro": "St. Louis",
+    "featured": false,
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "ascension-saint-thomas",
+    "name": "Ascension Saint Thomas",
+    "industry": "Healthcare",
+    "hq_metro": "Nashville",
+    "featured": true,
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "asurion",
+    "name": "Asurion",
+    "industry": "Technology",
+    "hq_metro": "Nashville",
+    "featured": true,
     "reviewCount": 0,
     "reviews": []
   },
@@ -28,14 +58,16 @@
     "name": "Bank of America",
     "industry": "Financial Services",
     "hq_metro": "Charlotte",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
   {
-    "slug": "cvs-health",
-    "name": "CVS Health",
-    "industry": "Healthcare",
-    "hq_metro": "Woonsocket",
+    "slug": "bridgestone",
+    "name": "Bridgestone",
+    "industry": "Manufacturing",
+    "hq_metro": "Nashville",
+    "featured": true,
     "reviewCount": 0,
     "reviews": []
   },
@@ -44,6 +76,7 @@
     "name": "Cigna",
     "industry": "Healthcare",
     "hq_metro": "Bloomfield",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -52,6 +85,16 @@
     "name": "Community Health Systems",
     "industry": "Healthcare",
     "hq_metro": "Nashville",
+    "featured": true,
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "cvs-health",
+    "name": "CVS Health",
+    "industry": "Healthcare",
+    "hq_metro": "Woonsocket",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -60,6 +103,7 @@
     "name": "Deloitte",
     "industry": "Professional Services",
     "hq_metro": "New York",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -68,6 +112,7 @@
     "name": "Elevance Health (Anthem)",
     "industry": "Healthcare",
     "hq_metro": "Indianapolis",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -76,6 +121,7 @@
     "name": "Google",
     "industry": "Technology",
     "hq_metro": "Mountain View",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -84,14 +130,7 @@
     "name": "HCA Healthcare",
     "industry": "Healthcare",
     "hq_metro": "Nashville",
-    "reviewCount": 0,
-    "reviews": []
-  },
-  {
-    "slug": "jpmorgan-chase",
-    "name": "JPMorgan Chase",
-    "industry": "Financial Services",
-    "hq_metro": "New York",
+    "featured": true,
     "reviewCount": 0,
     "reviews": []
   },
@@ -100,6 +139,16 @@
     "name": "Johnson & Johnson",
     "industry": "Healthcare",
     "hq_metro": "New Brunswick",
+    "featured": false,
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "jpmorgan-chase",
+    "name": "JPMorgan Chase",
+    "industry": "Financial Services",
+    "hq_metro": "New York",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -108,6 +157,16 @@
     "name": "Kaiser Permanente",
     "industry": "Healthcare",
     "hq_metro": "Oakland",
+    "featured": false,
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "lifepoint-health",
+    "name": "Lifepoint Health",
+    "industry": "Healthcare",
+    "hq_metro": "Nashville",
+    "featured": true,
     "reviewCount": 0,
     "reviews": []
   },
@@ -116,6 +175,7 @@
     "name": "Meta",
     "industry": "Technology",
     "hq_metro": "Menlo Park",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -124,6 +184,16 @@
     "name": "Microsoft",
     "industry": "Technology",
     "hq_metro": "Redmond",
+    "featured": false,
+    "reviewCount": 0,
+    "reviews": []
+  },
+  {
+    "slug": "nissan",
+    "name": "Nissan",
+    "industry": "Automotive",
+    "hq_metro": "Nashville",
+    "featured": true,
     "reviewCount": 0,
     "reviews": []
   },
@@ -132,6 +202,7 @@
     "name": "Tenet Healthcare",
     "industry": "Healthcare",
     "hq_metro": "Dallas",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -140,6 +211,7 @@
     "name": "UnitedHealth Group",
     "industry": "Healthcare",
     "hq_metro": "Minneapolis",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   },
@@ -148,6 +220,7 @@
     "name": "Vanderbilt University Medical Center",
     "industry": "Healthcare",
     "hq_metro": "Nashville",
+    "featured": true,
     "reviewCount": 0,
     "reviews": []
   },
@@ -156,6 +229,7 @@
     "name": "Walmart",
     "industry": "Retail",
     "hq_metro": "Bentonville",
+    "featured": false,
     "reviewCount": 0,
     "reviews": []
   }

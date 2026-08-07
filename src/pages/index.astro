@@ -1,11 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import companies from '../data/companies.json';
-import ReviewProgress from '../components/ReviewProgress.astro';
 import { getThreshold } from '../data/thresholds';
 
-// Sort alphabetically — no score-based ranking with zero reviews
-const allCompanies = [...companies].sort((a, b) => a.name.localeCompare(b.name));
+const companyNames = companies.map(c => c.name).sort();
+
+const totalReviews = companies.reduce((sum, c) => sum + (c.reviewCount ?? 0), 0);
+const employersWithReviews = companies.filter(c => (c.reviewCount ?? 0) > 0).length;
+
+const featuredCompanies = companies.filter(c => (c as any).featured).sort((a, b) => a.name.localeCompare(b.name));
 const threshold = getThreshold();
 ---
 <BaseLayout title="Home" description="See if you'll belong — before you take the job. Anonymous workplace belonging reviews filtered through identity lenses.">
@@ -13,18 +16,31 @@ const threshold = getThreshold();
   <section class="bg-gradient-to-b from-cream to-cream-light relative overflow-hidden">
     <div class="max-w-5xl mx-auto px-4 py-16 sm:py-24 text-center relative z-10">
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-plum leading-tight mb-6">
-        Do you actually <span class="text-coral">belong</span> there?
+        The stories nobody got to tell the next person.
       </h1>
       <p class="text-lg sm:text-xl text-ink/70 max-w-2xl mx-auto mb-10">
-        Real talk about belonging at work. Anonymous reviews filtered through the identity lenses that matter to you — not a polished employer brand.
+        Glassdoor tells you what people think of a company. Belongary tells you what people like you found there.
       </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/review" class="inline-flex items-center justify-center px-8 py-3 bg-coral text-white font-semibold rounded-lg hover:bg-coral/90 transition-colors shadow-sm">
-          Add Your Voice
-        </a>
-        <a href="/directory" class="inline-flex items-center justify-center px-8 py-3 bg-white text-plum font-semibold rounded-lg border border-border hover:border-plum/30 transition-colors">
-          Browse Companies
-        </a>
+
+      <form action="/review" method="GET" class="max-w-lg mx-auto relative text-left">
+        <label for="hero-company" class="block text-sm font-semibold text-plum mb-2">
+          Where do you work, or where did you?
+        </label>
+        <input
+          type="text"
+          name="company"
+          id="hero-company"
+          autocomplete="off"
+          placeholder="Start typing a company name"
+          class="w-full px-5 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral text-lg shadow-sm"
+        />
+        <ul id="hero-dropdown" class="hidden absolute z-10 w-full mt-1 max-h-56 overflow-y-auto bg-white border border-border rounded-lg shadow-lg"></ul>
+      </form>
+
+      <div class="flex flex-col gap-1 mt-6 text-sm text-ink/60">
+        <p>· We never ask for your work email.</p>
+        <p>· Nothing publishes until 5 people from a company have shared.</p>
+        <p>· Employers can't edit, remove, or pay to hide what you write.</p>
       </div>
     </div>
     <!-- Decorative brand pattern -->
@@ -32,6 +48,16 @@ const threshold = getThreshold();
       <img src="/brand/pattern-elements.png" alt="" class="w-full h-auto" aria-hidden="true" />
     </div>
   </section>
+
+  <!-- Global Counter -->
+  {totalReviews > 0 && (
+    <section class="py-8 text-center">
+      <p class="text-lg text-ink/70 font-heading">
+        <span class="font-bold text-plum">{totalReviews}</span> stories collected across
+        <span class="font-bold text-plum">{employersWithReviews}</span> employers.
+      </p>
+    </section>
+  )}
 
   <!-- How It Works -->
   <section class="py-16 sm:py-20">
@@ -44,44 +70,44 @@ const threshold = getThreshold();
           <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-coral/10 flex items-center justify-center">
             <span class="text-2xl font-heading font-bold text-coral">1</span>
           </div>
-          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Answer honestly</h3>
+          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Tell your story</h3>
           <p class="text-ink/60 text-sm">
-            One headline question — would you tell someone like you to take this job? — plus eight dimensions of belonging, scored 1-5.
+            Start with what you'd tell someone like you before they take this job. Then rate eight dimensions of belonging, 1-5.
           </p>
         </div>
         <div class="text-center">
           <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-teal/10 flex items-center justify-center">
             <span class="text-2xl font-heading font-bold text-teal">2</span>
           </div>
-          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Filter by lens</h3>
+          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Truth emerges</h3>
           <p class="text-ink/60 text-sm">
-            Optionally tag your review with an identity lens — professional of color, caregiver, LGBTQ+, and more. Your lens is never published individually.
+            Once 5 people from a company have shared, belonging scores go live. No one person's story is ever identifiable.
           </p>
         </div>
         <div class="text-center">
           <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-amber/10 flex items-center justify-center">
             <span class="text-2xl font-heading font-bold text-amber">3</span>
           </div>
-          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Truth emerges</h3>
+          <h3 class="text-lg font-heading font-semibold text-plum mb-2">See through your lens</h3>
           <p class="text-ink/60 text-sm">
-            Scores aggregate anonymously. Toggle lenses on any company to see how belonging differs across identities. Numbers speak when branding can't.
+            Optionally tag your review with an identity lens. Lens scores appear separately once 8 people share the same lens — never individually.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Companies We're Gathering Data On -->
+  <!-- Featured Companies -->
   <section class="py-16 sm:py-20 bg-white/50">
     <div class="max-w-5xl mx-auto px-4">
       <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum text-center mb-4">
-        Companies we're gathering data on
+        Nashville launch — help us start here
       </h2>
       <p class="text-ink/60 text-center mb-12 max-w-xl mx-auto">
-        Help us reach {threshold} reviews per company so belonging scores can go live. Every review brings us closer.
+        We're starting with Nashville's biggest employers. Be one of the first to share your story.
       </p>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {allCompanies.slice(0, 6).map(company => (
+        {featuredCompanies.map(company => (
           <a href={`/company/${company.slug}`} class="block bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-plum/20 transition-all group">
             <div class="mb-3">
               <h3 class="font-heading font-semibold text-plum group-hover:text-coral transition-colors">{company.name}</h3>
@@ -99,11 +125,25 @@ const threshold = getThreshold();
           </a>
         ))}
       </div>
-      <div class="text-center mt-10">
-        <a href="/directory" class="text-coral font-semibold hover:text-coral/80 transition-colors">
-          View all companies &rarr;
-        </a>
-      </div>
+    </div>
+  </section>
+
+  <!-- Founder Block -->
+  <section class="py-16 sm:py-20">
+    <div class="max-w-2xl mx-auto px-4">
+      <h2 class="text-2xl font-heading font-bold text-plum mb-4">Why I built this</h2>
+      <p class="text-ink/70 leading-relaxed mb-4">
+        I spent 18 years in HR — the person who was supposed to make the workplace better. I watched companies spend millions on engagement surveys that went nowhere, employer branding that papered over real problems, and DEI programs that measured everything except whether people actually belonged.
+      </p>
+      <p class="text-ink/70 leading-relaxed mb-4">
+        The people who needed the truth most — the ones deciding whether to take the job, stay in the job, or leave the job — never got it. Not from Glassdoor, not from the recruiter, and definitely not from the career page.
+      </p>
+      <p class="text-ink/70 leading-relaxed mb-6">
+        Belongary is the thing I wish had existed for every candidate I interviewed and every employee I couldn't protect.
+      </p>
+      <a href="/about" class="text-coral font-semibold hover:text-coral/80 transition-colors">
+        Read the full story &rarr;
+      </a>
     </div>
   </section>
 
@@ -143,4 +183,43 @@ const threshold = getThreshold();
       </form>
     </div>
   </section>
+
+  <script define:vars={{ companyNames }}>
+    // Hero autocomplete
+    function setupHeroAutocomplete() {
+      const input = document.getElementById('hero-company');
+      const dropdown = document.getElementById('hero-dropdown');
+      if (!input || !dropdown) return;
+
+      input.addEventListener('input', () => {
+        const val = input.value.toLowerCase().trim();
+        dropdown.innerHTML = '';
+        if (val.length < 1) { dropdown.classList.add('hidden'); return; }
+        const matches = companyNames.filter(item => item.toLowerCase().includes(val)).slice(0, 8);
+        if (matches.length === 0) { dropdown.classList.add('hidden'); return; }
+        matches.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          li.className = 'px-4 py-2 cursor-pointer hover:bg-cream text-sm text-ink';
+          li.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            input.value = item;
+            dropdown.classList.add('hidden');
+            // Submit the form
+            input.closest('form')?.submit();
+          });
+          dropdown.appendChild(li);
+        });
+        dropdown.classList.remove('hidden');
+      });
+
+      input.addEventListener('focus', () => {
+        if (input.value.trim().length >= 1) input.dispatchEvent(new Event('input'));
+      });
+      input.addEventListener('blur', () => {
+        setTimeout(() => dropdown.classList.add('hidden'), 150);
+      });
+    }
+    setupHeroAutocomplete();
+  </script>
 </BaseLayout>
