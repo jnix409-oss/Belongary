@@ -1,15 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import companies from '../data/companies.json';
-import { getThreshold } from '../data/thresholds';
 
 const companyNames = companies.map(c => c.name).sort();
 
 const totalReviews = companies.reduce((sum, c) => sum + (c.reviewCount ?? 0), 0);
 const employersWithReviews = companies.filter(c => (c.reviewCount ?? 0) > 0).length;
-
-const featuredCompanies = companies.filter(c => (c as any).featured).sort((a, b) => a.name.localeCompare(b.name));
-const threshold = getThreshold();
 ---
 <BaseLayout title="Home" description="See if you'll belong — before you take the job. Anonymous workplace belonging reviews filtered through identity lenses.">
   <!-- Hero -->
@@ -93,37 +89,6 @@ const threshold = getThreshold();
             Optionally tag your review with an identity lens. Lens scores appear separately once 8 people share the same lens — never individually.
           </p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Companies -->
-  <section class="py-16 sm:py-20 bg-white/50">
-    <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum text-center mb-4">
-        Nashville launch — help us start here
-      </h2>
-      <p class="text-ink/60 text-center mb-12 max-w-xl mx-auto">
-        We're starting with Nashville's biggest employers. Be one of the first to share your story.
-      </p>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {featuredCompanies.map(company => (
-          <a href={`/company/${company.slug}`} class="block bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-plum/20 transition-all group">
-            <div class="mb-3">
-              <h3 class="font-heading font-semibold text-plum group-hover:text-coral transition-colors">{company.name}</h3>
-              <p class="text-sm text-ink/50">{company.industry} · {company.hq_metro}</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="flex-1 bg-light rounded-full h-2 overflow-hidden">
-                <div
-                  class="h-full rounded-full bg-coral/40"
-                  style={`width: ${Math.min(100, Math.round(((company as any).reviewCount / threshold) * 100))}%`}
-                ></div>
-              </div>
-              <span class="text-xs text-ink/40 whitespace-nowrap">{(company as any).reviewCount} / {threshold}</span>
-            </div>
-          </a>
-        ))}
       </div>
     </div>
   </section>

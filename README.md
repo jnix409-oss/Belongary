@@ -40,14 +40,13 @@ src/
   pages/
     index.astro           # home page
     review.astro          # review submission form
-    company/[slug].astro  # company profiles with lens toggle
-    directory/            # ranked company lists
+    founder.astro         # founder's story
     methodology.astro     # how it works
     guidelines.astro      # community guidelines
     dispute.astro         # dispute process
     terms.astro           # terms of service (draft)
     privacy.astro         # privacy policy (draft)
-    about.astro           # founder story
+    about.astro           # about Belongary
 ```
 
 ## Company Data
@@ -96,4 +95,4 @@ Both use honeypot fields for spam protection. Form submissions appear in the Net
 
 Push to the connected Netlify site — `npm run build` produces static HTML in `dist/`.
 
-Redirects in `netlify.toml` map `/index` → `/directory/` and `/index/:lens` → `/directory/:lens/` to handle the spec's routing requirements.
+Redirects in `netlify.toml` 301-redirect `/company/*`, `/directory`, and `/directory/*` to `/` (routes removed, pages to be restored once companies cross MIN_REVIEWS_DISPLAY). See `RESTORING-COMPANY-PAGES.md` for the restore path.
