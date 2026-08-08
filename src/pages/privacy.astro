@@ -7,12 +7,14 @@ import LegalLayout from '../layouts/LegalLayout.astro';
   <h2>1. What We Collect</h2>
   <p>When you submit a review, we collect:</p>
   <ul>
-    <li><strong>Review content:</strong> Company name, tenure range, headline answer, dimension ratings, optional comment, and optional identity lens tags.</li>
-    <li><strong>Org level:</strong> Your self-reported organizational level (e.g., individual contributor, manager).</li>
-    <li><strong>Email address (optional):</strong> Only if you choose to provide one, for correction or removal requests only.</li>
-    <li><strong>Metro area:</strong> The metro area you associate with your experience at the company.</li>
+    <li><strong>Review content:</strong> Company name, headline answer, dimension ratings, story text, and optional identity lens tag.</li>
+    <li><strong>Email address (optional):</strong> Only if you choose to provide one, stored separately from your review, for correction or removal requests only.</li>
+    <li><strong>Removal token:</strong> A random token returned to you after submission. This is the primary way to identify your review for correction or removal. We store only a one-way hash of the token — the plaintext is shown once and cannot be recovered.</li>
   </ul>
   <p>When you join our waitlist, we collect your email address.</p>
+  <p>
+    Our infrastructure providers (hosting, CDN) keep standard server access logs, including IP address, for a short period set by them. We do not control the retention window and we do not retain copies of these logs ourselves. We do not use server logs to identify reviewers.
+  </p>
 
   <h2>2. What We Do NOT Collect</h2>
   <ul>
@@ -33,8 +35,17 @@ import LegalLayout from '../layouts/LegalLayout.astro';
 
   <h2>4. Data Storage</h2>
   <p>
-    Review submissions are processed through Netlify Forms and stored in our moderation queue. Approved reviews are added to our aggregated dataset. We do not maintain individual review records beyond what is needed for moderation and aggregation.
+    Review submissions are received by our server infrastructure and stored in our database for moderation. Approved reviews are included in the aggregated scores displayed on the Service. Individual review records are retained for as long as they remain approved and part of the dataset, or until the reviewer requests removal.
   </p>
+
+  <h2>4a. Data Retention</h2>
+  <ul>
+    <li><strong>Approved reviews</strong> are retained as long as they remain part of the published dataset or until the reviewer requests removal.</li>
+    <li><strong>Removal tokens</strong> (hashed) and optional contact emails are retained as long as the associated review exists.</li>
+    <li><strong>Rejected reviews</strong> are deleted promptly after rejection.</li>
+    <li><strong>Waitlist emails</strong> are retained until you unsubscribe.</li>
+    <li><strong>Server access logs</strong> (maintained by our infrastructure providers, not by us) are retained for a short period determined by those providers. We do not retain copies.</li>
+  </ul>
 
   <h2>5. Data Sharing</h2>
   <p>
@@ -43,8 +54,9 @@ import LegalLayout from '../layouts/LegalLayout.astro';
 
   <h2>6. Your Rights</h2>
   <ul>
-    <li><strong>Correction:</strong> If you provided an email, you can request correction of your review by contacting us.</li>
-    <li><strong>Deletion:</strong> You can request removal of your review by contacting us from the email you provided during submission.</li>
+    <li><strong>Correction or removal (with token):</strong> After submitting a review, you receive a one-time removal token. To request correction or removal, email <strong>support@belongary.com</strong> with your token. This is the primary method and works regardless of whether you provided an email.</li>
+    <li><strong>Correction or removal (with email):</strong> If you provided an email address during submission and have lost your token, email us from that address at <strong>support@belongary.com</strong>. We can use it to locate your submission.</li>
+    <li><strong>If you have neither:</strong> We cannot verify ownership of an anonymous review without the token or the email address used at submission. The token cannot be recovered once lost.</li>
     <li><strong>Waitlist removal:</strong> Email <strong>support@belongary.com</strong> to be removed from the waitlist.</li>
   </ul>
 
