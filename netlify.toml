@@ -6,6 +6,14 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# --- Temporary: homepage redirects to review form ---
+
+[[redirects]]
+  from = "/"
+  to = "/review"
+  status = 302
+  force = true
+
 # --- Redirects: removed routes → homepage ---
 
 [[redirects]]
