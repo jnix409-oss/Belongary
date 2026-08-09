@@ -75,49 +75,7 @@ const prefillStory = searchParams.get('story') || '';
         <p class="text-xs text-ink/40 mt-1">If your company isn't listed, type it in — we'll add it.</p>
       </div>
 
-      <!-- 2. Story -->
-      <div>
-        <label for="story" class="block text-sm font-semibold text-plum mb-1">Your story *</label>
-        <p class="text-sm text-ink/70 mb-2">What would you tell someone like you before they take this job?</p>
-        <textarea
-          name="story"
-          id="story"
-          required
-          rows="6"
-          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral resize-none"
-        >{prefillStory}</textarea>
-        <p class="text-xs text-ink/40 mt-1">
-          No names, please — yours or anyone else's. <a href="/anonymity" class="text-coral hover:text-coral/80 underline">How we protect your anonymity</a>
-        </p>
-      </div>
-
-      <!-- 3. Eight Dimensions -->
-      <div>
-        <h2 class="text-lg font-heading font-semibold text-plum mb-1">Rate These Dimensions</h2>
-        <p class="text-sm text-ink/50 mb-4">1 = poor, 5 = excellent. Skip any you can't speak to.</p>
-        <div class="space-y-4">
-          {DIMENSIONS.map(dim => (
-            <div class="flex items-center gap-4 p-3 rounded-lg bg-white border border-border">
-              <img src={dim.icon} alt="" width="20" height="20" class="shrink-0" aria-hidden="true" />
-              <div class="flex-1">
-                <p class="text-sm font-medium text-plum">{dim.label}</p>
-              </div>
-              <div class="flex gap-1" role="radiogroup" aria-label={dim.label}>
-                {[1, 2, 3, 4, 5].map(v => (
-                  <label class="dimension-rating">
-                    <input type="radio" name={`dim_${dim.id}`} value={v} class="peer hidden" />
-                    <span class="peer-checked:bg-coral peer-checked:text-white peer-checked:border-coral w-9 h-9 flex items-center justify-center rounded-md border border-border text-sm font-medium text-ink/60 cursor-pointer hover:border-coral/50 transition-all">
-                      {v}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <!-- 4. Headline Question -->
+      <!-- 2. Headline Question -->
       <div class="bg-cream rounded-xl p-6 border border-border">
         <p class="text-lg font-heading font-semibold text-plum mb-4">
           In your opinion, would you tell someone like you to take this job?
@@ -134,7 +92,7 @@ const prefillStory = searchParams.get('story') || '';
         </div>
       </div>
 
-      <!-- 5. Sensitive-Data Consent + Lens Selection -->
+      <!-- 3. Sensitive-Data Consent + Lens Selection -->
       <div class="bg-cream-light rounded-xl p-6 border border-border">
         <div class="mb-4">
           <label class="flex items-start gap-3 cursor-pointer">
@@ -162,6 +120,48 @@ const prefillStory = searchParams.get('story') || '';
               <span class="text-sm text-ink/70">Prefer not to say</span>
             </label>
           </div>
+        </div>
+      </div>
+
+      <!-- 4. Story -->
+      <div>
+        <label for="story" class="block text-sm font-semibold text-plum mb-1">Your story *</label>
+        <p class="text-sm text-ink/70 mb-2">What would you tell someone like you before they take this job?</p>
+        <textarea
+          name="story"
+          id="story"
+          required
+          rows="6"
+          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral resize-none"
+        >{prefillStory}</textarea>
+        <p class="text-xs text-ink/40 mt-1">
+          No names, please — yours or anyone else's. <a href="/anonymity" class="text-coral hover:text-coral/80 underline">How we protect your anonymity</a>
+        </p>
+      </div>
+
+      <!-- 5. Eight Dimensions -->
+      <div>
+        <h2 class="text-lg font-heading font-semibold text-plum mb-1">Rate These Dimensions</h2>
+        <p class="text-sm text-ink/50 mb-4">1 = poor, 5 = excellent. Skip any you can't speak to.</p>
+        <div class="space-y-4">
+          {DIMENSIONS.map(dim => (
+            <div class="flex items-center gap-4 p-3 rounded-lg bg-white border border-border">
+              <img src={dim.icon} alt="" width="20" height="20" class="shrink-0" aria-hidden="true" />
+              <div class="flex-1">
+                <p class="text-sm font-medium text-plum">{dim.label}</p>
+              </div>
+              <div class="flex gap-1" role="radiogroup" aria-label={dim.label}>
+                {[1, 2, 3, 4, 5].map(v => (
+                  <label class="dimension-rating">
+                    <input type="radio" name={`dim_${dim.id}`} value={v} class="peer hidden" />
+                    <span class="peer-checked:bg-coral peer-checked:text-white peer-checked:border-coral w-9 h-9 flex items-center justify-center rounded-md border border-border text-sm font-medium text-ink/60 cursor-pointer hover:border-coral/50 transition-all">
+                      {v}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
