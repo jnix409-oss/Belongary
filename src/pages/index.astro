@@ -1,15 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import companies from '../data/companies.json';
-import { getThreshold } from '../data/thresholds';
 
 const companyNames = companies.map(c => c.name).sort();
 
 const totalReviews = companies.reduce((sum, c) => sum + (c.reviewCount ?? 0), 0);
 const employersWithReviews = companies.filter(c => (c.reviewCount ?? 0) > 0).length;
-
-const featuredCompanies = companies.filter(c => (c as any).featured).sort((a, b) => a.name.localeCompare(b.name));
-const threshold = getThreshold();
 ---
 <BaseLayout title="Home" description="See if you'll belong — before you take the job. Anonymous workplace belonging reviews filtered through identity lenses.">
   <!-- Hero -->
@@ -97,51 +93,23 @@ const threshold = getThreshold();
     </div>
   </section>
 
-  <!-- Featured Companies -->
-  <section class="py-16 sm:py-20 bg-white/50">
-    <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum text-center mb-4">
-        Nashville launch — help us start here
-      </h2>
-      <p class="text-ink/60 text-center mb-12 max-w-xl mx-auto">
-        We're starting with Nashville's biggest employers. Be one of the first to share your story.
-      </p>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {featuredCompanies.map(company => (
-          <a href={`/company/${company.slug}`} class="block bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-plum/20 transition-all group">
-            <div class="mb-3">
-              <h3 class="font-heading font-semibold text-plum group-hover:text-coral transition-colors">{company.name}</h3>
-              <p class="text-sm text-ink/50">{company.industry} · {company.hq_metro}</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="flex-1 bg-light rounded-full h-2 overflow-hidden">
-                <div
-                  class="h-full rounded-full bg-coral/40"
-                  style={`width: ${Math.min(100, Math.round(((company as any).reviewCount / threshold) * 100))}%`}
-                ></div>
-              </div>
-              <span class="text-xs text-ink/40 whitespace-nowrap">{(company as any).reviewCount} / {threshold}</span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- Founder Block -->
   <section class="py-16 sm:py-20">
     <div class="max-w-2xl mx-auto px-4">
-      <h2 class="text-2xl font-heading font-bold text-plum mb-4">Why I built this</h2>
+      <h2 class="text-2xl font-heading font-bold text-plum mb-4">Why this exists</h2>
       <p class="text-ink/70 leading-relaxed mb-4">
-        I spent 18 years in HR — the person who was supposed to make the workplace better. I watched companies spend millions on engagement surveys that went nowhere, employer branding that papered over real problems, and DEI programs that measured everything except whether people actually belonged.
+        I started a job once where my manager was fired the Friday before my first day.
       </p>
       <p class="text-ink/70 leading-relaxed mb-4">
-        The people who needed the truth most — the ones deciding whether to take the job, stay in the job, or leave the job — never got it. Not from Glassdoor, not from the recruiter, and definitely not from the career page.
+        She was a Black woman, and honestly, that was part of why I took the role. Nobody could tell me what happened. The team was still stunned.
+      </p>
+      <p class="text-ink/70 leading-relaxed mb-4">
+        So I did what you do — went in quiet, watched, tried to understand the landscape. What I learned fast was that they didn't trust that she'd made a good hire. They sat me in a row by myself. Nobody said hello for weeks. And one afternoon I overheard two of them in the break room deciding how long I'd last. <em>That girl probably won't even make it past three months.</em>
       </p>
       <p class="text-ink/70 leading-relaxed mb-6">
-        Belongary is the thing I wish had existed for every candidate I interviewed and every employee I couldn't protect.
+        Coldest welcome I've ever had.
       </p>
-      <a href="/about" class="text-coral font-semibold hover:text-coral/80 transition-colors">
+      <a href="/founder" class="text-coral font-semibold hover:text-coral/80 transition-colors">
         Read the full story &rarr;
       </a>
     </div>

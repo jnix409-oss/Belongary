@@ -2,12 +2,38 @@
   command = "npm run build"
   publish = "dist"
 
-[[redirects]]
-  from = "/index"
-  to = "/directory/"
-  status = 200
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# --- Redirects: removed routes → homepage ---
 
 [[redirects]]
-  from = "/index/:lens"
-  to = "/directory/:lens/"
-  status = 200
+  from = "/company/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/directory/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/directory"
+  to = "/"
+  status = 301
+  force = true
+
+# --- Branch-deploy protection: prevent indexing of non-production deploys ---
+
+[[context.branch-deploy.headers]]
+  for = "/*"
+  [context.branch-deploy.headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[context.deploy-preview.headers]]
+  for = "/*"
+  [context.deploy-preview.headers.values]
+    X-Robots-Tag = "noindex, nofollow"
