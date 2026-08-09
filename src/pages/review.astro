@@ -10,17 +10,13 @@ const searchParams = Astro.url.searchParams;
 const prefillCompany = searchParams.get('company') || '';
 const prefillStory = searchParams.get('story') || '';
 
-const pageTitle = "Belongary — The stories nobody got to tell the next person.";
+const pageTitle = "The stories nobody got to tell the next person";
 const pageDescription = "Glassdoor tells you what people think of a company. Belongary tells you what people like you found there.";
 ---
 <BaseLayout title={pageTitle} description={pageDescription}>
   <Fragment slot="head">
     <link rel="canonical" href="https://belongary.netlify.app/review" />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content="https://belongary.netlify.app/review" />
-    <meta name="twitter:title" content={pageTitle} />
-    <meta name="twitter:description" content={pageDescription} />
   </Fragment>
 
   <div class="max-w-2xl mx-auto px-4 py-12 sm:py-16">

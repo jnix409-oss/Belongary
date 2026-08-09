@@ -1,6 +1,6 @@
 # Belongary
 
-Real talk about belonging at work — filtered through identity lenses that matter.
+Glassdoor tells you what people think of a company. Belongary tells you what people like you found there.
 
 ## What It Is
 
