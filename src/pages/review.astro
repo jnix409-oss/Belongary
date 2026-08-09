@@ -160,6 +160,13 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         </p>
       </div>
 
+      <!-- Submissions paused — waiting on privacy review -->
+      <div class="w-full py-4 px-6 bg-cream border border-border rounded-lg text-center">
+        <p class="text-sm font-semibold text-plum mb-1">Submissions open soon.</p>
+        <p class="text-xs text-ink/50">We're finishing our privacy review before we start collecting stories. Nothing is being saved right now.</p>
+      </div>
+
+      <!--
       <button
         type="submit"
         id="submit-btn"
@@ -168,36 +175,8 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         Submit Review
       </button>
 
-      <!-- Error message (appears at bottom after failed submission) -->
       <div id="error-message" class="hidden mt-6 bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700"></div>
-    </form>
-
-    <!-- Success message (replaces form after successful submission) -->
-    <div id="success-message" class="hidden mt-8 bg-score-good/10 border border-score-good/30 rounded-lg p-6">
-      <p class="text-lg font-heading font-semibold text-plum mb-2 text-center">Your story is in.</p>
-      <p class="text-ink/60 text-sm mb-4 text-center">It'll be reviewed by a moderator, then counted toward the company's scores.</p>
-
-      <!-- Removal token -->
-      <div class="mt-4 pt-4 border-t border-border">
-        <p class="text-sm font-semibold text-plum mb-2">Your removal token</p>
-        <div class="flex items-center gap-2 max-w-md">
-          <input type="text" id="removal-token" readonly class="flex-1 px-3 py-2 text-sm bg-cream border border-border rounded-lg text-ink font-mono select-all" />
-          <button type="button" id="copy-token-btn" class="px-4 py-2 bg-coral text-white text-sm font-semibold rounded-lg hover:bg-coral/90 transition-colors">Copy</button>
-        </div>
-        <p class="text-xs text-ink/50 mt-2">
-          <strong>Save this somewhere safe.</strong> It's the only way to request correction or removal of your review later. This token can't be recovered if lost — we don't store it, and it will never be shown again.
-        </p>
-      </div>
-
-      <!-- Share link -->
-      <div class="mt-4 pt-4 border-t border-border">
-        <p class="text-sm text-ink/60 mb-2">Know someone else who worked there?</p>
-        <div class="flex items-center gap-2 max-w-md">
-          <input type="text" id="share-link" readonly class="flex-1 px-3 py-2 text-sm bg-cream border border-border rounded-lg text-ink/70" />
-          <button type="button" id="copy-link-btn" class="px-4 py-2 bg-coral text-white text-sm font-semibold rounded-lg hover:bg-coral/90 transition-colors">Copy</button>
-        </div>
-      </div>
-    </div>
+      -->
   </div>
 
   <script define:vars={{ companyNames }}>
@@ -254,87 +233,10 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       });
     });
 
-    // Form submission via fetch to Netlify Function
-    const form = document.getElementById('review-form') as HTMLFormElement;
-    const submitBtn = document.getElementById('submit-btn');
-    const errorMessage = document.getElementById('error-message');
-    const successMessage = document.getElementById('success-message');
-
-    form?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorMessage?.classList.add('hidden');
-
-      // Disable submit button
-      if (submitBtn) {
-        submitBtn.setAttribute('disabled', 'true');
-        submitBtn.textContent = 'Submitting...';
-        submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
-      }
-
-      try {
-        const formData = new FormData(form);
-        const response = await fetch('/api/review', {
-          method: 'POST',
-          body: formData,
-        });
-
-        const result = await response.json();
-
-        if (!response.ok || result.error) {
-          throw new Error(result.error || 'Something went wrong. Please try again.');
-        }
-
-        // Show success state
-        form.classList.add('hidden');
-        successMessage?.classList.remove('hidden');
-
-        // Display the removal token
-        const tokenInput = document.getElementById('removal-token') as HTMLInputElement;
-        if (tokenInput && result.token) {
-          tokenInput.value = result.token;
-        } else if (tokenInput && result.warning) {
-          tokenInput.value = 'Token unavailable — contact support@belongary.com';
-          tokenInput.classList.add('text-red-600');
-        }
-
-        // Set the share link
-        const shareLink = document.getElementById('share-link') as HTMLInputElement;
-        if (shareLink && result.company) {
-          shareLink.value = `${window.location.origin}/review?company=${encodeURIComponent(result.company)}`;
-        }
-
-        // Scroll to success message
-        successMessage?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      } catch (err: any) {
-        if (errorMessage) {
-          errorMessage.textContent = err.message || 'Something went wrong. Please try again.';
-          errorMessage.classList.remove('hidden');
-          errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-        // Re-enable submit
-        if (submitBtn) {
-          submitBtn.removeAttribute('disabled');
-          submitBtn.textContent = 'Submit Review';
-          submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
-        }
-      }
-    });
-
-    // Copy buttons
-    function setupCopyButton(btnId: string, inputId: string) {
-      const btn = document.getElementById(btnId);
-      btn?.addEventListener('click', () => {
-        const input = document.getElementById(inputId) as HTMLInputElement;
-        if (input) {
-          navigator.clipboard.writeText(input.value);
-          btn.textContent = 'Copied!';
-          setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-        }
-      });
-    }
-
-    setupCopyButton('copy-token-btn', 'removal-token');
-    setupCopyButton('copy-link-btn', 'share-link');
+    // --- Submissions paused: form handler, success block, and copy buttons
+    // --- are commented out until privacy review is complete. ---
+    // --- To re-enable: restore submit button from HTML comment above,
+    // --- uncomment success-message div, uncomment this JS block,
+    // --- and re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars. ---
   </script>
 </BaseLayout>
