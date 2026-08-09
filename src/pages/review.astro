@@ -5,8 +5,10 @@ import { DIMENSIONS } from '../data/dimensions';
 import { LENSES } from '../data/lenses';
 
 const companyNames = companies.map(c => c.name).sort();
-const companyMetros = Object.fromEntries(companies.map(c => [c.name, c.hq_metro]));
-const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
+
+const searchParams = Astro.url.searchParams;
+const prefillCompany = searchParams.get('company') || '';
+const prefillStory = searchParams.get('story') || '';
 ---
 <BaseLayout title="Leave a Review" description="Share your anonymous experience of belonging at your company.">
   <div class="max-w-2xl mx-auto px-4 py-12 sm:py-16">
@@ -17,20 +19,41 @@ const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
       Your review is anonymous. No work email required. No identity verification. Just honest answers about belonging.
     </p>
 
-    <div id="success-message" class="hidden mb-8 bg-score-good/10 border border-score-good/30 rounded-lg p-6 text-center">
-      <p class="text-lg font-heading font-semibold text-plum mb-2">Thank you for your review!</p>
-      <p class="text-ink/60 text-sm">Your submission will be reviewed by a moderator and added to the company's profile.</p>
+    <!-- Success message (shown after submission via JS) -->
+    <div id="success-message" class="hidden mb-8 bg-score-good/10 border border-score-good/30 rounded-lg p-6">
+      <p class="text-lg font-heading font-semibold text-plum mb-2 text-center">Your story is in.</p>
+      <p class="text-ink/60 text-sm mb-4 text-center">It'll be reviewed by a moderator, then counted toward the company's scores.</p>
+
+      <!-- Removal token -->
+      <div class="mt-4 pt-4 border-t border-border">
+        <p class="text-sm font-semibold text-plum mb-2">Your removal token</p>
+        <div class="flex items-center gap-2 max-w-md">
+          <input type="text" id="removal-token" readonly class="flex-1 px-3 py-2 text-sm bg-cream border border-border rounded-lg text-ink font-mono select-all" />
+          <button type="button" id="copy-token-btn" class="px-4 py-2 bg-coral text-white text-sm font-semibold rounded-lg hover:bg-coral/90 transition-colors">Copy</button>
+        </div>
+        <p class="text-xs text-ink/50 mt-2">
+          <strong>Save this somewhere safe.</strong> It's the only way to request correction or removal of your review later. This token can't be recovered if lost — we don't store it, and it will never be shown again.
+        </p>
+      </div>
+
+      <!-- Share link -->
+      <div class="mt-4 pt-4 border-t border-border">
+        <p class="text-sm text-ink/60 mb-2">Know someone else who worked there?</p>
+        <div class="flex items-center gap-2 max-w-md">
+          <input type="text" id="share-link" readonly class="flex-1 px-3 py-2 text-sm bg-cream border border-border rounded-lg text-ink/70" />
+          <button type="button" id="copy-link-btn" class="px-4 py-2 bg-coral text-white text-sm font-semibold rounded-lg hover:bg-coral/90 transition-colors">Copy</button>
+        </div>
+      </div>
     </div>
 
+    <!-- Error message -->
+    <div id="error-message" class="hidden mb-6 bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700"></div>
+
     <form
-      name="review"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
       id="review-form"
       class="space-y-8"
     >
-      <input type="hidden" name="form-name" value="review" />
+      <!-- Honeypot (spam prevention) -->
       <p class="hidden">
         <label>Don't fill this out: <input name="bot-field" /></label>
       </p>
@@ -44,36 +67,52 @@ const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
           id="company"
           required
           autocomplete="off"
+          value={prefillCompany}
           placeholder="Start typing a company name..."
           class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
         />
         <ul id="company-dropdown" class="hidden absolute z-10 w-full mt-1 max-h-48 overflow-y-auto bg-white border border-border rounded-lg shadow-lg"></ul>
-        <p class="text-xs text-ink/40 mt-1">If your company isn't listed, type it in — we'll add it to the directory.</p>
+        <p class="text-xs text-ink/40 mt-1">If your company isn't listed, type it in — we'll add it.</p>
       </div>
 
-      <!-- 2. Metro -->
-      <div class="relative">
-        <label for="metro" class="block text-sm font-semibold text-plum mb-1">Metro area</label>
-        <input
-          type="text"
-          name="metro"
-          id="metro"
-          autocomplete="off"
-          placeholder="e.g., Nashville, New York, Remote"
-          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
-        />
-        <ul id="metro-dropdown" class="hidden absolute z-10 w-full mt-1 max-h-48 overflow-y-auto bg-white border border-border rounded-lg shadow-lg"></ul>
-      </div>
-
-      <!-- 3. Tenure -->
+      <!-- 2. Story -->
       <div>
-        <label class="block text-sm font-semibold text-plum mb-2">Tenure</label>
-        <div class="flex flex-wrap gap-3">
-          {['Still there', 'Less than 2 years', '2-5 years', '5+ years'].map(opt => (
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="tenure" value={opt} class="accent-coral" />
-              <span class="text-sm text-ink/70">{opt}</span>
-            </label>
+        <label for="story" class="block text-sm font-semibold text-plum mb-1">Your story *</label>
+        <p class="text-sm text-ink/70 mb-2">What would you tell someone like you before they take this job?</p>
+        <textarea
+          name="story"
+          id="story"
+          required
+          rows="6"
+          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral resize-none"
+        >{prefillStory}</textarea>
+        <p class="text-xs text-ink/40 mt-1">
+          No names, please — yours or anyone else's. <a href="/anonymity" class="text-coral hover:text-coral/80 underline">How we protect your anonymity</a>
+        </p>
+      </div>
+
+      <!-- 3. Eight Dimensions -->
+      <div>
+        <h2 class="text-lg font-heading font-semibold text-plum mb-1">Rate These Dimensions</h2>
+        <p class="text-sm text-ink/50 mb-4">1 = poor, 5 = excellent. Skip any you can't speak to.</p>
+        <div class="space-y-4">
+          {DIMENSIONS.map(dim => (
+            <div class="flex items-center gap-4 p-3 rounded-lg bg-white border border-border">
+              <img src={dim.icon} alt="" width="20" height="20" class="shrink-0" aria-hidden="true" />
+              <div class="flex-1">
+                <p class="text-sm font-medium text-plum">{dim.label}</p>
+              </div>
+              <div class="flex gap-1" role="radiogroup" aria-label={dim.label}>
+                {[1, 2, 3, 4, 5].map(v => (
+                  <label class="dimension-rating">
+                    <input type="radio" name={`dim_${dim.id}`} value={v} class="peer hidden" />
+                    <span class="peer-checked:bg-coral peer-checked:text-white peer-checked:border-coral w-9 h-9 flex items-center justify-center rounded-md border border-border text-sm font-medium text-ink/60 cursor-pointer hover:border-coral/50 transition-all">
+                      {v}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -95,33 +134,7 @@ const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
         </div>
       </div>
 
-      <!-- 5. Eight Dimensions -->
-      <div>
-        <h2 class="text-lg font-heading font-semibold text-plum mb-1">Rate These Dimensions</h2>
-        <p class="text-sm text-ink/50 mb-4">1 = poor, 5 = excellent. Skip any you can't speak to.</p>
-        <div class="space-y-4">
-          {DIMENSIONS.map(dim => (
-            <div class="flex items-center gap-4 p-3 rounded-lg bg-white border border-border">
-              <span class="text-lg">{dim.icon}</span>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-plum">{dim.label}</p>
-              </div>
-              <div class="flex gap-1" role="radiogroup" aria-label={dim.label}>
-                {[1, 2, 3, 4, 5].map(v => (
-                  <label class="dimension-rating">
-                    <input type="radio" name={`dim_${dim.id}`} value={v} class="peer hidden" />
-                    <span class="peer-checked:bg-coral peer-checked:text-white peer-checked:border-coral w-9 h-9 flex items-center justify-center rounded-md border border-border text-sm font-medium text-ink/60 cursor-pointer hover:border-coral/50 transition-all">
-                      {v}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <!-- 6. Sensitive-Data Consent + 7. Lens Selection -->
+      <!-- 5. Sensitive-Data Consent + Lens Selection -->
       <div class="bg-cream-light rounded-xl p-6 border border-border">
         <div class="mb-4">
           <label class="flex items-start gap-3 cursor-pointer">
@@ -129,7 +142,7 @@ const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
             <div>
               <p class="text-sm font-semibold text-plum">I'd like to tag my review with an identity lens</p>
               <p class="text-xs text-ink/50 mt-1">
-                Your lens tag helps aggregate belonging scores for people with similar identities. It is never published individually — only shown when enough reviews exist to protect anonymity. This is completely optional.
+                Your lens is never published individually — it only appears in aggregate when 8 or more people from a company share the same lens. This is completely optional.
               </p>
             </div>
           </label>
@@ -152,39 +165,7 @@ const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
         </div>
       </div>
 
-      <!-- 8. Org Level -->
-      <div>
-        <label class="block text-sm font-semibold text-plum mb-2">Org level</label>
-        <div class="flex flex-wrap gap-3">
-          {['Frontline / Hourly', 'Individual Contributor', 'Manager / Supervisor', 'Director / Sr. Leadership', 'Executive'].map(opt => (
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="org_level" value={opt} class="accent-coral" />
-              <span class="text-sm text-ink/70">{opt}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      <!-- 9. Optional Comment -->
-      <div>
-        <label for="comment" class="block text-sm font-semibold text-plum mb-1">
-          Anything else? <span class="font-normal text-ink/40">(optional, 200 characters max)</span>
-        </label>
-        <textarea
-          name="comment"
-          id="comment"
-          maxlength="200"
-          rows="3"
-          placeholder="Keep it about the experience, not individuals."
-          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral resize-none"
-        ></textarea>
-        <p class="text-xs text-ink/40 mt-1">
-          Content naming individuals, containing hate speech, or that could identify you will be rejected outright. You'll be asked to resubmit — we never edit your words.
-        </p>
-        <p class="text-xs text-ink/40 mt-0.5" id="char-count">0 / 200</p>
-      </div>
-
-      <!-- 10. Optional Email -->
+      <!-- 6. Optional Email -->
       <div>
         <label for="email" class="block text-sm font-semibold text-plum mb-1">
           Email <span class="font-normal text-ink/40">(optional — for corrections/removal only)</span>
@@ -197,12 +178,13 @@ const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
           class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
         />
         <p class="text-xs text-ink/40 mt-1">
-          Never published. Never used to verify employment. Only used to contact you if a correction or removal is requested.
+          Never published. Never used to verify employment. Stored separately from your review, used only as a fallback if you lose your removal token.
         </p>
       </div>
 
       <button
         type="submit"
+        id="submit-btn"
         class="w-full py-3 bg-coral text-white font-semibold rounded-lg hover:bg-coral/90 transition-colors shadow-sm text-lg"
       >
         Submit Review
@@ -210,7 +192,7 @@ const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
     </form>
   </div>
 
-  <script define:vars={{ companyNames, companyMetros, metros }}>
+  <script define:vars={{ companyNames }}>
     function setupAutocomplete(inputId, dropdownId, items, onSelect) {
       const input = document.getElementById(inputId);
       const dropdown = document.getElementById(dropdownId);
@@ -246,16 +228,11 @@ const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
       });
     }
 
-    const metroInput = document.getElementById('metro');
-    setupAutocomplete('company', 'company-dropdown', companyNames, (name) => {
-      if (companyMetros[name] && metroInput && !metroInput.value) {
-        metroInput.value = companyMetros[name];
-      }
-    });
-    setupAutocomplete('metro', 'metro-dropdown', metros, null);
+    setupAutocomplete('company', 'company-dropdown', companyNames, null);
   </script>
 
   <script>
+    // Lens consent toggle
     const consent = document.getElementById('lens-consent');
     const lensOptions = document.getElementById('lens-options');
     const lensCheckboxes = document.querySelectorAll('.lens-checkbox');
@@ -269,15 +246,86 @@ const metros = [...new Set(companies.map(c => c.hq_metro))].sort();
       });
     });
 
-    const comment = document.getElementById('comment') as HTMLTextAreaElement;
-    const charCount = document.getElementById('char-count');
-    comment?.addEventListener('input', () => {
-      if (charCount) charCount.textContent = `${comment.value.length} / 200`;
+    // Form submission via fetch to Netlify Function
+    const form = document.getElementById('review-form') as HTMLFormElement;
+    const submitBtn = document.getElementById('submit-btn');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMessage?.classList.add('hidden');
+
+      // Disable submit button
+      if (submitBtn) {
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.textContent = 'Submitting...';
+        submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+      }
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('/api/review', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || result.error) {
+          throw new Error(result.error || 'Something went wrong. Please try again.');
+        }
+
+        // Show success state
+        form.classList.add('hidden');
+        successMessage?.classList.remove('hidden');
+
+        // Display the removal token
+        const tokenInput = document.getElementById('removal-token') as HTMLInputElement;
+        if (tokenInput && result.token) {
+          tokenInput.value = result.token;
+        } else if (tokenInput && result.warning) {
+          tokenInput.value = 'Token unavailable — contact support@belongary.com';
+          tokenInput.classList.add('text-red-600');
+        }
+
+        // Set the share link
+        const shareLink = document.getElementById('share-link') as HTMLInputElement;
+        if (shareLink && result.company) {
+          shareLink.value = `${window.location.origin}/review?company=${encodeURIComponent(result.company)}`;
+        }
+
+        // Scroll to success message
+        successMessage?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      } catch (err: any) {
+        if (errorMessage) {
+          errorMessage.textContent = err.message || 'Something went wrong. Please try again.';
+          errorMessage.classList.remove('hidden');
+        }
+        // Re-enable submit
+        if (submitBtn) {
+          submitBtn.removeAttribute('disabled');
+          submitBtn.textContent = 'Submit Review';
+          submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+        }
+      }
     });
 
-    if (window.location.search.includes('success=true')) {
-      document.getElementById('success-message')?.classList.remove('hidden');
-      document.getElementById('review-form')?.classList.add('hidden');
+    // Copy buttons
+    function setupCopyButton(btnId: string, inputId: string) {
+      const btn = document.getElementById(btnId);
+      btn?.addEventListener('click', () => {
+        const input = document.getElementById(inputId) as HTMLInputElement;
+        if (input) {
+          navigator.clipboard.writeText(input.value);
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+        }
+      });
     }
+
+    setupCopyButton('copy-token-btn', 'removal-token');
+    setupCopyButton('copy-link-btn', 'share-link');
   </script>
 </BaseLayout>
