@@ -51,7 +51,7 @@ CREATE TABLE reviews (
 );
 
 -- ============================================================
--- 3. Submission tokens (removal / correction)
+-- 3. Submission tokens (removal)
 -- ============================================================
 -- token_hash = SHA-256 of the plaintext token.
 -- email is NULLABLE — only present if the reviewer chose to provide one.

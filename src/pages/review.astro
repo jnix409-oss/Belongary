@@ -146,7 +146,7 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       <!-- 6. Optional Email -->
       <div>
         <label for="email" class="block text-sm font-semibold text-plum mb-1">
-          Email <span class="font-normal text-ink/40">(optional — for corrections/removal only)</span>
+          Email <span class="font-normal text-ink/40">(optional — for removal only)</span>
         </label>
         <input
           type="email"
@@ -161,12 +161,20 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       </div>
 
       <!-- Submissions paused — waiting on privacy review -->
-      <div class="w-full py-4 px-6 bg-cream border border-border rounded-lg text-center">
+      <div id="paused-notice" class="w-full py-4 px-6 bg-cream border border-border rounded-lg text-center">
         <p class="text-sm font-semibold text-plum mb-1">Submissions open soon.</p>
         <p class="text-xs text-ink/50">We're finishing our privacy review before we start collecting stories. Nothing is being saved right now.</p>
       </div>
 
       <!--
+      ┌─────────────────────────────────────────────────────────────────┐
+      │  TO RE-ENABLE SUBMISSIONS:                                     │
+      │  1. Uncomment the <button> and error div below.                │
+      │  2. Remove or hide the #paused-notice div above.               │
+      │  3. Uncomment the form-handler <script> block further down.    │
+      │  4. Re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.      │
+      └─────────────────────────────────────────────────────────────────┘
+
       <button
         type="submit"
         id="submit-btn"
@@ -177,6 +185,45 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
 
       <div id="error-message" class="hidden mt-6 bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700"></div>
       -->
+    </form>
+
+    <!-- Success message — hidden until form submits successfully -->
+    <div id="success-message" class="hidden max-w-2xl mx-auto px-4 pb-16">
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-6 sm:p-8">
+        <h2 class="text-2xl font-heading font-bold text-plum mb-2">Thank you.</h2>
+        <p class="text-ink/70 mb-6">Your review has been submitted and is pending moderation. Keep your removal token — it's the only way to delete your review later.</p>
+
+        <div class="bg-white border border-border rounded-lg p-4 mb-4">
+          <p class="text-xs font-semibold text-plum mb-2 uppercase tracking-wide">Your Removal Token</p>
+          <p id="token-display" class="font-mono text-sm text-ink break-all select-all leading-relaxed"></p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 mb-6">
+          <button
+            id="copy-token-btn"
+            type="button"
+            class="flex-1 py-2.5 px-4 bg-plum text-white font-semibold rounded-lg hover:bg-plum/90 transition-colors text-sm"
+          >
+            Copy token
+          </button>
+          <button
+            id="download-token-btn"
+            type="button"
+            class="flex-1 py-2.5 px-4 bg-white text-plum font-semibold rounded-lg border-2 border-plum hover:bg-plum/5 transition-colors text-sm"
+          >
+            Download token
+          </button>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
+          <strong>Save this token now.</strong> It will not be shown again. If you lose it and didn't provide an email, your review cannot be removed.
+        </div>
+
+        <p class="mt-6 text-sm text-ink/50">
+          To remove your review later, visit <a href="/remove" class="text-coral hover:text-coral/80 underline">belongary.com/remove</a> and enter your token.
+        </p>
+      </div>
+    </div>
   </div>
 
   <script define:vars={{ companyNames }}>
@@ -233,10 +280,108 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       });
     });
 
-    // --- Submissions paused: form handler, success block, and copy buttons
-    // --- are commented out until privacy review is complete. ---
-    // --- To re-enable: restore submit button from HTML comment above,
-    // --- uncomment success-message div, uncomment this JS block,
-    // --- and re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars. ---
+    // ──────────────────────────────────────────────────────────────────
+    // SUBMISSIONS PAUSED — uncomment this block to re-enable.
+    // Also: uncomment the submit button in the HTML, hide #paused-notice,
+    // and re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.
+    // ──────────────────────────────────────────────────────────────────
+
+    /*
+    const form = document.getElementById('review-form');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const errorDiv = document.getElementById('error-message');
+    const successDiv = document.getElementById('success-message');
+    const tokenDisplay = document.getElementById('token-display');
+    const copyBtn = document.getElementById('copy-token-btn');
+    const downloadBtn = document.getElementById('download-token-btn');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!submitBtn || !errorDiv) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting…';
+      errorDiv.classList.add('hidden');
+
+      try {
+        const formData = new FormData(form as HTMLFormElement);
+        const res = await fetch('/api/review', { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+          errorDiv.textContent = data.error || 'Something went wrong. Please try again.';
+          errorDiv.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Review';
+          return;
+        }
+
+        // Success — show token, hide form.
+        if (tokenDisplay && data.token) {
+          tokenDisplay.textContent = data.token;
+        }
+        (form as HTMLElement).classList.add('hidden');
+        successDiv?.classList.remove('hidden');
+
+        // Store token temporarily for copy/download buttons.
+        const savedToken = data.token || '';
+        const savedCompany = data.company || '';
+
+        // Copy button
+        copyBtn?.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(savedToken);
+            if (copyBtn) copyBtn.textContent = 'Copied!';
+            setTimeout(() => { if (copyBtn) copyBtn.textContent = 'Copy token'; }, 2000);
+          } catch {
+            // Fallback: select the token text for manual copy.
+            const range = document.createRange();
+            if (tokenDisplay) {
+              range.selectNodeContents(tokenDisplay);
+              window.getSelection()?.removeAllRanges();
+              window.getSelection()?.addRange(range);
+            }
+          }
+        });
+
+        // Download button — saves a .txt file with the token and context.
+        downloadBtn?.addEventListener('click', () => {
+          const today = new Date().toISOString().slice(0, 10);
+          const content = [
+            'BELONGARY REMOVAL TOKEN',
+            '=======================',
+            '',
+            `Token: ${savedToken}`,
+            `Company: ${savedCompany}`,
+            `Submitted: ${today}`,
+            '',
+            'Keep this token safe. It is the only way to remove your review.',
+            'If you lose it and did not provide an email, your review cannot be removed.',
+            '',
+            'To remove your review, visit: https://belongary.netlify.app/remove',
+          ].join('\n');
+
+          const blob = new Blob([content], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `belongary-token-${today}.txt`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+
+          if (downloadBtn) downloadBtn.textContent = 'Downloaded!';
+          setTimeout(() => { if (downloadBtn) downloadBtn.textContent = 'Download token'; }, 2000);
+        });
+
+      } catch {
+        errorDiv.textContent = 'Could not reach the server. Please check your connection and try again.';
+        errorDiv.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Review';
+      }
+    });
+    */
   </script>
 </BaseLayout>

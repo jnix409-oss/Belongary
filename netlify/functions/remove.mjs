@@ -105,6 +105,10 @@ export default async function handler(req) {
       });
     }
 
+    // Normalize: uppercase, collapse whitespace, trim.
+    // Users may paste with different casing or accidental spaces.
+    token = token.toUpperCase().replace(/\s+/g, '').trim();
+
     // Hash the submitted token.
     const { createHash } = await import('node:crypto');
     const hash = createHash('sha256').update(token).digest('hex');
