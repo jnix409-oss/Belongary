@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pageTitle = "Remove Your Review";
+const pageDescription = "Use your removal token to permanently delete your anonymous review from Belongary.";
+---
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="max-w-xl mx-auto px-4 py-12 sm:py-16">
+    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-plum mb-3">
+      Remove Your Review
+    </h1>
+    <p class="text-ink/60 mb-8">
+      Enter the removal token you received when you submitted your review. Your review will be permanently and immediately deleted — this cannot be undone.
+    </p>
+
+    <form id="remove-form" class="space-y-6">
+      <div>
+        <label for="token" class="block text-sm font-semibold text-plum mb-1">Removal Token *</label>
+        <input
+          type="text"
+          name="token"
+          id="token"
+          required
+          autocomplete="off"
+          placeholder="Paste your removal token here"
+          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral font-mono text-sm"
+        />
+        <p class="text-xs text-ink/40 mt-1">
+          This is the token shown once after you submitted your review. If you've lost it and provided an email, contact <a href="mailto:support@belongary.com" class="text-coral hover:text-coral/80 underline">support@belongary.com</a>.
+        </p>
+      </div>
+
+      <button
+        type="submit"
+        id="remove-btn"
+        class="w-full py-3 bg-coral text-white font-semibold rounded-lg hover:bg-coral/90 transition-colors shadow-sm text-lg"
+      >
+        Remove My Review
+      </button>
+
+      <div id="result-message" class="hidden mt-4 rounded-lg p-4 text-sm"></div>
+    </form>
+
+    <div class="mt-10 p-4 bg-cream rounded-lg border border-border">
+      <h2 class="text-sm font-semibold text-plum mb-2">What happens when you remove a review?</h2>
+      <ul class="text-sm text-ink/60 space-y-1">
+        <li>• Your review text, ratings, and any identity lens tag are permanently deleted.</li>
+        <li>• Your removal token is deleted along with it.</li>
+        <li>• If you provided an email, it is deleted too.</li>
+        <li>• Aggregate company scores will update to reflect the removal.</li>
+        <li>• We keep an anonymous record that a removal happened (date only — no content, no company, no identifier).</li>
+        <li>• This cannot be undone.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('remove-form');
+    const btn = document.getElementById('remove-btn') as HTMLButtonElement;
+    const resultDiv = document.getElementById('result-message');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!resultDiv || !btn) return;
+
+      const tokenInput = (document.getElementById('token') as HTMLInputElement);
+      const token = tokenInput?.value.trim();
+      if (!token) return;
+
+      // Disable button during request.
+      btn.disabled = true;
+      btn.textContent = 'Removing…';
+      resultDiv.classList.add('hidden');
+
+      try {
+        const res = await fetch('/api/remove', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        });
+
+        const data = await res.json();
+
+        if (res.status === 429) {
+          resultDiv.className = 'mt-4 rounded-lg p-4 text-sm bg-amber-50 border border-amber-200 text-amber-800';
+          resultDiv.textContent = data.error || 'Too many requests. Please wait and try again.';
+          resultDiv.classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = 'Remove My Review';
+          return;
+        }
+
+        if (!res.ok) {
+          resultDiv.className = 'mt-4 rounded-lg p-4 text-sm bg-red-50 border border-red-200 text-red-700';
+          resultDiv.textContent = data.error || 'Something went wrong. Please try again.';
+          resultDiv.classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = 'Remove My Review';
+          return;
+        }
+
+        if (data.success) {
+          resultDiv.className = 'mt-4 rounded-lg p-4 text-sm bg-emerald-50 border border-emerald-200 text-emerald-800';
+          resultDiv.textContent = data.message;
+          resultDiv.classList.remove('hidden');
+          // Clear the form and keep button disabled — nothing left to do.
+          tokenInput.value = '';
+          btn.textContent = 'Removed';
+        } else {
+          // Token not found — generic message.
+          resultDiv.className = 'mt-4 rounded-lg p-4 text-sm bg-amber-50 border border-amber-200 text-amber-800';
+          resultDiv.textContent = data.message;
+          resultDiv.classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = 'Remove My Review';
+        }
+
+      } catch {
+        resultDiv.className = 'mt-4 rounded-lg p-4 text-sm bg-red-50 border border-red-200 text-red-700';
+        resultDiv.textContent = 'Could not reach the server. Please check your connection and try again.';
+        resultDiv.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Remove My Review';
+      }
+    });
+  </script>
+</BaseLayout>

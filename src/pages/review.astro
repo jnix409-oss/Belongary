@@ -9,45 +9,23 @@ const companyNames = companies.map(c => c.name).sort();
 const searchParams = Astro.url.searchParams;
 const prefillCompany = searchParams.get('company') || '';
 const prefillStory = searchParams.get('story') || '';
+
+const pageTitle = "The stories nobody got to tell the next person";
+const pageDescription = "Glassdoor tells you what people think of a company. Belongary tells you what people like you found there.";
 ---
-<BaseLayout title="Leave a Review" description="Share your anonymous experience of belonging at your company.">
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href="https://belongary.netlify.app/review" />
+    <meta property="og:url" content="https://belongary.netlify.app/review" />
+  </Fragment>
+
   <div class="max-w-2xl mx-auto px-4 py-12 sm:py-16">
     <h1 class="text-3xl sm:text-4xl font-heading font-bold text-plum mb-3">
-      Share Your Experience
+      The stories nobody got to tell the next person.
     </h1>
     <p class="text-ink/60 mb-8">
-      Your review is anonymous. No work email required. No identity verification. Just honest answers about belonging.
+      Glassdoor tells you what people think of a company. Belongary tells you what people like you found there. Share yours below — anonymous, no work email required.
     </p>
-
-    <!-- Success message (shown after submission via JS) -->
-    <div id="success-message" class="hidden mb-8 bg-score-good/10 border border-score-good/30 rounded-lg p-6">
-      <p class="text-lg font-heading font-semibold text-plum mb-2 text-center">Your story is in.</p>
-      <p class="text-ink/60 text-sm mb-4 text-center">It'll be reviewed by a moderator, then counted toward the company's scores.</p>
-
-      <!-- Removal token -->
-      <div class="mt-4 pt-4 border-t border-border">
-        <p class="text-sm font-semibold text-plum mb-2">Your removal token</p>
-        <div class="flex items-center gap-2 max-w-md">
-          <input type="text" id="removal-token" readonly class="flex-1 px-3 py-2 text-sm bg-cream border border-border rounded-lg text-ink font-mono select-all" />
-          <button type="button" id="copy-token-btn" class="px-4 py-2 bg-coral text-white text-sm font-semibold rounded-lg hover:bg-coral/90 transition-colors">Copy</button>
-        </div>
-        <p class="text-xs text-ink/50 mt-2">
-          <strong>Save this somewhere safe.</strong> It's the only way to request correction or removal of your review later. This token can't be recovered if lost — we don't store it, and it will never be shown again.
-        </p>
-      </div>
-
-      <!-- Share link -->
-      <div class="mt-4 pt-4 border-t border-border">
-        <p class="text-sm text-ink/60 mb-2">Know someone else who worked there?</p>
-        <div class="flex items-center gap-2 max-w-md">
-          <input type="text" id="share-link" readonly class="flex-1 px-3 py-2 text-sm bg-cream border border-border rounded-lg text-ink/70" />
-          <button type="button" id="copy-link-btn" class="px-4 py-2 bg-coral text-white text-sm font-semibold rounded-lg hover:bg-coral/90 transition-colors">Copy</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Error message -->
-    <div id="error-message" class="hidden mb-6 bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700"></div>
 
     <form
       id="review-form"
@@ -92,7 +70,49 @@ const prefillStory = searchParams.get('story') || '';
         </div>
       </div>
 
-      <!-- 3. Sensitive-Data Consent + Lens Selection -->
+      <!-- 3. Story -->
+      <div>
+        <label for="story" class="block text-sm font-semibold text-plum mb-1">Your story *</label>
+        <p class="text-sm text-ink/70 mb-2">What would you tell someone like you before they take this job?</p>
+        <textarea
+          name="story"
+          id="story"
+          required
+          rows="6"
+          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral resize-none"
+        >{prefillStory}</textarea>
+        <p class="text-xs text-ink/40 mt-1">
+          No names, please — yours or anyone else's. <a href="/anonymity" class="text-coral hover:text-coral/80 underline">How we protect your anonymity</a>
+        </p>
+      </div>
+
+      <!-- 4. Eight Dimensions -->
+      <div>
+        <h2 class="text-lg font-heading font-semibold text-plum mb-1">Rate These Dimensions</h2>
+        <p class="text-sm text-ink/50 mb-4">1 = poor, 5 = excellent. Skip any you can't speak to.</p>
+        <div class="space-y-4">
+          {DIMENSIONS.map(dim => (
+            <div class="flex items-center gap-4 p-3 rounded-lg bg-white border border-border">
+              <img src={dim.icon} alt="" width="20" height="20" class="shrink-0" aria-hidden="true" />
+              <div class="flex-1">
+                <p class="text-sm font-medium text-plum">{dim.label}</p>
+              </div>
+              <div class="flex gap-1" role="radiogroup" aria-label={dim.label}>
+                {[1, 2, 3, 4, 5].map(v => (
+                  <label class="dimension-rating">
+                    <input type="radio" name={`dim_${dim.id}`} value={v} class="peer hidden" />
+                    <span class="peer-checked:bg-coral peer-checked:text-white peer-checked:border-coral w-9 h-9 flex items-center justify-center rounded-md border border-border text-sm font-medium text-ink/60 cursor-pointer hover:border-coral/50 transition-all">
+                      {v}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- 5. Identity Lens (after investment, before submit) -->
       <div class="bg-cream-light rounded-xl p-6 border border-border">
         <div class="mb-4">
           <label class="flex items-start gap-3 cursor-pointer">
@@ -123,52 +143,10 @@ const prefillStory = searchParams.get('story') || '';
         </div>
       </div>
 
-      <!-- 4. Story -->
-      <div>
-        <label for="story" class="block text-sm font-semibold text-plum mb-1">Your story *</label>
-        <p class="text-sm text-ink/70 mb-2">What would you tell someone like you before they take this job?</p>
-        <textarea
-          name="story"
-          id="story"
-          required
-          rows="6"
-          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral resize-none"
-        >{prefillStory}</textarea>
-        <p class="text-xs text-ink/40 mt-1">
-          No names, please — yours or anyone else's. <a href="/anonymity" class="text-coral hover:text-coral/80 underline">How we protect your anonymity</a>
-        </p>
-      </div>
-
-      <!-- 5. Eight Dimensions -->
-      <div>
-        <h2 class="text-lg font-heading font-semibold text-plum mb-1">Rate These Dimensions</h2>
-        <p class="text-sm text-ink/50 mb-4">1 = poor, 5 = excellent. Skip any you can't speak to.</p>
-        <div class="space-y-4">
-          {DIMENSIONS.map(dim => (
-            <div class="flex items-center gap-4 p-3 rounded-lg bg-white border border-border">
-              <img src={dim.icon} alt="" width="20" height="20" class="shrink-0" aria-hidden="true" />
-              <div class="flex-1">
-                <p class="text-sm font-medium text-plum">{dim.label}</p>
-              </div>
-              <div class="flex gap-1" role="radiogroup" aria-label={dim.label}>
-                {[1, 2, 3, 4, 5].map(v => (
-                  <label class="dimension-rating">
-                    <input type="radio" name={`dim_${dim.id}`} value={v} class="peer hidden" />
-                    <span class="peer-checked:bg-coral peer-checked:text-white peer-checked:border-coral w-9 h-9 flex items-center justify-center rounded-md border border-border text-sm font-medium text-ink/60 cursor-pointer hover:border-coral/50 transition-all">
-                      {v}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <!-- 6. Optional Email -->
       <div>
         <label for="email" class="block text-sm font-semibold text-plum mb-1">
-          Email <span class="font-normal text-ink/40">(optional — for corrections/removal only)</span>
+          Email <span class="font-normal text-ink/40">(optional — for removal only)</span>
         </label>
         <input
           type="email"
@@ -182,6 +160,21 @@ const prefillStory = searchParams.get('story') || '';
         </p>
       </div>
 
+      <!-- Submissions paused — waiting on privacy review -->
+      <div id="paused-notice" class="w-full py-4 px-6 bg-cream border border-border rounded-lg text-center">
+        <p class="text-sm font-semibold text-plum mb-1">Submissions open soon.</p>
+        <p class="text-xs text-ink/50">We're finishing our privacy review before we start collecting stories. Nothing is being saved right now.</p>
+      </div>
+
+      <!--
+      ┌─────────────────────────────────────────────────────────────────┐
+      │  TO RE-ENABLE SUBMISSIONS:                                     │
+      │  1. Uncomment the <button> and error div below.                │
+      │  2. Remove or hide the #paused-notice div above.               │
+      │  3. Uncomment the form-handler <script> block further down.    │
+      │  4. Re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.      │
+      └─────────────────────────────────────────────────────────────────┘
+
       <button
         type="submit"
         id="submit-btn"
@@ -189,7 +182,48 @@ const prefillStory = searchParams.get('story') || '';
       >
         Submit Review
       </button>
+
+      <div id="error-message" class="hidden mt-6 bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700"></div>
+      -->
     </form>
+
+    <!-- Success message — hidden until form submits successfully -->
+    <div id="success-message" class="hidden max-w-2xl mx-auto px-4 pb-16">
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-6 sm:p-8">
+        <h2 class="text-2xl font-heading font-bold text-plum mb-2">Thank you.</h2>
+        <p class="text-ink/70 mb-6">Your review has been submitted and is pending moderation. Keep your removal token — it's the only way to delete your review later.</p>
+
+        <div class="bg-white border border-border rounded-lg p-4 mb-4">
+          <p class="text-xs font-semibold text-plum mb-2 uppercase tracking-wide">Your Removal Token</p>
+          <p id="token-display" class="font-mono text-sm text-ink break-all select-all leading-relaxed"></p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 mb-6">
+          <button
+            id="copy-token-btn"
+            type="button"
+            class="flex-1 py-2.5 px-4 bg-plum text-white font-semibold rounded-lg hover:bg-plum/90 transition-colors text-sm"
+          >
+            Copy token
+          </button>
+          <button
+            id="download-token-btn"
+            type="button"
+            class="flex-1 py-2.5 px-4 bg-white text-plum font-semibold rounded-lg border-2 border-plum hover:bg-plum/5 transition-colors text-sm"
+          >
+            Download token
+          </button>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
+          <strong>Save this token now.</strong> It will not be shown again. If you lose it and didn't provide an email, your review cannot be removed.
+        </div>
+
+        <p class="mt-6 text-sm text-ink/50">
+          To remove your review later, visit <a href="/remove" class="text-coral hover:text-coral/80 underline">belongary.com/remove</a> and enter your token.
+        </p>
+      </div>
+    </div>
   </div>
 
   <script define:vars={{ companyNames }}>
@@ -246,86 +280,108 @@ const prefillStory = searchParams.get('story') || '';
       });
     });
 
-    // Form submission via fetch to Netlify Function
-    const form = document.getElementById('review-form') as HTMLFormElement;
-    const submitBtn = document.getElementById('submit-btn');
-    const errorMessage = document.getElementById('error-message');
-    const successMessage = document.getElementById('success-message');
+    // ──────────────────────────────────────────────────────────────────
+    // SUBMISSIONS PAUSED — uncomment this block to re-enable.
+    // Also: uncomment the submit button in the HTML, hide #paused-notice,
+    // and re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.
+    // ──────────────────────────────────────────────────────────────────
+
+    /*
+    const form = document.getElementById('review-form');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const errorDiv = document.getElementById('error-message');
+    const successDiv = document.getElementById('success-message');
+    const tokenDisplay = document.getElementById('token-display');
+    const copyBtn = document.getElementById('copy-token-btn');
+    const downloadBtn = document.getElementById('download-token-btn');
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      errorMessage?.classList.add('hidden');
+      if (!submitBtn || !errorDiv) return;
 
-      // Disable submit button
-      if (submitBtn) {
-        submitBtn.setAttribute('disabled', 'true');
-        submitBtn.textContent = 'Submitting...';
-        submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
-      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting…';
+      errorDiv.classList.add('hidden');
 
       try {
-        const formData = new FormData(form);
-        const response = await fetch('/api/review', {
-          method: 'POST',
-          body: formData,
+        const formData = new FormData(form as HTMLFormElement);
+        const res = await fetch('/api/review', { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+          errorDiv.textContent = data.error || 'Something went wrong. Please try again.';
+          errorDiv.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Review';
+          return;
+        }
+
+        // Success — show token, hide form.
+        if (tokenDisplay && data.token) {
+          tokenDisplay.textContent = data.token;
+        }
+        (form as HTMLElement).classList.add('hidden');
+        successDiv?.classList.remove('hidden');
+
+        // Store token temporarily for copy/download buttons.
+        const savedToken = data.token || '';
+        const savedCompany = data.company || '';
+
+        // Copy button
+        copyBtn?.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(savedToken);
+            if (copyBtn) copyBtn.textContent = 'Copied!';
+            setTimeout(() => { if (copyBtn) copyBtn.textContent = 'Copy token'; }, 2000);
+          } catch {
+            // Fallback: select the token text for manual copy.
+            const range = document.createRange();
+            if (tokenDisplay) {
+              range.selectNodeContents(tokenDisplay);
+              window.getSelection()?.removeAllRanges();
+              window.getSelection()?.addRange(range);
+            }
+          }
         });
 
-        const result = await response.json();
+        // Download button — saves a .txt file with the token and context.
+        downloadBtn?.addEventListener('click', () => {
+          const today = new Date().toISOString().slice(0, 10);
+          const content = [
+            'BELONGARY REMOVAL TOKEN',
+            '=======================',
+            '',
+            `Token: ${savedToken}`,
+            `Company: ${savedCompany}`,
+            `Submitted: ${today}`,
+            '',
+            'Keep this token safe. It is the only way to remove your review.',
+            'If you lose it and did not provide an email, your review cannot be removed.',
+            '',
+            'To remove your review, visit: https://belongary.netlify.app/remove',
+          ].join('\n');
 
-        if (!response.ok || result.error) {
-          throw new Error(result.error || 'Something went wrong. Please try again.');
-        }
+          const blob = new Blob([content], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `belongary-token-${today}.txt`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
 
-        // Show success state
-        form.classList.add('hidden');
-        successMessage?.classList.remove('hidden');
+          if (downloadBtn) downloadBtn.textContent = 'Downloaded!';
+          setTimeout(() => { if (downloadBtn) downloadBtn.textContent = 'Download token'; }, 2000);
+        });
 
-        // Display the removal token
-        const tokenInput = document.getElementById('removal-token') as HTMLInputElement;
-        if (tokenInput && result.token) {
-          tokenInput.value = result.token;
-        } else if (tokenInput && result.warning) {
-          tokenInput.value = 'Token unavailable — contact support@belongary.com';
-          tokenInput.classList.add('text-red-600');
-        }
-
-        // Set the share link
-        const shareLink = document.getElementById('share-link') as HTMLInputElement;
-        if (shareLink && result.company) {
-          shareLink.value = `${window.location.origin}/review?company=${encodeURIComponent(result.company)}`;
-        }
-
-        // Scroll to success message
-        successMessage?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      } catch (err: any) {
-        if (errorMessage) {
-          errorMessage.textContent = err.message || 'Something went wrong. Please try again.';
-          errorMessage.classList.remove('hidden');
-        }
-        // Re-enable submit
-        if (submitBtn) {
-          submitBtn.removeAttribute('disabled');
-          submitBtn.textContent = 'Submit Review';
-          submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
-        }
+      } catch {
+        errorDiv.textContent = 'Could not reach the server. Please check your connection and try again.';
+        errorDiv.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Review';
       }
     });
-
-    // Copy buttons
-    function setupCopyButton(btnId: string, inputId: string) {
-      const btn = document.getElementById(btnId);
-      btn?.addEventListener('click', () => {
-        const input = document.getElementById(inputId) as HTMLInputElement;
-        if (input) {
-          navigator.clipboard.writeText(input.value);
-          btn.textContent = 'Copied!';
-          setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-        }
-      });
-    }
-
-    setupCopyButton('copy-token-btn', 'removal-token');
-    setupCopyButton('copy-link-btn', 'share-link');
+    */
   </script>
 </BaseLayout>

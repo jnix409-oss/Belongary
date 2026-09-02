@@ -8,8 +8,8 @@ import LegalLayout from '../layouts/LegalLayout.astro';
   <p>When you submit a review, we collect:</p>
   <ul>
     <li><strong>Review content:</strong> Company name, headline answer, dimension ratings, story text, and optional identity lens tag.</li>
-    <li><strong>Email address (optional):</strong> Only if you choose to provide one, stored separately from your review, for correction or removal requests only.</li>
-    <li><strong>Removal token:</strong> A random token returned to you after submission. This is the primary way to identify your review for correction or removal. We store only a one-way hash of the token — the plaintext is shown once and cannot be recovered.</li>
+    <li><strong>Email address (optional):</strong> Only if you choose to provide one, stored separately from your review, for removal requests only.</li>
+    <li><strong>Removal token:</strong> A random token returned to you after submission. This is the primary way to identify your review for removal. We store only a one-way hash of the token — the plaintext is shown once and cannot be recovered.</li>
   </ul>
   <p>When you join our waitlist, we collect your email address.</p>
   <p>
@@ -29,7 +29,7 @@ import LegalLayout from '../layouts/LegalLayout.astro';
   <ul>
     <li><strong>Review data</strong> is aggregated into company-level scores displayed on the Service. Individual reviews are never attributed to a specific person.</li>
     <li><strong>Identity lens tags</strong> are used to compute lens-specific aggregate scores. They are only displayed when enough reviews exist for that lens at that company to protect anonymity.</li>
-    <li><strong>Email addresses</strong> are used solely to process correction or removal requests. They are never published, sold, or shared with third parties.</li>
+    <li><strong>Email addresses</strong> are used solely to process removal requests. They are never published, sold, or shared with third parties.</li>
     <li><strong>Waitlist emails</strong> are used to send product updates. You can unsubscribe at any time.</li>
   </ul>
 
@@ -54,8 +54,8 @@ import LegalLayout from '../layouts/LegalLayout.astro';
 
   <h2>6. Your Rights</h2>
   <ul>
-    <li><strong>Correction or removal (with token):</strong> After submitting a review, you receive a one-time removal token. To request correction or removal, email <strong>support@belongary.com</strong> with your token. This is the primary method and works regardless of whether you provided an email.</li>
-    <li><strong>Correction or removal (with email):</strong> If you provided an email address during submission and have lost your token, email us from that address at <strong>support@belongary.com</strong>. We can use it to locate your submission.</li>
+    <li><strong>Removal (with token):</strong> After submitting a review, you receive a one-time removal token. To remove your review, visit <a href="/remove" class="text-coral hover:text-coral/80 underline">belongary.com/remove</a> and enter your token. This is the primary method and works regardless of whether you provided an email.</li>
+    <li><strong>Removal (with email):</strong> If you provided an email address during submission and have lost your token, email us from that address at <strong>support@belongary.com</strong>. We can use it to locate your submission.</li>
     <li><strong>If you have neither:</strong> We cannot verify ownership of an anonymous review without the token or the email address used at submission. The token cannot be recovered once lost.</li>
     <li><strong>Waitlist removal:</strong> Email <strong>support@belongary.com</strong> to be removed from the waitlist.</li>
   </ul>

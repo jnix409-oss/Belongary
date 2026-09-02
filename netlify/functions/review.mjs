@@ -30,12 +30,40 @@ const VALID_LENSES = new Set([
 const VALID_HEADLINES = new Set(['yes', 'no', 'depends']);
 
 /**
- * Generate a cryptographically random token and its SHA-256 hash.
- * Uses the Node.js built-in crypto module (available in Netlify Functions).
+ * Generate a cryptographically random removal token and its SHA-256 hash.
+ *
+ * Format: BELONGARY-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX
+ *   • 25 random bytes (200 bits) encoded in a 32-char no-confusables alphabet
+ *     (A-Z minus I,O plus 2-9) → 40 characters → 10 groups of 4.
+ *   • Grouped and prefixed for human readability; same entropy as before.
+ *   • The full formatted string (prefix + dashes + groups) is hashed with
+ *     SHA-256 and the hash is stored. The plaintext is returned once.
  */
 async function generateToken() {
   const { randomBytes, createHash } = await import('node:crypto');
-  const plaintext = randomBytes(24).toString('base64url'); // 32 chars, URL-safe
+  const raw = randomBytes(25); // 200 bits of entropy
+
+  // Encode as base32 with a no-confusables alphabet (32 chars).
+  const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let encoded = '';
+  let bits = 0;
+  let value = 0;
+  for (const byte of raw) {
+    value = (value << 8) | byte;
+    bits += 8;
+    while (bits >= 5) {
+      bits -= 5;
+      encoded += ALPHABET[(value >> bits) & 0x1F];
+    }
+  }
+  if (bits > 0) {
+    encoded += ALPHABET[(value << (5 - bits)) & 0x1F];
+  }
+
+  // Group into 4-char segments with prefix.
+  const groups = encoded.match(/.{1,4}/g).join('-');
+  const plaintext = `BELONGARY-${groups}`;
+
   const hash = createHash('sha256').update(plaintext).digest('hex');
   return { plaintext, hash };
 }
