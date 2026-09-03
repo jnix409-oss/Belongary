@@ -126,8 +126,8 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
           </label>
         </div>
 
-        <div id="lens-options" class="hidden">
-          <p class="text-sm font-semibold text-plum mb-2">Select any that apply:</p>
+        <div id="lens-options" class="opacity-50 pointer-events-none transition-opacity">
+          <p class="text-sm font-semibold text-plum mb-2">Available lenses:</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {LENSES.map(lens => (
               <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/50 cursor-pointer">
@@ -160,21 +160,6 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         </p>
       </div>
 
-      <!-- Submissions paused — waiting on privacy review -->
-      <div id="paused-notice" class="w-full py-4 px-6 bg-cream border border-border rounded-lg text-center">
-        <p class="text-sm font-semibold text-plum mb-1">Submissions open soon.</p>
-        <p class="text-xs text-ink/50">We're finishing our privacy review before we start collecting stories. Nothing is being saved right now.</p>
-      </div>
-
-      <!--
-      ┌─────────────────────────────────────────────────────────────────┐
-      │  TO RE-ENABLE SUBMISSIONS:                                     │
-      │  1. Uncomment the <button> and error div below.                │
-      │  2. Remove or hide the #paused-notice div above.               │
-      │  3. Uncomment the form-handler <script> block further down.    │
-      │  4. Re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.      │
-      └─────────────────────────────────────────────────────────────────┘
-
       <button
         type="submit"
         id="submit-btn"
@@ -184,7 +169,6 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       </button>
 
       <div id="error-message" class="hidden mt-6 bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700"></div>
-      -->
     </form>
 
     <!-- Success message — hidden until form submits successfully -->
@@ -273,20 +257,16 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
 
     consent?.addEventListener('change', () => {
       const checked = (consent as HTMLInputElement).checked;
-      lensOptions?.classList.toggle('hidden', !checked);
+      if (lensOptions) {
+        lensOptions.classList.toggle('opacity-50', !checked);
+        lensOptions.classList.toggle('pointer-events-none', !checked);
+      }
       lensCheckboxes.forEach(cb => {
         (cb as HTMLInputElement).disabled = !checked;
         if (!checked) (cb as HTMLInputElement).checked = false;
       });
     });
 
-    // ──────────────────────────────────────────────────────────────────
-    // SUBMISSIONS PAUSED — uncomment this block to re-enable.
-    // Also: uncomment the submit button in the HTML, hide #paused-notice,
-    // and re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.
-    // ──────────────────────────────────────────────────────────────────
-
-    /*
     const form = document.getElementById('review-form');
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
     const errorDiv = document.getElementById('error-message');
@@ -382,6 +362,5 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         submitBtn.textContent = 'Submit Review';
       }
     });
-    */
   </script>
 </BaseLayout>
