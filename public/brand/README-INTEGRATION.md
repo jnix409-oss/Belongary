@@ -28,7 +28,7 @@ Use `icon-512.png` (the arch mark alone) when it is.
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Belongary">
-<meta property="og:title" content="See if you'll belong — before you take the job.">
+<meta property="og:title" content="See if you'll belong — before you work there.">
 <meta property="og:description" content="Belonging at work, filtered through the identity lenses that matter to you.">
 <meta property="og:url" content="https://belongary.netlify.app/">
 <meta property="og:image" content="https://belongary.netlify.app/brand/social/og-image-1200x630.png">
