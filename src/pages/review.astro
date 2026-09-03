@@ -50,7 +50,7 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
           class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
         />
         <ul id="company-dropdown" class="hidden absolute z-10 w-full mt-1 max-h-48 overflow-y-auto bg-white border border-border rounded-lg shadow-lg"></ul>
-        <p class="text-xs text-ink/40 mt-1">If your company isn't listed, type it in — we'll add it.</p>
+        <p class="text-xs text-ink/40 mt-1">If your company isn't listed, type it in — we'll add it. You'll be the first person to share about them.</p>
       </div>
 
       <!-- 2. Headline Question -->
@@ -70,23 +70,7 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         </div>
       </div>
 
-      <!-- 3. Story -->
-      <div>
-        <label for="story" class="block text-sm font-semibold text-plum mb-1">Your story *</label>
-        <p class="text-sm text-ink/70 mb-2">What would you tell someone like you before they work at this employer?</p>
-        <textarea
-          name="story"
-          id="story"
-          required
-          rows="6"
-          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral resize-none"
-        >{prefillStory}</textarea>
-        <p class="text-xs text-ink/40 mt-1">
-          No names, please — yours or anyone else's. <a href="/anonymity" class="text-coral hover:text-coral/80 underline">How we protect your anonymity</a>
-        </p>
-      </div>
-
-      <!-- 4. Eight Dimensions -->
+      <!-- 3. Eight Dimensions -->
       <div>
         <h2 class="text-lg font-heading font-semibold text-plum mb-1">Rate These Dimensions</h2>
         <p class="text-sm text-ink/50 mb-4">1 = poor, 5 = excellent. Skip any you can't speak to.</p>
@@ -112,6 +96,21 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         </div>
       </div>
 
+      <!-- 4. Story -->
+      <div>
+        <label for="story" class="block text-sm font-semibold text-plum mb-1">Your story</label>
+        <p class="text-sm text-ink/70 mb-2">Optional, but even one sentence helps — this is the part people actually read.</p>
+        <textarea
+          name="story"
+          id="story"
+          rows="6"
+          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral resize-none"
+        >{prefillStory}</textarea>
+        <p class="text-xs text-ink/40 mt-1">
+          No names, please — yours or anyone else's. <a href="/anonymity" class="text-coral hover:text-coral/80 underline">How we protect your anonymity</a>
+        </p>
+      </div>
+
       <!-- 5. Identity Lens (after investment, before submit) -->
       <div class="bg-cream-light rounded-xl p-6 border border-border">
         <div class="mb-4">
@@ -135,11 +134,10 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
                 <span class="text-sm text-ink/70">{lens.label}</span>
               </label>
             ))}
-            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/50 cursor-pointer">
-              <input type="checkbox" name="lens" value="prefer-not-to-say" class="lens-checkbox accent-coral" disabled />
-              <span class="text-sm text-ink/70">Prefer not to say</span>
-            </label>
           </div>
+          <p class="text-xs text-ink/50 mt-3">
+            We'll add more lenses — including disability and LGBTQ+ — once our privacy review is complete. We're not collecting that data until we can protect it properly.
+          </p>
         </div>
       </div>
 
@@ -160,6 +158,22 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         </p>
       </div>
 
+      <!-- Submissions paused — SUPABASE_SERVICE_ROLE_KEY not set in Netlify -->
+      <div id="paused-notice" class="w-full py-4 px-6 bg-cream border border-border rounded-lg text-center">
+        <p class="text-sm font-semibold text-plum mb-1">Submissions open soon.</p>
+        <p class="text-xs text-ink/50">We're finishing our privacy review before we start collecting stories. Nothing is being saved right now.</p>
+      </div>
+
+      <!--
+      ┌─────────────────────────────────────────────────────────────────┐
+      │  TO RE-ENABLE SUBMISSIONS:                                     │
+      │  1. Uncomment the <button> and error div below.                │
+      │  2. Remove or hide the #paused-notice div above.               │
+      │  3. Uncomment the form-handler <script> block further down.    │
+      │  4. Re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.      │
+      │  5. Run the 003_story_optional migration in Supabase.          │
+      └─────────────────────────────────────────────────────────────────┘
+
       <button
         type="submit"
         id="submit-btn"
@@ -169,6 +183,7 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       </button>
 
       <div id="error-message" class="hidden mt-6 bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700"></div>
+      -->
     </form>
 
     <!-- Success message — hidden until form submits successfully -->
@@ -204,7 +219,7 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         </div>
 
         <p class="mt-6 text-sm text-ink/50">
-          To remove your review later, visit <a href="/remove" class="text-coral hover:text-coral/80 underline">belongary.com/remove</a> and enter your token.
+          To remove your review later, visit <a href="/remove" class="text-coral hover:text-coral/80 underline">the removal page</a> and enter your token.
         </p>
       </div>
     </div>
@@ -267,6 +282,13 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       });
     });
 
+    // ──────────────────────────────────────────────────────────────────
+    // SUBMISSIONS PAUSED — uncomment this block to re-enable.
+    // Also: uncomment the submit button in the HTML, hide #paused-notice,
+    // and re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.
+    // ──────────────────────────────────────────────────────────────────
+
+    /*
     const form = document.getElementById('review-form');
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
     const errorDiv = document.getElementById('error-message');
@@ -362,5 +384,6 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         submitBtn.textContent = 'Submit Review';
       }
     });
+    */
   </script>
 </BaseLayout>

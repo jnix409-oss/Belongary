@@ -22,9 +22,7 @@ const supabase = createClient(
 
 /** Valid identity-lens IDs (must match src/data/lenses.ts). */
 const VALID_LENSES = new Set([
-  'poc', '40plus', 'caregiver', 'lifestage', 'neurodivergent',
-  'disabled', 'lgbtq', 'veteran', 'exgov', 'exfounder', 'firstgen',
-  'prefer-not-to-say',
+  'poc', '40plus', 'caregiver', 'veteran', 'exgov', 'exfounder', 'firstgen',
 ]);
 
 const VALID_HEADLINES = new Set(['yes', 'no', 'depends']);
@@ -133,17 +131,11 @@ export default async function handler(req) {
 
     // --- Validate required fields ---
     const companyName = formData.get('company')?.trim();
-    const story = formData.get('story')?.trim();
+    const story = formData.get('story')?.trim() || null;
     const headline = formData.get('headline')?.trim()?.toLowerCase();
 
     if (!companyName) {
       return new Response(JSON.stringify({ error: 'Company is required.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-    if (!story) {
-      return new Response(JSON.stringify({ error: 'Your story is required.' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -154,6 +146,8 @@ export default async function handler(req) {
         headers: { 'Content-Type': 'application/json' },
       });
     }
+
+    const has_story = story !== null;
 
     // --- Parse optional fields ---
     const dimensions = {
@@ -184,6 +178,7 @@ export default async function handler(req) {
         company_id: companyId,
         headline,
         story,
+        has_story,
         lens,
         ...dimensions,
         moderation_status: 'pending',
