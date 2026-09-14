@@ -75,10 +75,13 @@ import { MIN_REVIEWS_DISPLAY, MIN_REVIEWS_SENSITIVE_LENS } from '../config';
       <section>
         <h2 class="text-2xl font-heading font-semibold text-plum mb-4">Anonymity</h2>
         <p class="mb-4">
+          Reviewers sign in with Google or LinkedIn to confirm they're a real person. That's it. The sign-in identity and the review are stored in completely separate places with no link between them — not hidden behind a permission, not encrypted with a key we hold, <em>not there</em>.
+        </p>
+        <p class="mb-4">
           No work email is required. No SSO verification. No domain matching. We don't verify employment. We trust reviewers to report honestly, and we rely on volume, moderation, and community norms to maintain data quality.
         </p>
         <p>
-          Every reviewer receives a one-time removal token after submission. If a reviewer also provides an email, it's stored separately from the review and used solely as a fallback for removal requests. It is never published, never cross-referenced, and never used to confirm employment.
+          Every reviewer receives a one-time removal token after submission. This token is the only way to delete a review — we can't recover a lost token, and we can't link a review back to an account even if asked.
         </p>
       </section>
 

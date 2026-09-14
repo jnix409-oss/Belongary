@@ -24,12 +24,64 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       The stories nobody got to tell the next person.
     </h1>
     <p class="text-ink/60 mb-8">
-      Glassdoor tells you what people think of a company. Belongary tells you what people like you found there. Share yours below — anonymous, no work email required.
+      Glassdoor tells you what people think of a company. Belongary tells you what people like you found there. Share yours below — anonymous, verified only.
     </p>
+
+    <!-- ============================================================
+         Sign-in gate — shown before the form.
+         Uses Supabase Auth with Google and LinkedIn (OIDC).
+         The anon key is the ONLY Supabase key in the browser.
+         ============================================================ -->
+    <div id="auth-gate" class="mb-8">
+      <div class="bg-cream rounded-xl p-6 border border-border text-center">
+        <h2 class="text-lg font-heading font-semibold text-plum mb-2">Sign in to review</h2>
+        <p class="text-sm text-ink/60 mb-6">
+          We use Google or LinkedIn only to confirm you're a real person. Your name and account are never attached to your review.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
+          <button
+            id="sign-in-google"
+            type="button"
+            class="flex-1 py-3 px-4 bg-white text-ink font-semibold rounded-lg border-2 border-border hover:border-coral/50 transition-colors text-sm flex items-center justify-center gap-2"
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+              <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+              <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
+              <path fill="#FBBC05" d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.997 8.997 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z"/>
+              <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.166 6.656 3.58 9 3.58z"/>
+            </svg>
+            Google
+          </button>
+          <button
+            id="sign-in-linkedin"
+            type="button"
+            class="flex-1 py-3 px-4 bg-white text-ink font-semibold rounded-lg border-2 border-border hover:border-coral/50 transition-colors text-sm flex items-center justify-center gap-2"
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+              <path fill="#0A66C2" d="M15.335 0H2.665A2.665 2.665 0 0 0 0 2.665v12.67A2.665 2.665 0 0 0 2.665 18h12.67A2.665 2.665 0 0 0 18 15.335V2.665A2.665 2.665 0 0 0 15.335 0zM5.339 15.337H2.669V6.75h2.67v8.587zM4.004 5.674a1.548 1.548 0 1 1 0-3.096 1.548 1.548 0 0 1 0 3.096zm11.335 9.663h-2.669V11.16c0-.996-.018-2.277-1.388-2.277-1.39 0-1.601 1.086-1.601 2.207v4.247H6.912V6.75h2.563v1.174h.036c.357-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.779 3.203 4.092v4.708z"/>
+            </svg>
+            LinkedIn
+          </button>
+        </div>
+        <p class="text-xs text-ink/40 mt-4">
+          <a href="/anonymity" class="text-coral hover:text-coral/80 underline">How we protect your anonymity</a> — your sign-in is never connected to your review.
+        </p>
+      </div>
+    </div>
+
+    <!-- Signed-in indicator (hidden until authenticated) -->
+    <div id="signed-in-bar" class="hidden mb-6 flex items-center justify-between p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+      <span class="text-sm text-emerald-800">
+        ✓ Signed in — your identity will not be attached to your review.
+      </span>
+      <button id="sign-out-btn" type="button" class="text-xs text-ink/50 hover:text-ink underline">
+        Sign out
+      </button>
+    </div>
 
     <form
       id="review-form"
-      class="space-y-8"
+      class="space-y-8 hidden"
     >
       <!-- Honeypot (spam prevention) -->
       <p class="hidden">
@@ -141,24 +193,10 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         </div>
       </div>
 
-      <!-- 6. Optional Email -->
-      <div>
-        <label for="email" class="block text-sm font-semibold text-plum mb-1">
-          Email <span class="font-normal text-ink/40">(optional — for removal only)</span>
-        </label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="your@email.com"
-          class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
-        />
-        <p class="text-xs text-ink/40 mt-1">
-          Never published. Never used to verify employment. Stored separately from your review, used only as a fallback if you lose your removal token.
-        </p>
-      </div>
+      <!-- No email field — Level 2 does not collect contact info.
+           The token is the only deletion credential. -->
 
-      <!-- Submissions paused — SUPABASE_SERVICE_ROLE_KEY not set in Netlify -->
+      <!-- Submissions paused notice -->
       <div id="paused-notice" class="w-full py-4 px-6 bg-cream border border-border rounded-lg text-center">
         <p class="text-sm font-semibold text-plum mb-1">Submissions open soon.</p>
         <p class="text-xs text-ink/50">We're finishing our privacy review before we start collecting stories. Nothing is being saved right now.</p>
@@ -170,8 +208,14 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       │  1. Uncomment the <button> and error div below.                │
       │  2. Remove or hide the #paused-notice div above.               │
       │  3. Uncomment the form-handler <script> block further down.    │
-      │  4. Re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.      │
-      │  5. Run the 003_story_optional migration in Supabase.          │
+      │  4. Set these env vars in Netlify:                             │
+      │     - SUPABASE_URL                                             │
+      │     - SUPABASE_SERVICE_ROLE_KEY                                │
+      │     - SUPABASE_JWT_SECRET                                      │
+      │     - GUARD_SECRET (32+ random bytes)                          │
+      │  5. Run migrations 002, 003, 004 in Supabase SQL Editor.       │
+      │  6. Enable Google + LinkedIn providers in Supabase Auth.       │
+      │  7. Set the SUPABASE_ANON_KEY below (search ANON_KEY_HERE).    │
       └─────────────────────────────────────────────────────────────────┘
 
       <button
@@ -190,7 +234,7 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
     <div id="success-message" class="hidden max-w-2xl mx-auto px-4 pb-16">
       <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-6 sm:p-8">
         <h2 class="text-2xl font-heading font-bold text-plum mb-2">Thank you.</h2>
-        <p class="text-ink/70 mb-6">Your review has been submitted and is pending moderation. Keep your removal token — it's the only way to delete your review later.</p>
+        <p class="text-ink/70 mb-6">Your review has been submitted and is pending moderation. Save this — it's the only way to delete your review. We can't recover it.</p>
 
         <div class="bg-white border border-border rounded-lg p-4 mb-4">
           <p class="text-xs font-semibold text-plum mb-2 uppercase tracking-wide">Your Removal Token</p>
@@ -215,7 +259,7 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
         </div>
 
         <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
-          <strong>Save this token now.</strong> It will not be shown again. If you lose it and didn't provide an email, your review cannot be removed.
+          <strong>Save this token now.</strong> It will not be shown again. Your review cannot be removed without it.
         </div>
 
         <p class="mt-6 text-sm text-ink/50">
@@ -265,7 +309,86 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
   </script>
 
   <script>
+    import { createClient } from '@supabase/supabase-js';
+
+    // ──────────────────────────────────────────────────────────────────
+    // Supabase client — anon key ONLY. Used for Auth and public reads.
+    // Replace ANON_KEY_HERE with your project's anon/public key.
+    // The service-role key is NEVER in the browser.
+    // ──────────────────────────────────────────────────────────────────
+    const SUPABASE_URL = 'https://grvqxnorfpgbryqzimlb.supabase.co';
+    const SUPABASE_ANON_KEY = 'ANON_KEY_HERE'; // TODO: replace before enabling
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ──────────────────────────────────────────────────────────────────
+    // Auth state management
+    // ──────────────────────────────────────────────────────────────────
+    const authGate = document.getElementById('auth-gate');
+    const signedInBar = document.getElementById('signed-in-bar');
+    const reviewForm = document.getElementById('review-form');
+    const googleBtn = document.getElementById('sign-in-google');
+    const linkedinBtn = document.getElementById('sign-in-linkedin');
+    const signOutBtn = document.getElementById('sign-out-btn');
+
+    function showForm() {
+      authGate?.classList.add('hidden');
+      signedInBar?.classList.remove('hidden');
+      reviewForm?.classList.remove('hidden');
+    }
+
+    function showAuthGate() {
+      authGate?.classList.remove('hidden');
+      signedInBar?.classList.add('hidden');
+      reviewForm?.classList.add('hidden');
+    }
+
+    // Check for existing session on load
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      showForm();
+    }
+
+    // Listen for auth state changes (e.g. after OAuth redirect)
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        showForm();
+      } else {
+        showAuthGate();
+      }
+    });
+
+    // Sign in with Google
+    googleBtn?.addEventListener('click', async () => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.href,
+        },
+      });
+      if (error) console.error('Google sign-in error:', error.message);
+    });
+
+    // Sign in with LinkedIn (OIDC)
+    linkedinBtn?.addEventListener('click', async () => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'linkedin_oidc',
+        options: {
+          redirectTo: window.location.href,
+        },
+      });
+      if (error) console.error('LinkedIn sign-in error:', error.message);
+    });
+
+    // Sign out
+    signOutBtn?.addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      showAuthGate();
+    });
+
+    // ──────────────────────────────────────────────────────────────────
     // Lens consent toggle
+    // ──────────────────────────────────────────────────────────────────
     const consent = document.getElementById('lens-consent');
     const lensOptions = document.getElementById('lens-options');
     const lensCheckboxes = document.querySelectorAll('.lens-checkbox');
@@ -285,7 +408,8 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
     // ──────────────────────────────────────────────────────────────────
     // SUBMISSIONS PAUSED — uncomment this block to re-enable.
     // Also: uncomment the submit button in the HTML, hide #paused-notice,
-    // and re-add SUPABASE_SERVICE_ROLE_KEY to Netlify env vars.
+    // set env vars in Netlify, run migrations, enable auth providers,
+    // and replace ANON_KEY_HERE above.
     // ──────────────────────────────────────────────────────────────────
 
     /*
@@ -306,9 +430,59 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
       errorDiv.classList.add('hidden');
 
       try {
-        const formData = new FormData(form as HTMLFormElement);
-        const res = await fetch('/api/review', { method: 'POST', body: formData });
+        // Get the current session JWT
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        if (!currentSession) {
+          errorDiv.textContent = 'Your session has expired. Please sign in again.';
+          errorDiv.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Review';
+          showAuthGate();
+          return;
+        }
+
+        // Collect form data as JSON (not FormData — the function expects JSON)
+        const formEl = form as HTMLFormElement;
+        const formData = new FormData(formEl);
+
+        const body: Record<string, any> = {
+          company: formData.get('company'),
+          headline: formData.get('headline'),
+          story: formData.get('story') || '',
+          'bot-field': formData.get('bot-field') || '',
+        };
+
+        // Dimensions
+        for (const key of [
+          'dim_belonging', 'dim_heard', 'dim_manager', 'dim_sponsorship',
+          'dim_promotion', 'dim_growth', 'dim_representation', 'dim_flexibility',
+        ]) {
+          const val = formData.get(key);
+          body[key] = val ? Number(val) : null;
+        }
+
+        // Lens (take checked values)
+        const lensValues = formData.getAll('lens');
+        body.lens = lensValues.length > 0 ? lensValues[0] : null;
+
+        const res = await fetch('/api/submit-review', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentSession.access_token}`,
+          },
+          body: JSON.stringify(body),
+        });
+
         const data = await res.json();
+
+        if (res.status === 409) {
+          errorDiv.textContent = data.error || 'You have already reviewed this company.';
+          errorDiv.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Review';
+          return;
+        }
 
         if (!res.ok || data.error) {
           errorDiv.textContent = data.error || 'Something went wrong. Please try again.';
@@ -323,9 +497,9 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
           tokenDisplay.textContent = data.token;
         }
         (form as HTMLElement).classList.add('hidden');
+        signedInBar?.classList.add('hidden');
         successDiv?.classList.remove('hidden');
 
-        // Store token temporarily for copy/download buttons.
         const savedToken = data.token || '';
         const savedCompany = data.company || '';
 
@@ -336,7 +510,6 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
             if (copyBtn) copyBtn.textContent = 'Copied!';
             setTimeout(() => { if (copyBtn) copyBtn.textContent = 'Copy token'; }, 2000);
           } catch {
-            // Fallback: select the token text for manual copy.
             const range = document.createRange();
             if (tokenDisplay) {
               range.selectNodeContents(tokenDisplay);
@@ -346,7 +519,7 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
           }
         });
 
-        // Download button — saves a .txt file with the token and context.
+        // Download button
         downloadBtn?.addEventListener('click', () => {
           const today = new Date().toISOString().slice(0, 10);
           const content = [
@@ -358,7 +531,7 @@ const pageDescription = "Glassdoor tells you what people think of a company. Bel
             `Submitted: ${today}`,
             '',
             'Keep this token safe. It is the only way to remove your review.',
-            'If you lose it and did not provide an email, your review cannot be removed.',
+            'Your review cannot be removed without it.',
             '',
             'To remove your review, visit: https://belongary.netlify.app/remove',
           ].join('\n');
