@@ -18,6 +18,11 @@ const pct = Math.min(100, Math.round((reviewCount / MIN_REVIEWS_DISPLAY) * 100))
 const reviewParam = encodeURIComponent(company.name);
 ---
 <BaseLayout title={company.name} description={`Belonging scores and anonymous workplace reviews for ${company.name}.`}>
+  {!hasScores && (
+    <Fragment slot="head">
+      <meta name="robots" content="noindex, nofollow" />
+    </Fragment>
+  )}
   <!-- Peach Header -->
   <section class="bg-peach pt-6 pb-10 sm:pt-8 sm:pb-14">
     <div class="max-w-content mx-auto px-4">
