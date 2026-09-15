@@ -2,39 +2,30 @@
 const footerLinks = [
   { href: '/about', label: 'About' },
   { href: '/methodology', label: 'Methodology' },
-  { href: '/anonymity', label: 'Privacy & Anonymity' },
-  { href: '/guidelines', label: 'Community Guidelines' },
-  { href: '/dispute', label: 'Dispute Process' },
+  { href: '/privacy', label: 'Privacy' },
   { href: '/terms', label: 'Terms' },
 ];
 ---
 <footer class="bg-plum text-white/80 mt-16">
-  <div class="max-w-content mx-auto px-4 py-12">
-    <div class="flex flex-col md:flex-row justify-between items-start gap-8">
-      <div>
+  <div class="max-w-content mx-auto px-4 py-10">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+      <a href="/" class="flex items-center gap-2">
         <img
           src="/brand/logo-wordmark.png"
           alt="Belongary"
-          height="32"
-          class="h-8 w-auto brightness-0 invert mb-4"
+          height="28"
+          class="h-7 w-auto brightness-0 invert"
         />
-        <p class="text-sm text-white/50 max-w-xs">
-          See the workplace through your lens.
-        </p>
-      </div>
-      <nav aria-label="Footer">
-        <ul class="grid grid-cols-2 gap-x-10 gap-y-2">
-          {footerLinks.map(link => (
-            <li>
-              <a href={link.href} class="text-sm text-white/60 hover:text-white transition-colors">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+      </a>
+      <nav aria-label="Footer" class="flex flex-wrap items-center gap-6">
+        {footerLinks.map(link => (
+          <a href={link.href} class="text-sm text-white/60 hover:text-white transition-colors">
+            {link.label}
+          </a>
+        ))}
       </nav>
     </div>
-    <div class="mt-10 pt-6 border-t border-white/10 text-xs text-white/40">
+    <div class="mt-8 pt-6 border-t border-white/10 text-xs text-white/40 text-center sm:text-left">
       &copy; {new Date().getFullYear()} Belongary. All rights reserved.
     </div>
   </div>

@@ -5,62 +5,105 @@ import { LENSES } from '../data/lenses';
 import { DIMENSIONS } from '../data/dimensions';
 import { MIN_REVIEWS_DISPLAY } from '../config';
 
-const companyNames = companies.map(c => c.name).sort();
-const featuredCompanies = companies.filter(c => c.featured).slice(0, 9);
+const companySlugs = companies.map(c => ({ name: c.name, slug: c.slug }));
 ---
 <BaseLayout title="Home" darkHeader description="See the workplace through your lens. Anonymous belonging reviews filtered through the perspectives that matter to you.">
-  <!-- Plum Hero -->
+  <!-- ═══════════════════ 1. HERO (plum) ═══════════════════ -->
   <section class="bg-plum text-white relative overflow-hidden">
-    <div class="max-w-content mx-auto px-4 py-20 sm:py-28 lg:py-32 relative z-10">
-      <div class="max-w-2xl">
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6 text-white">
-          See the workplace through your lens.
-        </h1>
-        <p class="text-lg sm:text-xl text-white/70 mb-10 max-w-lg">
-          Anonymous belonging reviews, filtered through the perspectives that matter to you.
-        </p>
+    <div class="max-w-content mx-auto px-4 py-16 sm:py-24 lg:py-28">
+      <div class="grid lg:grid-cols-[1fr_auto] gap-12 items-center">
+        <!-- Text + Search -->
+        <div class="relative z-10 max-w-xl">
+          <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-heading font-bold leading-[1.1] mb-4 text-white">
+            See the workplace through your lens.
+          </h1>
+          <p class="text-lg sm:text-xl text-white/70 font-heading mb-2">
+            Your next chapter deserves a clearer view.
+          </p>
+          <p class="text-white/50 mb-8">
+            Explore workplace experiences from people with backgrounds like yours.
+          </p>
 
-        <form id="hero-form" class="relative max-w-lg">
-          <label for="hero-search" class="sr-only">Search for a company</label>
-          <div class="relative">
-            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              id="hero-search"
-              autocomplete="off"
-              placeholder="Search for a company…"
-              class="w-full pl-12 pr-5 py-4 rounded-xl bg-white text-ink placeholder:text-ink/40 text-lg shadow-lg border-0 focus:outline-none focus:ring-2 focus:ring-terra/50"
-            />
+          <!-- Search -->
+          <div class="relative max-w-lg mb-4">
+            <form id="hero-form" class="flex gap-2">
+              <div class="relative flex-1">
+                <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink/30 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                  type="text"
+                  id="hero-search"
+                  autocomplete="off"
+                  placeholder="Search for a company…"
+                  class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white text-ink placeholder:text-ink/40 text-base border-0 focus:outline-none focus:ring-2 focus:ring-terra/50"
+                />
+              </div>
+              <button type="submit" class="px-6 py-3.5 bg-terra text-white font-semibold rounded-xl hover:bg-terra-dark transition-colors whitespace-nowrap">
+                Search
+              </button>
+            </form>
+            <ul id="hero-dropdown" class="hidden absolute z-20 w-full mt-2 max-h-56 overflow-y-auto bg-white border border-border rounded-xl shadow-xl"></ul>
           </div>
-          <ul id="hero-dropdown" class="hidden absolute z-10 w-full mt-2 max-h-56 overflow-y-auto bg-white border border-border rounded-xl shadow-xl"></ul>
-        </form>
+
+          <a href="/review" class="inline-flex items-center gap-1 text-white/70 hover:text-white text-sm font-medium transition-colors">
+            Share your experience <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <!-- Decorative arch elements -->
+        <div class="hidden lg:flex items-end gap-4 relative" aria-hidden="true">
+          <div class="w-28 h-40 arch-outline border-2 border-white/10"></div>
+          <div class="w-36 h-56 arch-outline border-2 border-white/[0.15] relative">
+            <div class="absolute inset-3 arch-outline bg-white/[0.04]"></div>
+          </div>
+          <div class="w-28 h-36 arch-outline border-2 border-white/10"></div>
+          <p class="absolute -bottom-8 right-0 text-[9px] uppercase tracking-[0.25em] text-white/20 leading-loose text-right font-medium">
+            Different<br>People<br>Brighter<br>Workplaces
+          </p>
+        </div>
       </div>
     </div>
 
-    <!-- Decorative arch shapes -->
-    <div class="hidden lg:block absolute right-12 xl:right-24 top-1/2 -translate-y-1/2 z-0" aria-hidden="true">
-      <div class="flex gap-5 items-end opacity-[0.12]">
-        <div class="w-32 h-48 arch-outline border-2 border-white"></div>
-        <div class="w-40 h-60 arch-outline border-2 border-white"></div>
-        <div class="w-32 h-44 arch-outline border-2 border-white"></div>
-      </div>
-    </div>
+    <!-- Background accent arch -->
+    <div class="absolute left-0 bottom-0 w-48 h-48 arch-outline border border-white/[0.06] -translate-x-1/3 translate-y-1/4" aria-hidden="true"></div>
   </section>
 
-  <!-- Identity Lenses -->
+  <!-- ═══════════════════ 2. PERSPECTIVES (ivory) ═══════════════════ -->
   <section class="py-16 sm:py-20">
     <div class="max-w-content mx-auto px-4 text-center">
-      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum mb-4">
-        Your identity shapes your experience
+      <h2 class="text-3xl sm:text-4xl font-heading font-bold text-plum mb-3 leading-tight">
+        One workplace.<br class="sm:hidden"> Different perspectives.
       </h2>
-      <p class="text-ink/60 max-w-lg mx-auto mb-10">
-        Browse belonging data through the lenses that matter to you. Lens scores appear once enough people share — never individually.
+      <p class="text-ink/60 mb-10 max-w-md mx-auto">
+        Explore a perspective. You choose what matters to you.
       </p>
       <div class="flex flex-wrap justify-center gap-3">
         {LENSES.map(lens => (
-          <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-lavender text-plum">
+          <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-white border border-border text-plum">
+            <span class="w-5 h-5 rounded-full bg-terra/10 flex items-center justify-center shrink-0" aria-hidden="true">
+              {lens.id === 'poc' && (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-terra"><circle cx="9" cy="7" r="3"/><circle cx="15" cy="7" r="3"/><path d="M3 19c0-2.7 3-5 6-5s6 2.3 6 5"/><path d="M15 14c3 0 6 2.3 6 5" opacity=".6"/></svg>
+              )}
+              {lens.id === '40plus' && (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-terra"><circle cx="12" cy="7" r="3.5"/><path d="M4 20c0-3 4-5.5 8-5.5s8 2.5 8 5.5"/></svg>
+              )}
+              {lens.id === 'caregiver' && (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-terra"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              )}
+              {lens.id === 'veteran' && (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-terra"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              )}
+              {lens.id === 'exgov' && (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-terra"><path d="M12 2L3 7v2h18V7L12 2zM5 11v7h3v-7H5zm5 0v7h4v-7h-4zm6 0v7h3v-7h-3zM3 20v2h18v-2H3z"/></svg>
+              )}
+              {lens.id === 'exfounder' && (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-terra"><path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z"/></svg>
+              )}
+              {lens.id === 'firstgen' && (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-terra"><path d="M4 18l4-4-4-4v3H1v2h3v3zm8-13l-4 4 4 4V10h7V8h-7V5zm4 13v-3h3v-2h-3v-3l-4 4 4 4z"/></svg>
+              )}
+            </span>
             {lens.label}
           </span>
         ))}
@@ -68,132 +111,186 @@ const featuredCompanies = companies.filter(c => c.featured).slice(0, 9);
     </div>
   </section>
 
-  <!-- Explore Workplaces -->
-  <section id="explore" class="py-16 sm:py-20 bg-peach-light/50">
+  <!-- ═══════════════════ 3. DEMO CARD (peach tint) ═══════════════════ -->
+  <section class="py-16 sm:py-20 bg-peach-light/40">
     <div class="max-w-content mx-auto px-4">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Left text -->
         <div>
-          <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum mb-2">
-            Explore workplaces
+          <h2 class="text-3xl sm:text-4xl font-heading font-bold text-plum leading-tight mb-3">
+            <em>A different lens.<br>A clearer picture.</em>
           </h2>
-          <p class="text-ink/60">
-            Companies collecting belonging perspectives from real workers.
+          <p class="text-ink/60 mb-8 max-w-md">
+            See how experiences vary within the same workplace.
           </p>
-        </div>
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {featuredCompanies.map(company => (
-          <a href={`/company/${company.slug}`} class="group block bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-terra/30 transition-all">
-            <h3 class="text-lg font-heading font-semibold text-plum group-hover:text-terra transition-colors mb-1">
-              {company.name}
-            </h3>
-            <p class="text-sm text-ink/50 mb-5">{company.industry} · {company.hq_metro}</p>
-
-            <div class="flex items-center gap-3">
-              <div class="flex-1 bg-peach/50 rounded-full h-2 overflow-hidden">
-                <div
-                  class="h-full bg-terra/40 rounded-full"
-                  style={`width: ${Math.min(100, Math.round(((company.reviewCount ?? 0) / MIN_REVIEWS_DISPLAY) * 100))}%`}
-                ></div>
-              </div>
-              <span class="text-xs font-medium text-ink/40 whitespace-nowrap">
-                {company.reviewCount ?? 0} / {MIN_REVIEWS_DISPLAY}
-              </span>
+          <!-- Decorative arch -->
+          <div class="hidden lg:block relative" aria-hidden="true">
+            <div class="w-40 h-56 arch-outline border-2 border-peach relative">
+              <div class="absolute inset-3 arch-outline bg-peach/20"></div>
             </div>
-            <p class="text-xs text-ink/40 mt-2">Collecting perspectives</p>
+            <p class="mt-4 text-[9px] uppercase tracking-[0.2em] text-terra/40 font-medium leading-loose">
+              More perspectives<br>A brighter tomorrow
+            </p>
+          </div>
+        </div>
+
+        <!-- Demo card -->
+        <div class="bg-white rounded-2xl border border-border p-6 sm:p-8 shadow-sm">
+          <p class="text-[10px] uppercase tracking-[0.15em] text-ink/40 mb-1 font-medium">Illustrative example</p>
+          <h3 class="text-xl font-heading font-bold text-plum mb-5">Example Company</h3>
+
+          <!-- Lens tabs (static, demo only) -->
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="px-4 py-1.5 rounded-full text-xs font-medium bg-plum text-white">All perspectives</span>
+            <span class="px-4 py-1.5 rounded-full text-xs font-medium bg-white border border-border text-ink/50">40+</span>
+            <span class="px-4 py-1.5 rounded-full text-xs font-medium bg-white border border-border text-ink/50">Caregivers</span>
+          </div>
+
+          <!-- Dimension bars (illustrative) -->
+          <div class="space-y-4 mb-6">
+            <div>
+              <p class="text-sm font-medium text-plum mb-1.5">Belonging</p>
+              <div class="h-3 bg-peach/30 rounded-full overflow-hidden">
+                <div class="h-full rounded-full bg-terra" style="width: 76%"></div>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-plum mb-1.5">Manager support</p>
+              <div class="h-3 bg-peach/30 rounded-full overflow-hidden">
+                <div class="h-full rounded-full bg-plum" style="width: 82%"></div>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-plum mb-1.5">Opportunity</p>
+              <div class="h-3 bg-peach/30 rounded-full overflow-hidden">
+                <div class="h-full rounded-full bg-plum" style="width: 70%"></div>
+              </div>
+            </div>
+          </div>
+
+          <a href="/#explore" class="block w-full py-3 bg-terra text-white font-semibold rounded-xl text-center hover:bg-terra-dark transition-colors">
+            Explore company insights
           </a>
-        ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Privacy & Trust Strip -->
-  <section class="py-16 sm:py-20">
+  <!-- ═══════════════════ 4. PRIVACY STRIP ═══════════════════ -->
+  <section class="py-12 sm:py-14 border-y border-border">
     <div class="max-w-content mx-auto px-4">
-      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum text-center mb-12">
-        Built for trust
-      </h2>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div class="text-center">
-          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-lavender-light flex items-center justify-center">
-            <img src="/brand/icons/safe-to-speak.svg" alt="" class="w-6 h-6" aria-hidden="true" />
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-8 sm:gap-10 lg:gap-14">
+        <div class="flex items-start gap-3">
+          <svg class="w-5 h-5 mt-0.5 text-plum shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+          </svg>
+          <div>
+            <p class="text-sm font-semibold text-plum">Optional lenses</p>
+            <p class="text-xs text-ink/50">You choose what to share.</p>
           </div>
-          <h3 class="font-heading font-semibold text-plum text-sm mb-1">Architecturally anonymous</h3>
-          <p class="text-xs text-ink/60">Your review and your identity are stored with no link between them — not hidden, not encrypted, not there.</p>
         </div>
-        <div class="text-center">
-          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-lavender-light flex items-center justify-center">
-            <img src="/brand/icons/belonging.svg" alt="" class="w-6 h-6" aria-hidden="true" />
+        <div class="flex items-start gap-3">
+          <svg class="w-5 h-5 mt-0.5 text-plum shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          <div>
+            <p class="text-sm font-semibold text-plum">Private account details</p>
+            <p class="text-xs text-ink/50">Your personal information stays private.</p>
           </div>
-          <h3 class="font-heading font-semibold text-plum text-sm mb-1">No work email required</h3>
-          <p class="text-xs text-ink/60">We never ask for your work email, verify employment, or match domains to companies.</p>
         </div>
-        <div class="text-center">
-          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-lavender-light flex items-center justify-center">
-            <img src="/brand/icons/fairness.svg" alt="" class="w-6 h-6" aria-hidden="true" />
+        <div class="flex items-start gap-3">
+          <svg class="w-5 h-5 mt-0.5 text-plum shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <div>
+            <p class="text-sm font-semibold text-plum">Grouped results</p>
+            <p class="text-xs text-ink/50">Individual responses are never shown.</p>
           </div>
-          <h3 class="font-heading font-semibold text-plum text-sm mb-1">Threshold-protected</h3>
-          <p class="text-xs text-ink/60">Nothing publishes until {MIN_REVIEWS_DISPLAY} people have shared. This threshold is never waived.</p>
         </div>
-        <div class="text-center">
-          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-lavender-light flex items-center justify-center">
-            <img src="/brand/icons/verified.svg" alt="" class="w-6 h-6" aria-hidden="true" />
-          </div>
-          <h3 class="font-heading font-semibold text-plum text-sm mb-1">Employer-proof</h3>
-          <p class="text-xs text-ink/60">Employers cannot edit, remove, or pay to hide your review.</p>
+        <a href="/anonymity" class="text-sm font-medium text-plum hover:text-terra transition-colors whitespace-nowrap">
+          How we protect you <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 5. EDITORIAL (peach) ═══════════════════ -->
+  <section class="py-16 sm:py-20 bg-peach/30">
+    <div class="max-w-content mx-auto px-4">
+      <p class="text-[10px] uppercase tracking-[0.2em] text-terra font-semibold mb-4">From the Belongary Journal</p>
+      <div class="grid lg:grid-cols-[1fr_1fr_1fr] gap-8 items-start">
+        <!-- Heading -->
+        <div class="lg:col-span-1">
+          <h2 class="text-3xl sm:text-4xl font-heading font-bold text-plum leading-tight">
+            <em>Belonging is worth understanding.</em>
+          </h2>
+        </div>
+        <!-- Article cards -->
+        <div class="lg:col-span-2 grid sm:grid-cols-2 gap-6">
+          <a href="/methodology" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-md transition-all">
+            <div class="h-36 bg-peach/40 flex items-center justify-center" aria-hidden="true">
+              <div class="w-20 h-28 arch-outline border-2 border-peach/60"></div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-heading font-semibold text-plum group-hover:text-terra transition-colors mb-1">
+                What an overall rating can miss
+              </h3>
+              <p class="text-sm text-ink/50 mb-3">
+                A closer look at the nuances behind workplace experiences.
+              </p>
+              <span class="text-sm font-medium text-terra">Read more <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
+          <a href="/about" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-md transition-all">
+            <div class="h-36 bg-peach/40 flex items-center justify-center" aria-hidden="true">
+              <div class="w-20 h-28 arch-outline border-2 border-peach/60"></div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-heading font-semibold text-plum group-hover:text-terra transition-colors mb-1">
+                Questions to ask before you accept
+              </h3>
+              <p class="text-sm text-ink/50 mb-3">
+                Thoughtful questions for a more informed next step.
+              </p>
+              <span class="text-sm font-medium text-terra">Read more <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Eight Dimensions -->
-  <section class="py-16 sm:py-20 bg-sage-light/50">
-    <div class="max-w-content mx-auto px-4 text-center">
-      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum mb-4">
-        Eight dimensions of belonging
-      </h2>
-      <p class="text-ink/60 max-w-lg mx-auto mb-10">
-        Beyond the headline question, reviewers rate eight specific dimensions on a 1–5 scale.
-      </p>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
-        {DIMENSIONS.map(dim => (
-          <div class="flex flex-col items-center gap-2 p-4 rounded-xl bg-white border border-border">
-            <img src={dim.icon} alt="" width="28" height="28" aria-hidden="true" />
-            <span class="text-xs font-medium text-plum text-center leading-tight">{dim.label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="py-20 sm:py-24 bg-plum text-white">
+  <!-- ═══════════════════ 6. CTA ═══════════════════ -->
+  <section id="explore" class="py-20 sm:py-24">
     <div class="max-w-narrow mx-auto px-4 text-center">
-      <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4">
+      <h2 class="text-3xl sm:text-4xl font-heading font-bold text-plum mb-4">
         What would you tell the next person?
       </h2>
-      <p class="text-white/60 mb-8 max-w-md mx-auto">
-        Your anonymous review helps the next person make a more informed decision. Every voice moves the number.
+      <p class="text-ink/60 mb-8 max-w-md mx-auto">
+        Your experience can help someone make a more informed move.
       </p>
       <a
         href="/review"
-        class="inline-flex items-center justify-center px-8 py-4 bg-terra text-white font-semibold rounded-xl hover:bg-terra-dark transition-colors shadow-lg text-lg"
+        class="inline-flex items-center justify-center px-8 py-4 bg-terra text-white font-semibold rounded-xl hover:bg-terra-dark transition-colors shadow-sm text-lg"
       >
         Share your experience
       </a>
     </div>
   </section>
 
-  <script define:vars={{ companyNames, companySlugs: companies.map(c => ({ name: c.name, slug: c.slug })) }}>
+  <script define:vars={{ companySlugs }}>
     function setupHeroSearch() {
       const input = document.getElementById('hero-search');
       const dropdown = document.getElementById('hero-dropdown');
+      const form = document.getElementById('hero-form');
       if (!input || !dropdown) return;
+
+      let selectedSlug = '';
 
       input.addEventListener('input', () => {
         const val = input.value.toLowerCase().trim();
         dropdown.innerHTML = '';
+        selectedSlug = '';
         if (val.length < 1) { dropdown.classList.add('hidden'); return; }
         const matches = companySlugs.filter(c => c.name.toLowerCase().includes(val)).slice(0, 8);
         if (matches.length === 0) { dropdown.classList.add('hidden'); return; }
@@ -203,11 +300,27 @@ const featuredCompanies = companies.filter(c => c.featured).slice(0, 9);
           li.className = 'px-4 py-3 cursor-pointer hover:bg-peach-light text-sm text-ink first:rounded-t-xl last:rounded-b-xl';
           li.addEventListener('mousedown', (e) => {
             e.preventDefault();
+            input.value = c.name;
+            selectedSlug = c.slug;
+            dropdown.classList.add('hidden');
             window.location.href = '/company/' + c.slug;
           });
           dropdown.appendChild(li);
         });
         dropdown.classList.remove('hidden');
+      });
+
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = input.value.toLowerCase().trim();
+        if (selectedSlug) {
+          window.location.href = '/company/' + selectedSlug;
+          return;
+        }
+        const match = companySlugs.find(c => c.name.toLowerCase() === val);
+        if (match) {
+          window.location.href = '/company/' + match.slug;
+        }
       });
 
       input.addEventListener('focus', () => {
