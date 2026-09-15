@@ -5,6 +5,7 @@ import { DIMENSIONS } from '../../data/dimensions';
 import { LENSES } from '../../data/lenses';
 import { INTERVIEW_QUESTIONS } from '../../data/interview-questions';
 import { MIN_REVIEWS_DISPLAY, MIN_REVIEWS_SENSITIVE_LENS } from '../../config';
+import ArchDecoration from '../../components/ArchDecoration.astro';
 
 export function getStaticPaths() {
   return companies.map(c => ({ params: { slug: c.slug }, props: { company: c } }));
@@ -50,10 +51,8 @@ const reviewParam = encodeURIComponent(company.name);
           </a>
         </div>
 
-        <div class="hidden lg:block" aria-hidden="true">
-          <div class="w-36 h-48 arch-outline border-2 border-terra/15 relative">
-            <div class="absolute inset-3 arch-outline bg-terra/[0.04]"></div>
-          </div>
+        <div class="hidden lg:block">
+          <ArchDecoration size="md" />
         </div>
       </div>
     </div>
@@ -308,10 +307,8 @@ const reviewParam = encodeURIComponent(company.name);
   <section class="py-14 sm:py-16 bg-peach-light/30">
     <div class="max-w-narrow mx-auto px-4">
       <div class="flex flex-col sm:flex-row items-center gap-6 sm:gap-10">
-        <div class="hidden sm:block shrink-0" aria-hidden="true">
-          <div class="w-20 h-28 arch-outline border-2 border-terra/15 relative">
-            <div class="absolute inset-2 arch-outline bg-terra/[0.04]"></div>
-          </div>
+        <div class="hidden sm:block shrink-0">
+          <ArchDecoration size="sm" />
         </div>
         <div class="text-center sm:text-left">
           <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum mb-4">

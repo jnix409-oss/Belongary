@@ -4,6 +4,7 @@ import companies from '../data/companies.json';
 import { LENSES } from '../data/lenses';
 import { DIMENSIONS } from '../data/dimensions';
 import { MIN_REVIEWS_DISPLAY } from '../config';
+import ArchDecoration from '../components/ArchDecoration.astro';
 
 const companySlugs = companies.map(c => ({ name: c.name, slug: c.slug }));
 ---
@@ -52,13 +53,25 @@ const companySlugs = companies.map(c => ({ name: c.name, slug: c.slug }));
         </div>
 
         <!-- Decorative arch elements -->
-        <div class="hidden lg:flex items-end gap-4 relative" aria-hidden="true">
-          <div class="w-28 h-40 arch-outline border-2 border-white/10"></div>
-          <div class="w-36 h-56 arch-outline border-2 border-white/[0.15] relative">
-            <div class="absolute inset-3 arch-outline bg-white/[0.04]"></div>
+        <div class="hidden lg:flex items-end gap-4 relative">
+          <div class="w-28 h-40 arch-outline overflow-hidden" aria-hidden="true">
+            <svg viewBox="0 0 112 160" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+              <path d="M56 0C25.07 0 0 25.07 0 56v104h112V56C112 25.07 86.93 0 56 0Z" fill="white" fill-opacity="0.08" />
+              <circle cx="35" cy="100" r="35" fill="#B84E3B" opacity="0.35" />
+              <circle cx="75" cy="85" r="28" fill="#F4D4C3" opacity="0.3" />
+              <circle cx="50" cy="130" r="25" fill="#E4DCEF" opacity="0.25" />
+            </svg>
           </div>
-          <div class="w-28 h-36 arch-outline border-2 border-white/10"></div>
-          <p class="absolute -bottom-8 right-0 text-[9px] uppercase tracking-[0.25em] text-white/20 leading-loose text-right font-medium">
+          <ArchDecoration size="lg" class="border-2 border-white/[0.15]" />
+          <div class="w-28 h-36 arch-outline overflow-hidden" aria-hidden="true">
+            <svg viewBox="0 0 112 144" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+              <path d="M56 0C25.07 0 0 25.07 0 56v88h112V56C112 25.07 86.93 0 56 0Z" fill="white" fill-opacity="0.08" />
+              <circle cx="60" cy="90" r="30" fill="#F4D4C3" opacity="0.3" />
+              <circle cx="40" cy="110" r="25" fill="#DCE5D7" opacity="0.25" />
+              <circle cx="70" cy="120" r="20" fill="#B84E3B" opacity="0.2" />
+            </svg>
+          </div>
+          <p class="absolute -bottom-8 right-0 text-[9px] uppercase tracking-[0.25em] text-white/20 leading-loose text-right font-medium" aria-hidden="true">
             Different<br>People<br>Brighter<br>Workplaces
           </p>
         </div>
@@ -124,10 +137,8 @@ const companySlugs = companies.map(c => ({ name: c.name, slug: c.slug }));
             See how experiences vary within the same workplace.
           </p>
           <!-- Decorative arch -->
-          <div class="hidden lg:block relative" aria-hidden="true">
-            <div class="w-40 h-56 arch-outline border-2 border-peach relative">
-              <div class="absolute inset-3 arch-outline bg-peach/20"></div>
-            </div>
+          <div class="hidden lg:block relative">
+            <ArchDecoration size="lg" />
             <p class="mt-4 text-[9px] uppercase tracking-[0.2em] text-terra/40 font-medium leading-loose">
               More perspectives<br>A brighter tomorrow
             </p>
@@ -228,8 +239,8 @@ const companySlugs = companies.map(c => ({ name: c.name, slug: c.slug }));
         <!-- Article cards -->
         <div class="lg:col-span-2 grid sm:grid-cols-2 gap-6">
           <a href="/methodology" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-md transition-all">
-            <div class="h-36 bg-peach/40 flex items-center justify-center" aria-hidden="true">
-              <div class="w-20 h-28 arch-outline border-2 border-peach/60"></div>
+            <div class="h-36 bg-peach/40 flex items-center justify-center">
+              <ArchDecoration size="sm" />
             </div>
             <div class="p-5">
               <h3 class="font-heading font-semibold text-plum group-hover:text-terra transition-colors mb-1">
@@ -242,8 +253,8 @@ const companySlugs = companies.map(c => ({ name: c.name, slug: c.slug }));
             </div>
           </a>
           <a href="/about" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-md transition-all">
-            <div class="h-36 bg-peach/40 flex items-center justify-center" aria-hidden="true">
-              <div class="w-20 h-28 arch-outline border-2 border-peach/60"></div>
+            <div class="h-36 bg-peach/40 flex items-center justify-center">
+              <ArchDecoration size="sm" />
             </div>
             <div class="p-5">
               <h3 class="font-heading font-semibold text-plum group-hover:text-terra transition-colors mb-1">
