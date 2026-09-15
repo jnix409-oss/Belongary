@@ -1,161 +1,193 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import companies from '../data/companies.json';
+import { LENSES } from '../data/lenses';
+import { DIMENSIONS } from '../data/dimensions';
+import { MIN_REVIEWS_DISPLAY } from '../config';
 
 const companyNames = companies.map(c => c.name).sort();
-
-const totalReviews = companies.reduce((sum, c) => sum + (c.reviewCount ?? 0), 0);
-const employersWithReviews = companies.filter(c => (c.reviewCount ?? 0) > 0).length;
+const featuredCompanies = companies.filter(c => c.featured).slice(0, 9);
 ---
-<BaseLayout title="Home" description="See if you'll belong — before you work there. Anonymous workplace belonging reviews filtered through identity lenses.">
-  <!-- Hero -->
-  <section class="bg-gradient-to-b from-cream to-cream-light relative overflow-hidden">
-    <div class="max-w-5xl mx-auto px-4 py-16 sm:py-24 text-center relative z-10">
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-plum leading-tight mb-6">
-        The stories nobody got to tell the next person.
-      </h1>
-      <p class="text-lg sm:text-xl text-ink/70 max-w-2xl mx-auto mb-10">
-        Glassdoor tells you what people think of a company. Belongary tells you what people like you found there.
-      </p>
+<BaseLayout title="Home" darkHeader description="See the workplace through your lens. Anonymous belonging reviews filtered through the perspectives that matter to you.">
+  <!-- Plum Hero -->
+  <section class="bg-plum text-white relative overflow-hidden">
+    <div class="max-w-content mx-auto px-4 py-20 sm:py-28 lg:py-32 relative z-10">
+      <div class="max-w-2xl">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6 text-white">
+          See the workplace through your lens.
+        </h1>
+        <p class="text-lg sm:text-xl text-white/70 mb-10 max-w-lg">
+          Anonymous belonging reviews, filtered through the perspectives that matter to you.
+        </p>
 
-      <form action="/review" method="GET" class="max-w-lg mx-auto relative text-left">
-        <label for="hero-company" class="block text-sm font-semibold text-plum mb-2">
-          Where do you work, or where did you?
-        </label>
-        <input
-          type="text"
-          name="company"
-          id="hero-company"
-          autocomplete="off"
-          placeholder="Start typing a company name"
-          class="w-full px-5 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral text-lg shadow-sm"
-        />
-        <ul id="hero-dropdown" class="hidden absolute z-10 w-full mt-1 max-h-56 overflow-y-auto bg-white border border-border rounded-lg shadow-lg"></ul>
-      </form>
-
-      <div class="flex flex-col gap-1 mt-6 text-sm text-ink/60">
-        <p>· We never ask for your work email.</p>
-        <p>· Nothing publishes until 5 people from a company have shared.</p>
-        <p>· Employers can't edit, remove, or pay to hide what you write.</p>
+        <form id="hero-form" class="relative max-w-lg">
+          <label for="hero-search" class="sr-only">Search for a company</label>
+          <div class="relative">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              id="hero-search"
+              autocomplete="off"
+              placeholder="Search for a company…"
+              class="w-full pl-12 pr-5 py-4 rounded-xl bg-white text-ink placeholder:text-ink/40 text-lg shadow-lg border-0 focus:outline-none focus:ring-2 focus:ring-terra/50"
+            />
+          </div>
+          <ul id="hero-dropdown" class="hidden absolute z-10 w-full mt-2 max-h-56 overflow-y-auto bg-white border border-border rounded-xl shadow-xl"></ul>
+        </form>
       </div>
     </div>
-    <!-- Decorative brand pattern -->
-    <div class="absolute bottom-0 right-0 w-64 sm:w-80 lg:w-96 opacity-[0.07] pointer-events-none translate-x-1/4 translate-y-1/4">
-      <img src="/brand/pattern-elements.png" alt="" class="w-full h-auto" aria-hidden="true" />
+
+    <!-- Decorative arch shapes -->
+    <div class="hidden lg:block absolute right-12 xl:right-24 top-1/2 -translate-y-1/2 z-0" aria-hidden="true">
+      <div class="flex gap-5 items-end opacity-[0.12]">
+        <div class="w-32 h-48 arch-outline border-2 border-white"></div>
+        <div class="w-40 h-60 arch-outline border-2 border-white"></div>
+        <div class="w-32 h-44 arch-outline border-2 border-white"></div>
+      </div>
     </div>
   </section>
 
-  <!-- Global Counter -->
-  {totalReviews > 0 && (
-    <section class="py-8 text-center">
-      <p class="text-lg text-ink/70 font-heading">
-        <span class="font-bold text-plum">{totalReviews}</span> stories collected across
-        <span class="font-bold text-plum">{employersWithReviews}</span> employers.
-      </p>
-    </section>
-  )}
-
-  <!-- How It Works -->
+  <!-- Identity Lenses -->
   <section class="py-16 sm:py-20">
-    <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum text-center mb-12">
-        How Belongary Works
+    <div class="max-w-content mx-auto px-4 text-center">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum mb-4">
+        Your identity shapes your experience
       </h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-coral/10 flex items-center justify-center">
-            <span class="text-2xl font-heading font-bold text-coral">1</span>
-          </div>
-          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Tell your story</h3>
-          <p class="text-ink/60 text-sm">
-            Start with what you'd tell someone like you before they work at this employer. Then rate eight dimensions of belonging, 1-5.
+      <p class="text-ink/60 max-w-lg mx-auto mb-10">
+        Browse belonging data through the lenses that matter to you. Lens scores appear once enough people share — never individually.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        {LENSES.map(lens => (
+          <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-lavender text-plum">
+            {lens.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Explore Workplaces -->
+  <section id="explore" class="py-16 sm:py-20 bg-peach-light/50">
+    <div class="max-w-content mx-auto px-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum mb-2">
+            Explore workplaces
+          </h2>
+          <p class="text-ink/60">
+            Companies collecting belonging perspectives from real workers.
           </p>
         </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredCompanies.map(company => (
+          <a href={`/company/${company.slug}`} class="group block bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-terra/30 transition-all">
+            <h3 class="text-lg font-heading font-semibold text-plum group-hover:text-terra transition-colors mb-1">
+              {company.name}
+            </h3>
+            <p class="text-sm text-ink/50 mb-5">{company.industry} · {company.hq_metro}</p>
+
+            <div class="flex items-center gap-3">
+              <div class="flex-1 bg-peach/50 rounded-full h-2 overflow-hidden">
+                <div
+                  class="h-full bg-terra/40 rounded-full"
+                  style={`width: ${Math.min(100, Math.round(((company.reviewCount ?? 0) / MIN_REVIEWS_DISPLAY) * 100))}%`}
+                ></div>
+              </div>
+              <span class="text-xs font-medium text-ink/40 whitespace-nowrap">
+                {company.reviewCount ?? 0} / {MIN_REVIEWS_DISPLAY}
+              </span>
+            </div>
+            <p class="text-xs text-ink/40 mt-2">Collecting perspectives</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy & Trust Strip -->
+  <section class="py-16 sm:py-20">
+    <div class="max-w-content mx-auto px-4">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum text-center mb-12">
+        Built for trust
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-teal/10 flex items-center justify-center">
-            <span class="text-2xl font-heading font-bold text-teal">2</span>
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-lavender-light flex items-center justify-center">
+            <img src="/brand/icons/safe-to-speak.svg" alt="" class="w-6 h-6" aria-hidden="true" />
           </div>
-          <h3 class="text-lg font-heading font-semibold text-plum mb-2">Truth emerges</h3>
-          <p class="text-ink/60 text-sm">
-            Once 5 people from a company have shared, belonging scores go live. No one person's story is ever identifiable.
-          </p>
+          <h3 class="font-heading font-semibold text-plum text-sm mb-1">Architecturally anonymous</h3>
+          <p class="text-xs text-ink/60">Your review and your identity are stored with no link between them — not hidden, not encrypted, not there.</p>
         </div>
         <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-amber/10 flex items-center justify-center">
-            <span class="text-2xl font-heading font-bold text-amber">3</span>
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-lavender-light flex items-center justify-center">
+            <img src="/brand/icons/belonging.svg" alt="" class="w-6 h-6" aria-hidden="true" />
           </div>
-          <h3 class="text-lg font-heading font-semibold text-plum mb-2">See through your lens</h3>
-          <p class="text-ink/60 text-sm">
-            Optionally tag your review with an identity lens. Lens scores appear separately once 8 people share the same lens — never individually.
-          </p>
+          <h3 class="font-heading font-semibold text-plum text-sm mb-1">No work email required</h3>
+          <p class="text-xs text-ink/60">We never ask for your work email, verify employment, or match domains to companies.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-lavender-light flex items-center justify-center">
+            <img src="/brand/icons/fairness.svg" alt="" class="w-6 h-6" aria-hidden="true" />
+          </div>
+          <h3 class="font-heading font-semibold text-plum text-sm mb-1">Threshold-protected</h3>
+          <p class="text-xs text-ink/60">Nothing publishes until {MIN_REVIEWS_DISPLAY} people have shared. This threshold is never waived.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-lavender-light flex items-center justify-center">
+            <img src="/brand/icons/verified.svg" alt="" class="w-6 h-6" aria-hidden="true" />
+          </div>
+          <h3 class="font-heading font-semibold text-plum text-sm mb-1">Employer-proof</h3>
+          <p class="text-xs text-ink/60">Employers cannot edit, remove, or pay to hide your review.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Founder Block -->
-  <section class="py-16 sm:py-20">
-    <div class="max-w-2xl mx-auto px-4">
-      <h2 class="text-2xl font-heading font-bold text-plum mb-4">Why this exists</h2>
-      <p class="text-ink/70 leading-relaxed mb-4">
-        I started a job once where my manager was fired the Friday before my first day.
+  <!-- Eight Dimensions -->
+  <section class="py-16 sm:py-20 bg-sage-light/50">
+    <div class="max-w-content mx-auto px-4 text-center">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum mb-4">
+        Eight dimensions of belonging
+      </h2>
+      <p class="text-ink/60 max-w-lg mx-auto mb-10">
+        Beyond the headline question, reviewers rate eight specific dimensions on a 1–5 scale.
       </p>
-      <p class="text-ink/70 leading-relaxed mb-4">
-        She was a Black woman, and honestly, that was part of why I took the role. Nobody could tell me what happened. The team was still stunned.
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        {DIMENSIONS.map(dim => (
+          <div class="flex flex-col items-center gap-2 p-4 rounded-xl bg-white border border-border">
+            <img src={dim.icon} alt="" width="28" height="28" aria-hidden="true" />
+            <span class="text-xs font-medium text-plum text-center leading-tight">{dim.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 sm:py-24 bg-plum text-white">
+    <div class="max-w-narrow mx-auto px-4 text-center">
+      <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4">
+        What would you tell the next person?
+      </h2>
+      <p class="text-white/60 mb-8 max-w-md mx-auto">
+        Your anonymous review helps the next person make a more informed decision. Every voice moves the number.
       </p>
-      <p class="text-ink/70 leading-relaxed mb-4">
-        So I did what you do — went in quiet, watched, tried to understand the landscape. What I learned fast was that they didn't trust that she'd made a good hire. They sat me in a row by myself. Nobody said hello for weeks. And one afternoon I overheard two of them in the break room deciding how long I'd last. <em>That girl probably won't even make it past three months.</em>
-      </p>
-      <p class="text-ink/70 leading-relaxed mb-6">
-        Coldest welcome I've ever had.
-      </p>
-      <a href="/founder" class="text-coral font-semibold hover:text-coral/80 transition-colors">
-        Read the full story &rarr;
+      <a
+        href="/review"
+        class="inline-flex items-center justify-center px-8 py-4 bg-terra text-white font-semibold rounded-xl hover:bg-terra-dark transition-colors shadow-lg text-lg"
+      >
+        Share your experience
       </a>
     </div>
   </section>
 
-  <!-- Waitlist / CTA -->
-  <section class="py-16 sm:py-20 bg-cream">
-    <div class="max-w-xl mx-auto px-4 text-center">
-      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-plum mb-4">
-        Stay in the loop
-      </h2>
-      <p class="text-ink/60 mb-8">
-        Get notified when new companies are added, and be the first to know about new features.
-      </p>
-      <form
-        name="waitlist"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-      >
-        <input type="hidden" name="form-name" value="waitlist" />
-        <p class="hidden">
-          <label>Don't fill this out: <input name="bot-field" /></label>
-        </p>
-        <input
-          type="email"
-          name="email"
-          required
-          placeholder="your@email.com"
-          class="flex-1 px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral"
-        />
-        <button
-          type="submit"
-          class="px-6 py-3 bg-coral text-white font-semibold rounded-lg hover:bg-coral/90 transition-colors shadow-sm"
-        >
-          Join Waitlist
-        </button>
-      </form>
-    </div>
-  </section>
-
-  <script define:vars={{ companyNames }}>
-    // Hero autocomplete
-    function setupHeroAutocomplete() {
-      const input = document.getElementById('hero-company');
+  <script define:vars={{ companyNames, companySlugs: companies.map(c => ({ name: c.name, slug: c.slug })) }}>
+    function setupHeroSearch() {
+      const input = document.getElementById('hero-search');
       const dropdown = document.getElementById('hero-dropdown');
       if (!input || !dropdown) return;
 
@@ -163,18 +195,15 @@ const employersWithReviews = companies.filter(c => (c.reviewCount ?? 0) > 0).len
         const val = input.value.toLowerCase().trim();
         dropdown.innerHTML = '';
         if (val.length < 1) { dropdown.classList.add('hidden'); return; }
-        const matches = companyNames.filter(item => item.toLowerCase().includes(val)).slice(0, 8);
+        const matches = companySlugs.filter(c => c.name.toLowerCase().includes(val)).slice(0, 8);
         if (matches.length === 0) { dropdown.classList.add('hidden'); return; }
-        matches.forEach(item => {
+        matches.forEach(c => {
           const li = document.createElement('li');
-          li.textContent = item;
-          li.className = 'px-4 py-2 cursor-pointer hover:bg-cream text-sm text-ink';
+          li.textContent = c.name;
+          li.className = 'px-4 py-3 cursor-pointer hover:bg-peach-light text-sm text-ink first:rounded-t-xl last:rounded-b-xl';
           li.addEventListener('mousedown', (e) => {
             e.preventDefault();
-            input.value = item;
-            dropdown.classList.add('hidden');
-            // Submit the form
-            input.closest('form')?.submit();
+            window.location.href = '/company/' + c.slug;
           });
           dropdown.appendChild(li);
         });
@@ -188,6 +217,6 @@ const employersWithReviews = companies.filter(c => (c.reviewCount ?? 0) > 0).len
         setTimeout(() => dropdown.classList.add('hidden'), 150);
       });
     }
-    setupHeroAutocomplete();
+    setupHeroSearch();
   </script>
 </BaseLayout>

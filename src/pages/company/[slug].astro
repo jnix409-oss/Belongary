@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import companies from '../../data/companies.json';
+import { DIMENSIONS } from '../../data/dimensions';
+import { LENSES } from '../../data/lenses';
+import { MIN_REVIEWS_DISPLAY, MIN_REVIEWS_SENSITIVE_LENS } from '../../config';
+
+export function getStaticPaths() {
+  return companies.map(c => ({ params: { slug: c.slug }, props: { company: c } }));
+}
+
+const { company } = Astro.props;
+const reviewCount = company.reviewCount ?? 0;
+const hasScores = reviewCount >= MIN_REVIEWS_DISPLAY;
+const remaining = Math.max(0, MIN_REVIEWS_DISPLAY - reviewCount);
+const pct = Math.min(100, Math.round((reviewCount / MIN_REVIEWS_DISPLAY) * 100));
+const reviewParam = encodeURIComponent(company.name);
+---
+<BaseLayout title={company.name} description={`Belonging scores and anonymous reviews for ${company.name}.`}>
+  <!-- Company Header -->
+  <section class="bg-peach pt-8 pb-12 sm:pt-12 sm:pb-16">
+    <div class="max-w-content mx-auto px-4">
+      <p class="text-sm text-ink/50 mb-2">
+        <a href="/#explore" class="hover:text-plum transition-colors">&larr; All workplaces</a>
+      </p>
+      <h1 class="text-3xl sm:text-4xl font-heading font-bold text-plum mb-2">
+        {company.name}
+      </h1>
+      <p class="text-ink/60">{company.industry} · {company.hq_metro}</p>
+    </div>
+  </section>
+
+  <!-- Tab Navigation -->
+  <div class="border-b border-border bg-white sticky top-[73px] z-40">
+    <div class="max-w-content mx-auto px-4">
+      <nav class="flex gap-8" aria-label="Company sections">
+        <button class="py-3 text-sm font-medium text-plum border-b-2 border-terra" aria-current="page">
+          Overview
+        </button>
+        <button class="py-3 text-sm font-medium text-ink/40 border-b-2 border-transparent cursor-default" disabled title="Available once scores are live">
+          Lens insights
+        </button>
+        <button class="py-3 text-sm font-medium text-ink/40 border-b-2 border-transparent cursor-default" disabled title="Available once scores are live">
+          About
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="max-w-content mx-auto px-4 py-10 sm:py-14">
+    {hasScores ? (
+      <!-- Scores — will render once MIN_REVIEWS_DISPLAY is met -->
+      <div>
+        <p class="text-ink/60">Scores display will appear here once reviews are collected.</p>
+      </div>
+    ) : (
+      <!-- Collecting Perspectives Empty State -->
+      <div class="max-w-2xl mx-auto">
+        <!-- Progress card -->
+        <div class="bg-white rounded-2xl border border-border p-8 sm:p-10 text-center mb-10">
+          <div class="w-16 h-16 mx-auto mb-5 rounded-full bg-lavender-light flex items-center justify-center">
+            <img src="/brand/icons/belonging.svg" alt="" width="32" height="32" aria-hidden="true" />
+          </div>
+          <h2 class="text-xl font-heading font-semibold text-plum mb-3">
+            Collecting perspectives
+          </h2>
+          <p class="text-sm text-ink/60 mb-8 max-w-md mx-auto">
+            Belonging scores for {company.name} will appear once {MIN_REVIEWS_DISPLAY} people have shared their experience. This threshold protects reviewer anonymity — it is never waived.
+          </p>
+
+          <!-- Progress bar -->
+          <div class="max-w-sm mx-auto mb-8">
+            <div
+              class="w-full bg-peach/30 rounded-full h-3 overflow-hidden"
+              role="progressbar"
+              aria-valuenow={reviewCount}
+              aria-valuemin={0}
+              aria-valuemax={MIN_REVIEWS_DISPLAY}
+              aria-label={`${reviewCount} of ${MIN_REVIEWS_DISPLAY} reviews collected`}
+            >
+              <div
+                class="h-full rounded-full transition-all duration-500"
+                style={`width: ${pct}%; background-color: ${reviewCount > 0 ? '#B84E3B' : '#E3D8CC'};`}
+              ></div>
+            </div>
+            <p class="text-sm font-medium text-ink/50 mt-3">
+              {reviewCount} of {MIN_REVIEWS_DISPLAY} reviews collected
+            </p>
+          </div>
+
+          <a
+            href={`/review?company=${reviewParam}`}
+            class="inline-flex items-center justify-center px-7 py-3 bg-terra text-white font-semibold rounded-xl hover:bg-terra-dark transition-colors shadow-sm"
+          >
+            Be one of the first {remaining}
+          </a>
+        </div>
+
+        <!-- What you'll see once scores are live -->
+        <div class="space-y-6">
+          <h3 class="text-lg font-heading font-semibold text-plum">
+            What you'll see once scores are live
+          </h3>
+
+          <!-- Headline preview -->
+          <div class="bg-white rounded-xl border border-border p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-14 h-14 rounded-full bg-peach/30 flex items-center justify-center">
+                <span class="text-lg font-heading font-bold text-ink/20">—</span>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-ink/30">Headline score</p>
+                <p class="text-xs text-ink/20">"Would you tell someone like you to work here?"</p>
+              </div>
+            </div>
+            <div class="h-3 bg-peach/20 rounded-full w-full"></div>
+          </div>
+
+          <!-- Dimension previews -->
+          <div class="bg-white rounded-xl border border-border p-6">
+            <p class="text-sm font-medium text-ink/40 mb-4">Eight dimensions of belonging</p>
+            <div class="space-y-3">
+              {DIMENSIONS.map(dim => (
+                <div class="flex items-center gap-3">
+                  <img src={dim.icon} alt="" width="20" height="20" class="opacity-30" aria-hidden="true" />
+                  <span class="text-sm text-ink/30 w-40 shrink-0">{dim.label}</span>
+                  <div class="flex-1 h-2 bg-peach/15 rounded-full"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Lens preview -->
+          <div class="bg-white rounded-xl border border-border p-6">
+            <p class="text-sm font-medium text-ink/40 mb-4">Identity lens insights</p>
+            <p class="text-xs text-ink/30 mb-4">
+              Scores filtered by perspective — requires {MIN_REVIEWS_SENSITIVE_LENS} reviews per lens.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              {LENSES.map(lens => (
+                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs bg-lavender/30 text-ink/20">
+                  {lens.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+</BaseLayout>

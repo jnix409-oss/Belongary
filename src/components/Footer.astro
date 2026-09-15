@@ -1,36 +1,40 @@
 ---
 const footerLinks = [
-  { href: '/methodology', label: 'Methodology' },
-  { href: '/guidelines', label: 'Community Guidelines' },
-  { href: '/anonymity', label: 'How We Protect You' },
-  { href: '/dispute', label: 'Dispute Process' },
-  { href: '/terms', label: 'Terms of Service' },
-  { href: '/privacy', label: 'Privacy Policy' },
   { href: '/about', label: 'About' },
+  { href: '/methodology', label: 'Methodology' },
+  { href: '/anonymity', label: 'Privacy & Anonymity' },
+  { href: '/guidelines', label: 'Community Guidelines' },
+  { href: '/dispute', label: 'Dispute Process' },
+  { href: '/terms', label: 'Terms' },
 ];
 ---
-<footer class="bg-plum text-light/80 mt-16">
-  <div class="max-w-6xl mx-auto px-4 py-12">
-    <div class="flex flex-col md:flex-row justify-between gap-8">
+<footer class="bg-plum text-white/80 mt-16">
+  <div class="max-w-content mx-auto px-4 py-12">
+    <div class="flex flex-col md:flex-row justify-between items-start gap-8">
       <div>
-        <p class="font-heading text-xl font-bold text-light mb-2">Belongary</p>
-        <p class="text-sm text-light/60 max-w-xs">
-          Glassdoor tells you what people think of a company. Belongary tells you what people like you found there.
+        <img
+          src="/brand/logo-wordmark.png"
+          alt="Belongary"
+          height="32"
+          class="h-8 w-auto brightness-0 invert mb-4"
+        />
+        <p class="text-sm text-white/50 max-w-xs">
+          See the workplace through your lens.
         </p>
       </div>
-      <div>
-        <ul class="grid grid-cols-2 gap-x-8 gap-y-2">
+      <nav aria-label="Footer">
+        <ul class="grid grid-cols-2 gap-x-10 gap-y-2">
           {footerLinks.map(link => (
             <li>
-              <a href={link.href} class="text-sm text-light/60 hover:text-light transition-colors">
+              <a href={link.href} class="text-sm text-white/60 hover:text-white transition-colors">
                 {link.label}
               </a>
             </li>
           ))}
         </ul>
-      </div>
+      </nav>
     </div>
-    <div class="mt-8 pt-6 border-t border-light/10 text-xs text-light/40">
+    <div class="mt-10 pt-6 border-t border-white/10 text-xs text-white/40">
       &copy; {new Date().getFullYear()} Belongary. All rights reserved.
     </div>
   </div>

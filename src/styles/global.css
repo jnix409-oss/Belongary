@@ -4,9 +4,31 @@
 
 @layer base {
   body {
-    @apply font-body text-ink bg-cream-light antialiased;
+    @apply font-body text-ink bg-ivory antialiased;
   }
   h1, h2, h3, h4, h5 {
     @apply font-heading text-plum;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-2 outline-offset-2 outline-terra;
+  }
+}
+
+@layer components {
+  /* Arch clip-path — used on portrait images */
+  .clip-arch {
+    clip-path: ellipse(50% 60% at 50% 60%);
+  }
+  /* Rounded-top arch shape for containers */
+  .arch-top {
+    border-radius: 9999px 9999px 0.75rem 0.75rem;
+  }
+  /* Arch outline — decorative SVG-like border */
+  .arch-outline {
+    border-radius: 50% 50% 0 0;
   }
 }

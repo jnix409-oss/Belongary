@@ -4,9 +4,14 @@ import { DIMENSIONS } from '../data/dimensions';
 import { MIN_REVIEWS_DISPLAY, MIN_REVIEWS_SENSITIVE_LENS } from '../config';
 ---
 <BaseLayout title="Methodology" description="How Belongary collects, aggregates, and displays belonging scores.">
-  <div class="max-w-3xl mx-auto px-4 py-12 sm:py-16">
-    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-plum mb-8">How Belongary Works</h1>
+  <!-- Peach header -->
+  <section class="bg-peach pt-8 pb-12 sm:pt-12 sm:pb-16">
+    <div class="max-w-narrow mx-auto px-4">
+      <h1 class="text-3xl sm:text-4xl font-heading font-bold text-plum">How Belongary Works</h1>
+    </div>
+  </section>
 
+  <div class="max-w-narrow mx-auto px-4 py-12 sm:py-16">
     <div class="space-y-10 text-ink/80 leading-relaxed">
       <section>
         <h2 class="text-2xl font-heading font-semibold text-plum mb-4">The Headline Question</h2>
@@ -29,7 +34,7 @@ import { MIN_REVIEWS_DISPLAY, MIN_REVIEWS_SENSITIVE_LENS } from '../config';
         <div class="grid sm:grid-cols-2 gap-3">
           {DIMENSIONS.map(dim => (
             <div class="flex items-center gap-3 p-3 rounded-lg bg-white border border-border">
-              <img src={dim.icon} alt="" width="24" height="24" class="text-plum" aria-hidden="true" />
+              <img src={dim.icon} alt="" width="24" height="24" aria-hidden="true" />
               <span class="text-sm font-medium text-plum">{dim.label}</span>
             </div>
           ))}
@@ -58,11 +63,11 @@ import { MIN_REVIEWS_DISPLAY, MIN_REVIEWS_SENSITIVE_LENS } from '../config';
           We take data integrity and anonymity seriously. Scores are gated by review count and are never displayed until the threshold is met:
         </p>
         <div class="space-y-3">
-          <div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-border">
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-white border border-border">
             <span class="text-sm font-semibold text-plum whitespace-nowrap">Company scores</span>
             <span class="text-sm text-ink/60">Require at least {MIN_REVIEWS_DISPLAY} reviews before any scores are shown.</span>
           </div>
-          <div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-border">
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-white border border-border">
             <span class="text-sm font-semibold text-plum whitespace-nowrap">Identity lens scores</span>
             <span class="text-sm text-ink/60">Require at least {MIN_REVIEWS_SENSITIVE_LENS} reviews with that lens tag. The higher bar protects the anonymity of smaller groups.</span>
           </div>
