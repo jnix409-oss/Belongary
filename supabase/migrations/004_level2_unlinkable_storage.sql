@@ -105,28 +105,36 @@ CREATE POLICY companies_public_read
   USING (true);
 
 -- ============================================================
--- §5 Public read surface — a view that exposes review content
---    but never the token hash or any internal identifiers.
---    Grant SELECT on the view only; revoke direct table access.
+-- §5 Public read surface — company aggregates only.
+--    Never expose individual rows, stories, lenses, review IDs, or dates.
+--    The database enforces the same five-review threshold as src/config.ts
+--    so a future client cannot accidentally bypass it.
 -- ============================================================
 REVOKE ALL ON public.reviews          FROM anon, authenticated;
 REVOKE ALL ON public.submission_guard FROM anon, authenticated;
 REVOKE ALL ON public.removal_log      FROM anon, authenticated;
 
-CREATE OR REPLACE VIEW public.reviews_public
+DROP VIEW IF EXISTS public.reviews_public;
+CREATE VIEW public.reviews_public
 WITH (security_invoker = false) AS
 SELECT
-  r.id,
   r.company_id,
-  r.headline,
-  r.dim_belonging, r.dim_heard, r.dim_manager, r.dim_sponsorship,
-  r.dim_promotion, r.dim_growth, r.dim_representation, r.dim_flexibility,
-  r.story,
-  r.has_story,
-  r.lens,
-  r.created_on
+  count(*)::integer AS review_count,
+  count(*) FILTER (WHERE r.headline = 'yes')::integer AS headline_yes,
+  count(*) FILTER (WHERE r.headline = 'no')::integer AS headline_no,
+  count(*) FILTER (WHERE r.headline = 'depends')::integer AS headline_depends,
+  avg(r.dim_belonging)::numeric(3,2) AS dim_belonging,
+  avg(r.dim_heard)::numeric(3,2) AS dim_heard,
+  avg(r.dim_manager)::numeric(3,2) AS dim_manager,
+  avg(r.dim_sponsorship)::numeric(3,2) AS dim_sponsorship,
+  avg(r.dim_promotion)::numeric(3,2) AS dim_promotion,
+  avg(r.dim_growth)::numeric(3,2) AS dim_growth,
+  avg(r.dim_representation)::numeric(3,2) AS dim_representation,
+  avg(r.dim_flexibility)::numeric(3,2) AS dim_flexibility
 FROM public.reviews r
-WHERE r.moderation_status = 'approved';
+WHERE r.moderation_status = 'approved'
+GROUP BY r.company_id
+HAVING count(*) >= 5;
 
 GRANT SELECT ON public.reviews_public TO anon, authenticated;
 
@@ -154,6 +162,7 @@ END;
 $$;
 
 REVOKE EXECUTE ON FUNCTION public.delete_review_by_token(text) FROM public, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.delete_review_by_token(text) TO service_role;
 
 -- ============================================================
 -- §7 Lock down auth.users exposure.
