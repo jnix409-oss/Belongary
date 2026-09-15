@@ -160,8 +160,9 @@ const reviewParam = encodeURIComponent(company.name);
         </section>
       </div>
     ) : (
-      <!-- Collecting Perspectives -->
-      <section class="mb-12">
+      <!-- Collecting Perspectives + Preview -->
+      <div class="mb-12 space-y-10">
+        <!-- Progress card -->
         <div class="bg-white rounded-2xl border border-border p-8 sm:p-10 text-center max-w-2xl mx-auto">
           <div class="w-16 h-16 mx-auto mb-5 rounded-full bg-lavender-light flex items-center justify-center">
             <img src="/brand/icons/belonging.svg" alt="" width="32" height="32" aria-hidden="true" />
@@ -199,7 +200,64 @@ const reviewParam = encodeURIComponent(company.name);
             Be one of the first {remaining}
           </a>
         </div>
-      </section>
+
+        <!-- What you'll see — score previews -->
+        <div class="max-w-2xl mx-auto">
+          <h3 class="text-lg font-heading font-semibold text-plum mb-5">
+            What you'll see once scores are live
+          </h3>
+
+          <!-- Headline score preview -->
+          <div class="bg-white rounded-xl border border-border p-6 mb-4">
+            <p class="text-sm font-medium text-ink/40 mb-4">Would you recommend this employer to someone like you?</p>
+            <div class="grid grid-cols-3 gap-3">
+              <div class="rounded-lg bg-sage-light/40 p-4 text-center">
+                <p class="text-xs text-ink/30 mb-1">Yes</p>
+                <p class="text-2xl font-heading font-bold text-ink/15">—</p>
+              </div>
+              <div class="rounded-lg bg-peach-light/60 p-4 text-center">
+                <p class="text-xs text-ink/30 mb-1">Depends</p>
+                <p class="text-2xl font-heading font-bold text-ink/15">—</p>
+              </div>
+              <div class="rounded-lg bg-peach/20 p-4 text-center">
+                <p class="text-xs text-ink/30 mb-1">No</p>
+                <p class="text-2xl font-heading font-bold text-ink/15">—</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dimension bars preview -->
+          <div class="bg-white rounded-xl border border-border p-6 mb-4">
+            <p class="text-sm font-medium text-ink/40 mb-1">Everyday experience</p>
+            <p class="text-xs text-ink/25 mb-5">Ratings on a 1–5 scale across eight dimensions of belonging</p>
+            <div class="space-y-3.5">
+              {DIMENSIONS.map(dim => (
+                <div class="flex items-center gap-3">
+                  <img src={dim.icon} alt="" width="20" height="20" class="opacity-25" aria-hidden="true" />
+                  <span class="text-sm text-ink/30 w-44 shrink-0">{dim.label}</span>
+                  <div class="flex-1 h-2.5 bg-peach/15 rounded-full"></div>
+                  <span class="text-xs text-ink/20 w-8 text-right">— / 5</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Lens insights preview -->
+          <div class="bg-white rounded-xl border border-border p-6">
+            <p class="text-sm font-medium text-ink/40 mb-1">Identity lens insights</p>
+            <p class="text-xs text-ink/25 mb-4">
+              Scores filtered by perspective — requires {MIN_REVIEWS_SENSITIVE_LENS} reviews per lens
+            </p>
+            <div class="flex flex-wrap gap-2">
+              {LENSES.map(lens => (
+                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs bg-lavender/20 text-ink/20">
+                  {lens.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     )}
 
     <!-- "When there isn't enough feedback" notice -->
