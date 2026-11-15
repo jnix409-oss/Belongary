@@ -10,9 +10,15 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  /** Use a dark (plum) header style — for pages with plum hero backgrounds */
+  darkHeader?: boolean;
 }
 
-const { title, description = 'See if you\'ll belong — before you work there. Anonymous workplace belonging reviews filtered through identity lenses.' } = Astro.props;
+const {
+  title,
+  description = 'See the workplace through your lens. Anonymous belonging reviews filtered through the perspectives that matter to you.',
+  darkHeader = false,
+} = Astro.props;
 ---
 <html lang="en">
   <head>
@@ -27,7 +33,7 @@ const { title, description = 'See if you\'ll belong — before you work there. A
     <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicon-16.png" />
     <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
     <link rel="manifest" href="/brand/site.webmanifest" />
-    <meta name="theme-color" content="#2B1B33" />
+    <meta name="theme-color" content="#352238" />
 
     <!-- Open Graph / Social -->
     <meta property="og:type" content="website" />
@@ -45,7 +51,7 @@ const { title, description = 'See if you\'ll belong — before you work there. A
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">
-    <Header />
+    <Header dark={darkHeader} />
     <main class="flex-1">
       <slot />
     </main>

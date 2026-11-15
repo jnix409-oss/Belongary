@@ -1,0 +1,26 @@
+---
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+const { size = 'md', class: className = '' } = Astro.props;
+
+const dims = {
+  sm: 'w-20 h-28',
+  md: 'w-36 h-48',
+  lg: 'w-40 h-56',
+};
+---
+<div class:list={[dims[size], 'arch-outline overflow-hidden relative', className]} aria-hidden="true">
+  <svg viewBox="0 0 144 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 w-full h-full">
+    <rect width="144" height="192" fill="#352238" rx="0" />
+    <path d="M72 0C32.24 0 0 32.24 0 72v120h144V72C144 32.24 111.76 0 72 0Z" fill="#352238" />
+    <circle cx="50" cy="120" r="50" fill="#B84E3B" opacity="0.7" />
+    <circle cx="95" cy="100" r="40" fill="#F4D4C3" opacity="0.6" />
+    <circle cx="65" cy="155" r="35" fill="#E4DCEF" opacity="0.5" />
+    <circle cx="40" cy="80" r="28" fill="#B84E3B" opacity="0.4" />
+    <circle cx="100" cy="150" r="30" fill="#F4D4C3" opacity="0.45" />
+    <circle cx="72" cy="60" r="20" fill="#DCE5D7" opacity="0.35" />
+    <circle cx="55" cy="170" r="22" fill="#FFF8F0" opacity="0.25" />
+  </svg>
+</div>

@@ -26,7 +26,7 @@ const pageDescription = "Use your removal token to permanently delete your anony
           class="w-full px-4 py-3 rounded-lg border border-border bg-white text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral font-mono text-sm"
         />
         <p class="text-xs text-ink/40 mt-1">
-          This is the token shown once after you submitted your review. If you've lost it and provided an email, contact <a href="mailto:support@belongary.com" class="text-coral hover:text-coral/80 underline">support@belongary.com</a>.
+          This is the token shown once after you submitted your review. If you've lost it, your review cannot be removed — we have no way to link it back to you.
         </p>
       </div>
 
@@ -46,7 +46,7 @@ const pageDescription = "Use your removal token to permanently delete your anony
       <ul class="text-sm text-ink/60 space-y-1">
         <li>• Your review text, ratings, and any identity lens tag are permanently deleted.</li>
         <li>• Your removal token is deleted along with it.</li>
-        <li>• If you provided an email, it is deleted too.</li>
+        <li>• Your review was never connected to your account — there is nothing else to delete.</li>
         <li>• Aggregate company scores will update to reflect the removal.</li>
         <li>• We keep an anonymous record that a removal happened (date only — no content, no company, no identifier).</li>
         <li>• This cannot be undone.</li>
@@ -73,7 +73,7 @@ const pageDescription = "Use your removal token to permanently delete your anony
       resultDiv.classList.add('hidden');
 
       try {
-        const res = await fetch('/api/remove', {
+        const res = await fetch('/api/delete-review', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
